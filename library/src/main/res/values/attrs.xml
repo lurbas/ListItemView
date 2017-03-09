@@ -5,5 +5,6 @@
         <attr name="liv_menuItemsRoom" format="integer" />
         <attr name="liv_title" format="string" />
         <attr name="liv_subtitle" format="string" />
+        <attr name="liv_multiline" format="boolean" />
     </declare-styleable>
 </resources>

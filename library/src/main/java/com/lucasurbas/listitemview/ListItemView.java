@@ -7,9 +7,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.lucasurbas.listitemview.util.ViewUtils;
 import com.lucasurbas.listitemview.util.view.MenuView;
@@ -23,7 +25,15 @@ public class ListItemView extends FrameLayout {
 
     private static final int DEFAULT_MENU_ITEMS_ROOM = 2;
 
+    private static final int SINGLE_LINE_ITEM_HEIGHT_DP = 48;
+
+    private static final int SINGLE_LINE_AVATAR_ITEM_HEIGHT_DP = 56;
+
+    private static final int TWO_LINE_ITEM_HEIGHT_DP = 72;
+
     private static final String TAG = "ListItemView";
+
+    private LinearLayout mItemLayout;
 
     private TextView mTitleView;
 
@@ -46,6 +56,8 @@ public class ListItemView extends FrameLayout {
     private String mTitle;
 
     private String mSubtitle;
+
+    private boolean mIsMultiline;
 
     /**
      * Interface for implementing a listener to listen
@@ -75,6 +87,7 @@ public class ListItemView extends FrameLayout {
 
         inflate(getContext(), R.layout.liv_list_item_layout, this);
 
+        mItemLayout = (LinearLayout) findViewById(R.id.item_layout);
         mMenuView = (MenuView) findViewById(R.id.menu_view);
         mTitleView = (TextView) findViewById(R.id.title_view);
         mSubtitleView = (TextView) findViewById(R.id.subtitle_view);
@@ -97,6 +110,7 @@ public class ListItemView extends FrameLayout {
                     DEFAULT_MENU_ITEMS_ROOM);
             mTitle = a.getString(R.styleable.ListItemView_liv_title);
             mSubtitle = a.getString(R.styleable.ListItemView_liv_subtitle);
+            mIsMultiline = a.getBoolean(R.styleable.ListItemView_liv_multiline, false);
 
 
         } finally {
@@ -105,6 +119,8 @@ public class ListItemView extends FrameLayout {
     }
 
     private void setupView() {
+
+        setMultiline(mIsMultiline);
 
         setupTextView(mTitleView, (int) ViewUtils.spToPixel(24), 1);
         setupTextView(mSubtitleView, (int) ViewUtils.spToPixel(20), 1);
@@ -131,6 +147,24 @@ public class ListItemView extends FrameLayout {
 
         textView.setPadding(textView.getPaddingLeft(), textView.getPaddingTop() + alignTopExtra,
                 textView.getPaddingRight(), textView.getPaddingBottom() + alignBottomExtra);
+    }
+
+    @Override
+    protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
+        if (mIsMultiline) {
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        } else {
+            int finalHeight = 0;
+            if (mTitleView.getVisibility() != GONE && mSubtitleView.getVisibility() != GONE) {
+                finalHeight = (int) ViewUtils.dpToPixel(TWO_LINE_ITEM_HEIGHT_DP);
+            } else if (mAvatarView != null && mAvatarView.getVisibility() != GONE) {
+                finalHeight = (int) ViewUtils.dpToPixel(SINGLE_LINE_AVATAR_ITEM_HEIGHT_DP);
+            } else {
+                finalHeight = (int) ViewUtils.dpToPixel(SINGLE_LINE_ITEM_HEIGHT_DP);
+            }
+            super.onMeasure(widthMeasureSpec,
+                    MeasureSpec.makeMeasureSpec(finalHeight, MeasureSpec.EXACTLY));
+        }
     }
 
     /**
@@ -164,5 +198,26 @@ public class ListItemView extends FrameLayout {
     public void inflateMenu(final int menuId) {
         mMenuId = menuId;
         mMenuView.reset(menuId, mMenuItemsRoom);
+    }
+
+    /**
+     * Allows multiline for title and subtitle.
+     *
+     * @param isMultiline a multiline flag
+     */
+    public void setMultiline(final boolean isMultiline) {
+        mIsMultiline = isMultiline;
+        if (isMultiline) {
+            int padding = (int) ViewUtils.dpToPixel(4);
+            mItemLayout.setGravity(Gravity.TOP);
+            mTitleView.setMaxLines(Integer.MAX_VALUE);
+            mSubtitleView.setMaxLines(Integer.MAX_VALUE);
+            mItemLayout.setPadding(0, padding, 0, padding);
+        } else {
+            mItemLayout.setGravity(Gravity.CENTER_VERTICAL);
+            mTitleView.setMaxLines(1);
+            mSubtitleView.setMaxLines(1);
+            mItemLayout.setPadding(0, 0, 0, 0);
+        }
     }
 }
