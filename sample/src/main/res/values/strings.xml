@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">ListItemView</string>
+
+    <string name="action_heart">Heart</string>
+    <string name="action_info">Info</string>
+    <string name="action_remove">Remove</string>
 </resources>

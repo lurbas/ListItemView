@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ImageView android:id="@+id/search_bar_overflow_menu"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="36dp"
+    android:layout_height="48dp"
+    android:layout_centerInParent="true"
+    android:scaleType="centerInside"
+    android:alpha="1"
+    android:background="?selectableItemBackgroundBorderless"
+    android:clickable="true" />

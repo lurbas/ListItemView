@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ListItemView">
+        <attr name="liv_menu" format="reference" />
+        <attr name="liv_menuItemsRoom" format="integer" />
+    </declare-styleable>
+</resources>
