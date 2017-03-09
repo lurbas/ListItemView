@@ -3,5 +3,7 @@
     <declare-styleable name="ListItemView">
         <attr name="liv_menu" format="reference" />
         <attr name="liv_menuItemsRoom" format="integer" />
+        <attr name="liv_title" format="string" />
+        <attr name="liv_subtitle" format="string" />
     </declare-styleable>
 </resources>

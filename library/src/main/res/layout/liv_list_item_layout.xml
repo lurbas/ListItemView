@@ -1,39 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <LinearLayout
-            android:id="@+id/text_layout"
+            android:id="@+id/texts_layout"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_weight="1"
             android:gravity="center_vertical"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/text_title"
+                android:id="@+id/title_view"
+                style="@style/TextAppearance.AppCompat.Subhead"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Title"/>
+                android:layout_marginBottom="2dp"
+                tools:text="Single Title" />
 
             <TextView
-                android:id="@+id/text_description"
+                android:id="@+id/subtitle_view"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_marginTop="2dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Description"/>
+                android:textColor="?android:textColorSecondary"
+                tools:text="Very long and interesting\nsubtitle"/>
 
         </LinearLayout>
 
         <com.lucasurbas.listitemview.util.view.MenuView
-            android:id="@+id/menu_layout"
+            android:id="@+id/menu_view"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
 
     </LinearLayout>
 

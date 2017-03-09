@@ -25,7 +25,9 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title"
+        app:liv_title="@string/title_long"
+        app:liv_subtitle="@string/subtitle"
         app:liv_menu="@menu/list_item"
-        app:liv_menuItemsRoom="3" />
+        app:liv_menuItemsRoom="2" />
 
 </android.support.constraint.ConstraintLayout>
