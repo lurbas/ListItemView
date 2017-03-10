@@ -1,12 +1,16 @@
 package com.lucasurbas.listitemview.util.view;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
+import android.support.annotation.ColorInt;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.view.SupportMenuInflater;
 import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.view.menu.MenuItemImpl;
 import android.support.v7.view.menu.MenuPopupHelper;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
@@ -70,8 +74,29 @@ public class MenuView extends LinearLayout {
     private void init() {
         mMenuBuilder = new MenuBuilder(getContext());
         mMenuPopupHelper = new MenuPopupHelper(getContext(), mMenuBuilder, this);
-        mActionIconColor = ContextCompat.getColor(getContext(), R.color.liv_gray_active_icon);
-        mOverflowIconColor = ContextCompat.getColor(getContext(), R.color.liv_gray_active_icon);
+        int color = getDefaultColor();
+        mActionIconColor = color;
+        mOverflowIconColor = color;
+    }
+
+    @ColorInt
+    private int getDefaultColor() {
+        // Get the primary text color of the theme
+        TypedValue typedValue = new TypedValue();
+        Resources.Theme theme = getContext().getTheme();
+        theme.resolveAttribute(android.R.attr.textColorSecondary, typedValue, true);
+        TypedArray a = getContext().obtainStyledAttributes(typedValue.data, new int[] {
+                android.R.attr.textColorSecondary
+        });
+        int colorFallback = ContextCompat.getColor(getContext(), R.color.liv_gray_active_icon);
+        int color = colorFallback;
+        try {
+            color = a.getColor(0, colorFallback);
+        } finally {
+            a.recycle();
+        }
+
+        return color;
     }
 
     public void setActionIconColor(int actionColor) {
