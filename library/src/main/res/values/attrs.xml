@@ -6,5 +6,9 @@
         <attr name="liv_title" format="string" />
         <attr name="liv_subtitle" format="string" />
         <attr name="liv_multiline" format="boolean" />
+        <attr name="liv_padding_start" format="dimension" />
+        <attr name="liv_padding_end" format="dimension" />
+        <attr name="liv_keyline" format="dimension" />
+        <attr name="liv_force_keyline" format="boolean" />
     </declare-styleable>
 </resources>

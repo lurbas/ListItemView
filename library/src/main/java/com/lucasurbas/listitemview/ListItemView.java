@@ -23,6 +23,8 @@ import com.lucasurbas.listitemview.util.view.MenuView;
  */
 public class ListItemView extends FrameLayout {
 
+    private static final String TAG = "ListItemView";
+
     private static final int DEFAULT_MENU_ITEMS_ROOM = 2;
 
     private static final int SINGLE_LINE_ITEM_HEIGHT_DP = 48;
@@ -31,7 +33,9 @@ public class ListItemView extends FrameLayout {
 
     private static final int TWO_LINE_ITEM_HEIGHT_DP = 72;
 
-    private static final String TAG = "ListItemView";
+    private static final int AVATAR_WIDTH_DP = 40;
+
+    private static final int ICON_WIDTH_DP = 24;
 
     private LinearLayout mItemLayout;
 
@@ -58,6 +62,20 @@ public class ListItemView extends FrameLayout {
     private String mSubtitle;
 
     private boolean mIsMultiline;
+
+    private int mPaddingEnd;
+
+    private int mPaddingStart;
+
+    private int mPaddingVertical;
+
+    private int mKeyline;
+
+    private boolean mForceKeyline;
+
+    private int mAvatarWidth;
+
+    private int mIconWidth;
 
     /**
      * Interface for implementing a listener to listen
@@ -92,6 +110,13 @@ public class ListItemView extends FrameLayout {
         mTitleView = (TextView) findViewById(R.id.title_view);
         mSubtitleView = (TextView) findViewById(R.id.subtitle_view);
 
+        mPaddingEnd = getResources().getDimensionPixelSize(R.dimen.liv_padding_end);
+        mPaddingStart = getResources().getDimensionPixelSize(R.dimen.liv_padding_start);
+        mKeyline = getResources().getDimensionPixelSize(R.dimen.liv_keyline);
+
+        mAvatarWidth = (int) ViewUtils.dpToPixel(AVATAR_WIDTH_DP);
+        mIconWidth = (int) ViewUtils.dpToPixel(ICON_WIDTH_DP);
+
         if (attrs != null) {
             applyAttrs(attrs);
         }
@@ -108,10 +133,17 @@ public class ListItemView extends FrameLayout {
             mMenuId = a.getResourceId(R.styleable.ListItemView_liv_menu, -1);
             mMenuItemsRoom = a.getInteger(R.styleable.ListItemView_liv_menuItemsRoom,
                     DEFAULT_MENU_ITEMS_ROOM);
+
             mTitle = a.getString(R.styleable.ListItemView_liv_title);
             mSubtitle = a.getString(R.styleable.ListItemView_liv_subtitle);
             mIsMultiline = a.getBoolean(R.styleable.ListItemView_liv_multiline, false);
 
+            mPaddingEnd = a.getDimensionPixelSize(R.styleable.ListItemView_liv_padding_end,
+                    mPaddingEnd);
+            mPaddingStart = a.getDimensionPixelSize(R.styleable.ListItemView_liv_padding_start,
+                    mPaddingStart);
+            mKeyline = a.getDimensionPixelSize(R.styleable.ListItemView_liv_keyline, mKeyline);
+            mForceKeyline = a.getBoolean(R.styleable.ListItemView_liv_force_keyline, false);
 
         } finally {
             a.recycle();
@@ -119,6 +151,8 @@ public class ListItemView extends FrameLayout {
     }
 
     private void setupView() {
+
+        assertPadding();
 
         setMultiline(mIsMultiline);
 
@@ -129,6 +163,26 @@ public class ListItemView extends FrameLayout {
         setSubtitle(mSubtitle);
         inflateMenu(mMenuId);
 
+    }
+
+    private void assertPadding() {
+        if (hasAvatar() || hasCircularIcon()) {
+            if (mKeyline - mAvatarWidth < mPaddingStart) {
+                throw new IllegalArgumentException("keyline value is to small");
+            }
+        } else if (hasIcon()) {
+            if (mKeyline - mIconWidth < mPaddingStart) {
+                throw new IllegalArgumentException("keyline value is to small");
+            }
+        } else {
+            if (mKeyline < mPaddingStart) {
+                throw new IllegalArgumentException("keyline value is to small");
+            }
+        }
+    }
+
+    private void adjustPadding(){
+        mItemLayout.setPaddingRelative(mForceKeyline ? mKeyline : mPaddingStart, mPaddingVertical, mPaddingEnd, mPaddingVertical);
     }
 
     private void setupTextView(final TextView textView, final int leading, final int step) {
@@ -208,16 +262,43 @@ public class ListItemView extends FrameLayout {
     public void setMultiline(final boolean isMultiline) {
         mIsMultiline = isMultiline;
         if (isMultiline) {
-            int padding = (int) ViewUtils.dpToPixel(4);
+            mPaddingVertical = (int) ViewUtils.dpToPixel(4);
             mItemLayout.setGravity(Gravity.TOP);
             mTitleView.setMaxLines(Integer.MAX_VALUE);
             mSubtitleView.setMaxLines(Integer.MAX_VALUE);
-            mItemLayout.setPadding(0, padding, 0, padding);
         } else {
+            mPaddingVertical = 0;
             mItemLayout.setGravity(Gravity.CENTER_VERTICAL);
             mTitleView.setMaxLines(1);
             mSubtitleView.setMaxLines(1);
-            mItemLayout.setPadding(0, 0, 0, 0);
         }
+        adjustPadding();
+    }
+
+    /**
+     * Check if item should display avatar.
+     *
+     * @return if item has avatar
+     */
+    public boolean hasAvatar() {
+        return false;
+    }
+
+    /**
+     * Check if item should display circular icon.
+     *
+     * @return if item has circular icon
+     */
+    public boolean hasCircularIcon() {
+        return false;
+    }
+
+    /**
+     * Check if item should display icon.
+     *
+     * @return if item has icon
+     */
+    public boolean hasIcon() {
+        return false;
     }
 }

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="liv_padding_end">4dp</dimen>
+    <dimen name="liv_padding_start">16dp</dimen>
+    <dimen name="liv_keyline">72dp</dimen>
+</resources>

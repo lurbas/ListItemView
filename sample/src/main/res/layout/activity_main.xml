@@ -25,10 +25,11 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title"
-        app:liv_title="@string/title_long"
-        app:liv_subtitle="@string/subtitle_long"
+        app:liv_force_keyline="false"
         app:liv_menu="@menu/list_item"
-        app:liv_multiline="true"
-        app:liv_menuItemsRoom="2" />
+        app:liv_menuItemsRoom="1"
+        app:liv_multiline="false"
+        app:liv_subtitle="@string/subtitle_long"
+        app:liv_title="@string/title_long" />
 
 </android.support.constraint.ConstraintLayout>
