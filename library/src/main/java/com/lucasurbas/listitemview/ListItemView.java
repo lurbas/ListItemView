@@ -63,6 +63,12 @@ public class ListItemView extends FrameLayout {
 
     private int mMenuItemsRoom;
 
+    @ColorInt
+    private int mMenuActionColor;
+
+    @ColorInt
+    private int mMenuOverflowColor;
+
     private String mTitle;
 
     private String mSubtitle;
@@ -146,6 +152,10 @@ public class ListItemView extends FrameLayout {
             mMenuId = a.getResourceId(R.styleable.ListItemView_liv_menu, -1);
             mMenuItemsRoom = a.getInteger(R.styleable.ListItemView_liv_menuItemsRoom,
                     DEFAULT_MENU_ITEMS_ROOM);
+            mMenuActionColor = a.getColor(R.styleable.ListItemView_liv_menuActionColor,
+                    defaultColor);
+            mMenuOverflowColor = a.getColor(R.styleable.ListItemView_liv_menuOverflowColor,
+                    defaultColor);
 
             mTitle = a.getString(R.styleable.ListItemView_liv_title);
             mSubtitle = a.getString(R.styleable.ListItemView_liv_subtitle);
@@ -177,6 +187,8 @@ public class ListItemView extends FrameLayout {
         setMultiline(mIsMultiline);
         setTitle(mTitle);
         setSubtitle(mSubtitle);
+        setMenuActionColor(mMenuActionColor);
+        setMenuOverflowColor(mMenuOverflowColor);
         inflateMenu(mMenuId);
 
     }
@@ -299,11 +311,46 @@ public class ListItemView extends FrameLayout {
         adjustPadding();
     }
 
-    private void setIcon(Drawable iconDrawable) {
+    /**
+     * Set an icon on left side.
+     *
+     * @param iconDrawable a icon drawable
+     */
+    public void setIcon(Drawable iconDrawable) {
         mIconDrawable = iconDrawable;
         mIconView.setImageDrawable(iconDrawable);
         ViewUtils.setIconColor(mIconView, mIconColor);
         mIconView.setVisibility(iconDrawable == null ? GONE : VISIBLE);
+    }
+
+    /**
+     * Set a color of icon on left side.
+     *
+     * @param iconColor a icon color
+     */
+    public void setIconColor(@ColorInt int iconColor) {
+        mIconColor = iconColor;
+        ViewUtils.setIconColor(mIconView, mIconColor);
+    }
+
+    /**
+     * Set a color of an action icon in menu.
+     *
+     * @param menuActionColor a icon color
+     */
+    public void setMenuActionColor(@ColorInt int menuActionColor) {
+        mMenuActionColor = menuActionColor;
+        mMenuView.setActionIconColor(menuActionColor);
+    }
+
+    /**
+     * Set a color of an overflow icon in menu.
+     *
+     * @param overflowColor a icon color
+     */
+    public void setMenuOverflowColor(@ColorInt int overflowColor) {
+        mMenuOverflowColor = overflowColor;
+        mMenuView.setOverflowColor(overflowColor);
     }
 
     /**
