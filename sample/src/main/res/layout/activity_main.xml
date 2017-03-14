@@ -30,7 +30,8 @@
         app:liv_menu="@menu/list_item"
         app:liv_menuItemsRoom="2"
         app:liv_multiline="true"
-        app:liv_subtitle="@string/subtitle_long"
-        app:liv_title="@string/title_long" />
+        app:liv_circleIcon="true"
+        app:liv_title="@string/title"
+        app:liv_subtitle="@string/subtitle_long"/>
 
 </android.support.constraint.ConstraintLayout>

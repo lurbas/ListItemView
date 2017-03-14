@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.lucasurbas.listitemview.util.ViewUtils;
+import com.lucasurbas.listitemview.util.view.CircularIconView;
 import com.lucasurbas.listitemview.util.view.MenuView;
 
 /**
@@ -51,7 +52,7 @@ public class ListItemView extends FrameLayout {
 
     private ImageView mIconView;
 
-    // private CircularIconView mCircularIconView;
+    private CircularIconView mCircularIconView;
 
     private ImageView mAvatarView;
 
@@ -94,6 +95,8 @@ public class ListItemView extends FrameLayout {
     @ColorInt
     private int mIconColor;
 
+    private boolean mUseCircularIcon;
+
     /**
      * Interface for implementing a listener to listen
      * when an menu item has been selected.
@@ -127,6 +130,7 @@ public class ListItemView extends FrameLayout {
         mTitleView = (TextView) findViewById(R.id.title_view);
         mSubtitleView = (TextView) findViewById(R.id.subtitle_view);
         mIconView = (ImageView) findViewById(R.id.icon_view);
+        mCircularIconView = (CircularIconView) findViewById(R.id.circular_icon_view);
 
         mPaddingEnd = getResources().getDimensionPixelSize(R.dimen.liv_padding_end);
         mPaddingStart = getResources().getDimensionPixelSize(R.dimen.liv_padding_start);
@@ -170,6 +174,7 @@ public class ListItemView extends FrameLayout {
 
             mIconDrawable = a.getDrawable(R.styleable.ListItemView_liv_icon);
             mIconColor = a.getColor(R.styleable.ListItemView_liv_iconColor, defaultColor);
+            mUseCircularIcon = a.getBoolean(R.styleable.ListItemView_liv_circleIcon, false);
 
         } finally {
             a.recycle();
@@ -210,13 +215,14 @@ public class ListItemView extends FrameLayout {
     }
 
     private boolean useKeyline() {
-        return mForceKeyline || mIconDrawable != null;
+        return mForceKeyline || hasIcon() || hasCircularIcon() || hasAvatar();
     }
 
     private void adjustPadding() {
         mItemLayout.setPaddingRelative(useKeyline() ? mKeyline : mPaddingStart, mPaddingVertical,
                 mPaddingEnd, mPaddingVertical);
         ((MarginLayoutParams) mIconView.getLayoutParams()).setMarginStart(mPaddingStart);
+        ((MarginLayoutParams) mCircularIconView.getLayoutParams()).setMarginStart(mPaddingStart);
     }
 
     private void setupTextView(final TextView textView, final int leading, final int step) {
@@ -245,7 +251,7 @@ public class ListItemView extends FrameLayout {
             int finalHeight = 0;
             if (mTitleView.getVisibility() != GONE && mSubtitleView.getVisibility() != GONE) {
                 finalHeight = (int) ViewUtils.dpToPixel(TWO_LINE_ITEM_HEIGHT_DP);
-            } else if (mAvatarView != null && mAvatarView.getVisibility() != GONE) {
+            } else if ((mAvatarView != null && mAvatarView.getVisibility() != GONE) || (mCircularIconView.getVisibility() != GONE)) {
                 finalHeight = (int) ViewUtils.dpToPixel(SINGLE_LINE_AVATAR_ITEM_HEIGHT_DP);
             } else {
                 finalHeight = (int) ViewUtils.dpToPixel(SINGLE_LINE_ITEM_HEIGHT_DP);
@@ -299,12 +305,14 @@ public class ListItemView extends FrameLayout {
             mPaddingVertical = (int) ViewUtils.dpToPixel(4);
             mItemLayout.setGravity(Gravity.TOP);
             ((LayoutParams) mIconView.getLayoutParams()).gravity = Gravity.TOP;
+            ((LayoutParams) mCircularIconView.getLayoutParams()).gravity = Gravity.TOP;
             mTitleView.setMaxLines(Integer.MAX_VALUE);
             mSubtitleView.setMaxLines(Integer.MAX_VALUE);
         } else {
             mPaddingVertical = 0;
             mItemLayout.setGravity(Gravity.CENTER_VERTICAL);
             ((LayoutParams) mIconView.getLayoutParams()).gravity = Gravity.CENTER_VERTICAL;
+            ((LayoutParams) mCircularIconView.getLayoutParams()).gravity = Gravity.CENTER_VERTICAL;
             mTitleView.setMaxLines(1);
             mSubtitleView.setMaxLines(1);
         }
@@ -318,9 +326,16 @@ public class ListItemView extends FrameLayout {
      */
     public void setIcon(Drawable iconDrawable) {
         mIconDrawable = iconDrawable;
-        mIconView.setImageDrawable(iconDrawable);
-        setIconColor(mIconColor);
-        mIconView.setVisibility(iconDrawable == null ? GONE : VISIBLE);
+        if (!mUseCircularIcon) {
+            mIconView.setImageDrawable(iconDrawable);
+            setIconColor(mIconColor);
+            mIconView.setVisibility(iconDrawable == null ? GONE : VISIBLE);
+            mCircularIconView.setVisibility(GONE);
+        } else {
+            mCircularIconView.setIcon(iconDrawable);
+            mCircularIconView.setVisibility(iconDrawable == null ? GONE : VISIBLE);
+            mIconView.setVisibility(GONE);
+        }
     }
 
     /**
@@ -370,7 +385,7 @@ public class ListItemView extends FrameLayout {
      * @return if item has circular icon
      */
     public boolean hasCircularIcon() {
-        return false;
+        return mIconDrawable != null && mUseCircularIcon;
     }
 
     /**
@@ -379,6 +394,6 @@ public class ListItemView extends FrameLayout {
      * @return if item has icon
      */
     public boolean hasIcon() {
-        return false;
+        return mIconDrawable != null;
     }
 }
