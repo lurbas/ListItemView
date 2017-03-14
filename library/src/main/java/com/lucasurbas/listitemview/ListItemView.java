@@ -319,7 +319,7 @@ public class ListItemView extends FrameLayout {
     public void setIcon(Drawable iconDrawable) {
         mIconDrawable = iconDrawable;
         mIconView.setImageDrawable(iconDrawable);
-        ViewUtils.setIconColor(mIconView, mIconColor);
+        setIconColor(mIconColor);
         mIconView.setVisibility(iconDrawable == null ? GONE : VISIBLE);
     }
 
@@ -330,7 +330,9 @@ public class ListItemView extends FrameLayout {
      */
     public void setIconColor(@ColorInt int iconColor) {
         mIconColor = iconColor;
-        ViewUtils.setIconColor(mIconView, mIconColor);
+        if (mIconView.getDrawable() != null) {
+            ViewUtils.setIconColor(mIconView, mIconColor);
+        }
     }
 
     /**
