@@ -4,12 +4,21 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+
+    <ImageView
+        android:id="@+id/icon_view"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_gravity="center_vertical"/>
+
     <LinearLayout
         android:id="@+id/item_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
         android:layout_gravity="center"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -17,8 +26,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="12dp"
-            android:layout_marginTop="12dp"
             android:layout_marginEnd="12dp"
+            android:layout_marginTop="12dp"
             android:layout_weight="1"
             android:orientation="vertical">
 

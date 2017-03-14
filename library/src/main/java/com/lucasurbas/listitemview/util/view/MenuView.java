@@ -74,29 +74,9 @@ public class MenuView extends LinearLayout {
     private void init() {
         mMenuBuilder = new MenuBuilder(getContext());
         mMenuPopupHelper = new MenuPopupHelper(getContext(), mMenuBuilder, this);
-        int color = getDefaultColor();
+        int color = ViewUtils.getDefaultColor(getContext());
         mActionIconColor = color;
         mOverflowIconColor = color;
-    }
-
-    @ColorInt
-    private int getDefaultColor() {
-        // Get the primary text color of the theme
-        TypedValue typedValue = new TypedValue();
-        Resources.Theme theme = getContext().getTheme();
-        theme.resolveAttribute(android.R.attr.textColorSecondary, typedValue, true);
-        TypedArray a = getContext().obtainStyledAttributes(typedValue.data, new int[] {
-                android.R.attr.textColorSecondary
-        });
-        int colorFallback = ContextCompat.getColor(getContext(), R.color.liv_gray_active_icon);
-        int color = colorFallback;
-        try {
-            color = a.getColor(0, colorFallback);
-        } finally {
-            a.recycle();
-        }
-
-        return color;
     }
 
     public void setActionIconColor(int actionColor) {

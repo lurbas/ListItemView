@@ -1,14 +1,19 @@
 package com.lucasurbas.listitemview.util;
 
+import android.content.Context;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.ColorInt;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
+import com.lucasurbas.listitemview.R;
 
 /**
  * Static methods to help with views and dimensions.
@@ -56,6 +61,25 @@ public class ViewUtils {
                 runnable.run();
             }
         });
+    }
+
+    @ColorInt
+    public static int getDefaultColor(Context context) {
+        // Get the primary text color of the theme
+        TypedValue typedValue = new TypedValue();
+        Resources.Theme theme = context.getTheme();
+        theme.resolveAttribute(android.R.attr.textColorSecondary, typedValue, true);
+        TypedArray a = context.obtainStyledAttributes(typedValue.data, new int[] {
+                android.R.attr.textColorSecondary
+        });
+        int colorFallback = ContextCompat.getColor(context, R.color.liv_gray_active_icon);
+        int color = colorFallback;
+        try {
+            color = a.getColor(0, colorFallback);
+        } finally {
+            a.recycle();
+        }
+        return color;
     }
 
     public static void setIconColor(ImageView iconHolder, int color) {

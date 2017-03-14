@@ -3,6 +3,8 @@ package com.lucasurbas.listitemview;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -81,6 +83,11 @@ public class ListItemView extends FrameLayout {
 
     private int mIconWidth;
 
+    private Drawable mIconDrawable;
+
+    @ColorInt
+    private int mIconColor;
+
     /**
      * Interface for implementing a listener to listen
      * when an menu item has been selected.
@@ -113,6 +120,7 @@ public class ListItemView extends FrameLayout {
         mMenuView = (MenuView) findViewById(R.id.menu_view);
         mTitleView = (TextView) findViewById(R.id.title_view);
         mSubtitleView = (TextView) findViewById(R.id.subtitle_view);
+        mIconView = (ImageView) findViewById(R.id.icon_view);
 
         mPaddingEnd = getResources().getDimensionPixelSize(R.dimen.liv_padding_end);
         mPaddingStart = getResources().getDimensionPixelSize(R.dimen.liv_padding_start);
@@ -131,6 +139,7 @@ public class ListItemView extends FrameLayout {
     private void applyAttrs(final AttributeSet attrs) {
 
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.ListItemView);
+        int defaultColor = ViewUtils.getDefaultColor(getContext());
 
         try {
 
@@ -149,6 +158,9 @@ public class ListItemView extends FrameLayout {
             mKeyline = a.getDimensionPixelSize(R.styleable.ListItemView_liv_keyline, mKeyline);
             mForceKeyline = a.getBoolean(R.styleable.ListItemView_liv_forceKeyline, false);
 
+            mIconDrawable = a.getDrawable(R.styleable.ListItemView_liv_icon);
+            mIconColor = a.getColor(R.styleable.ListItemView_liv_iconColor, defaultColor);
+
         } finally {
             a.recycle();
         }
@@ -158,11 +170,11 @@ public class ListItemView extends FrameLayout {
 
         assertPadding();
 
-        setMultiline(mIsMultiline);
-
         setupTextView(mTitleView, (int) ViewUtils.spToPixel(TITLE_LEADING_SP), 1);
         setupTextView(mSubtitleView, (int) ViewUtils.spToPixel(SUBTITLE_LEADING_SP), 1);
 
+        setIcon(mIconDrawable);
+        setMultiline(mIsMultiline);
         setTitle(mTitle);
         setSubtitle(mSubtitle);
         inflateMenu(mMenuId);
@@ -185,8 +197,14 @@ public class ListItemView extends FrameLayout {
         }
     }
 
-    private void adjustPadding(){
-        mItemLayout.setPaddingRelative(mForceKeyline ? mKeyline : mPaddingStart, mPaddingVertical, mPaddingEnd, mPaddingVertical);
+    private boolean useKeyline() {
+        return mForceKeyline || mIconDrawable != null;
+    }
+
+    private void adjustPadding() {
+        mItemLayout.setPaddingRelative(useKeyline() ? mKeyline : mPaddingStart, mPaddingVertical,
+                mPaddingEnd, mPaddingVertical);
+        ((MarginLayoutParams) mIconView.getLayoutParams()).setMarginStart(mPaddingStart);
     }
 
     private void setupTextView(final TextView textView, final int leading, final int step) {
@@ -268,15 +286,24 @@ public class ListItemView extends FrameLayout {
         if (isMultiline) {
             mPaddingVertical = (int) ViewUtils.dpToPixel(4);
             mItemLayout.setGravity(Gravity.TOP);
+            ((LayoutParams) mIconView.getLayoutParams()).gravity = Gravity.TOP;
             mTitleView.setMaxLines(Integer.MAX_VALUE);
             mSubtitleView.setMaxLines(Integer.MAX_VALUE);
         } else {
             mPaddingVertical = 0;
             mItemLayout.setGravity(Gravity.CENTER_VERTICAL);
+            ((LayoutParams) mIconView.getLayoutParams()).gravity = Gravity.CENTER_VERTICAL;
             mTitleView.setMaxLines(1);
             mSubtitleView.setMaxLines(1);
         }
         adjustPadding();
+    }
+
+    private void setIcon(Drawable iconDrawable) {
+        mIconDrawable = iconDrawable;
+        mIconView.setImageDrawable(iconDrawable);
+        ViewUtils.setIconColor(mIconView, mIconColor);
+        mIconView.setVisibility(iconDrawable == null ? GONE : VISIBLE);
     }
 
     /**
