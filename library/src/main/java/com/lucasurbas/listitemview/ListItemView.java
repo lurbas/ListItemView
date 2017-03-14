@@ -37,6 +37,10 @@ public class ListItemView extends FrameLayout {
 
     private static final int ICON_WIDTH_DP = 24;
 
+    private static final int TITLE_LEADING_SP = 24;
+
+    private static final int SUBTITLE_LEADING_SP = 20;
+
     private LinearLayout mItemLayout;
 
     private TextView mTitleView;
@@ -138,12 +142,12 @@ public class ListItemView extends FrameLayout {
             mSubtitle = a.getString(R.styleable.ListItemView_liv_subtitle);
             mIsMultiline = a.getBoolean(R.styleable.ListItemView_liv_multiline, false);
 
-            mPaddingEnd = a.getDimensionPixelSize(R.styleable.ListItemView_liv_padding_end,
+            mPaddingEnd = a.getDimensionPixelSize(R.styleable.ListItemView_liv_paddingEnd,
                     mPaddingEnd);
-            mPaddingStart = a.getDimensionPixelSize(R.styleable.ListItemView_liv_padding_start,
+            mPaddingStart = a.getDimensionPixelSize(R.styleable.ListItemView_liv_paddingStart,
                     mPaddingStart);
             mKeyline = a.getDimensionPixelSize(R.styleable.ListItemView_liv_keyline, mKeyline);
-            mForceKeyline = a.getBoolean(R.styleable.ListItemView_liv_force_keyline, false);
+            mForceKeyline = a.getBoolean(R.styleable.ListItemView_liv_forceKeyline, false);
 
         } finally {
             a.recycle();
@@ -156,8 +160,8 @@ public class ListItemView extends FrameLayout {
 
         setMultiline(mIsMultiline);
 
-        setupTextView(mTitleView, (int) ViewUtils.spToPixel(24), 1);
-        setupTextView(mSubtitleView, (int) ViewUtils.spToPixel(20), 1);
+        setupTextView(mTitleView, (int) ViewUtils.spToPixel(TITLE_LEADING_SP), 1);
+        setupTextView(mSubtitleView, (int) ViewUtils.spToPixel(SUBTITLE_LEADING_SP), 1);
 
         setTitle(mTitle);
         setSubtitle(mSubtitle);
