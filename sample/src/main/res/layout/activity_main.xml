@@ -25,13 +25,13 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title"
+        app:liv_circularIcon="true"
         app:liv_forceKeyline="false"
         app:liv_icon="@drawable/ic_favorite_24dp"
         app:liv_menu="@menu/list_item"
         app:liv_menuItemsRoom="2"
         app:liv_multiline="true"
-        app:liv_circleIcon="true"
-        app:liv_title="@string/title"
-        app:liv_subtitle="@string/subtitle_long"/>
+        app:liv_subtitle="@string/subtitle_long"
+        app:liv_title="@string/title" />
 
 </android.support.constraint.ConstraintLayout>

@@ -58,8 +58,6 @@ public class MenuView extends LinearLayout {
 
     private boolean mHasOverflow = false;
 
-    private int mVisibleWidth;
-
 
     public MenuView(Context context) {
         this(context, null);
@@ -216,10 +214,6 @@ public class MenuView extends LinearLayout {
             mMenuBuilder.removeItem(id);
         }
         actionItemsIds = null;
-    }
-
-    public int getVisibleWidth() {
-        return mVisibleWidth;
     }
 
     private ImageView createActionView() {

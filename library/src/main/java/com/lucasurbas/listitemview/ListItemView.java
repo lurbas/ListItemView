@@ -2,11 +2,13 @@ package com.lucasurbas.listitemview;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -44,6 +46,8 @@ public class ListItemView extends FrameLayout {
 
     private static final int SUBTITLE_LEADING_SP = 20;
 
+    private static final int NOT_SET = -1;
+
     private LinearLayout mItemLayout;
 
     private TextView mTitleView;
@@ -60,7 +64,7 @@ public class ListItemView extends FrameLayout {
 
     // VARIABLES
 
-    private int mMenuId = -1;
+    private int mMenuId = NOT_SET;
 
     private int mMenuItemsRoom;
 
@@ -93,9 +97,12 @@ public class ListItemView extends FrameLayout {
     private Drawable mIconDrawable;
 
     @ColorInt
-    private int mIconColor;
+    private int mIconColor = Color.TRANSPARENT;
 
     private boolean mUseCircularIcon;
+
+    @ColorInt
+    private int mCircularIconColor;
 
     /**
      * Interface for implementing a listener to listen
@@ -153,7 +160,7 @@ public class ListItemView extends FrameLayout {
 
         try {
 
-            mMenuId = a.getResourceId(R.styleable.ListItemView_liv_menu, -1);
+            mMenuId = a.getResourceId(R.styleable.ListItemView_liv_menu, NOT_SET);
             mMenuItemsRoom = a.getInteger(R.styleable.ListItemView_liv_menuItemsRoom,
                     DEFAULT_MENU_ITEMS_ROOM);
             mMenuActionColor = a.getColor(R.styleable.ListItemView_liv_menuActionColor,
@@ -173,8 +180,9 @@ public class ListItemView extends FrameLayout {
             mForceKeyline = a.getBoolean(R.styleable.ListItemView_liv_forceKeyline, false);
 
             mIconDrawable = a.getDrawable(R.styleable.ListItemView_liv_icon);
-            mIconColor = a.getColor(R.styleable.ListItemView_liv_iconColor, defaultColor);
-            mUseCircularIcon = a.getBoolean(R.styleable.ListItemView_liv_circleIcon, false);
+            mIconColor = a.getColor(R.styleable.ListItemView_liv_iconColor, Color.TRANSPARENT);
+            mUseCircularIcon = a.getBoolean(R.styleable.ListItemView_liv_circularIcon, false);
+            mCircularIconColor = a.getColor(R.styleable.ListItemView_liv_circularIconColor, defaultColor);
 
         } finally {
             a.recycle();
@@ -188,6 +196,7 @@ public class ListItemView extends FrameLayout {
         setupTextView(mTitleView, (int) ViewUtils.spToPixel(TITLE_LEADING_SP), 1);
         setupTextView(mSubtitleView, (int) ViewUtils.spToPixel(SUBTITLE_LEADING_SP), 1);
 
+        setCircularIconColor(mCircularIconColor);
         setIcon(mIconDrawable);
         setMultiline(mIsMultiline);
         setTitle(mTitle);
@@ -251,7 +260,8 @@ public class ListItemView extends FrameLayout {
             int finalHeight = 0;
             if (mTitleView.getVisibility() != GONE && mSubtitleView.getVisibility() != GONE) {
                 finalHeight = (int) ViewUtils.dpToPixel(TWO_LINE_ITEM_HEIGHT_DP);
-            } else if ((mAvatarView != null && mAvatarView.getVisibility() != GONE) || (mCircularIconView.getVisibility() != GONE)) {
+            } else if ((mAvatarView != null && mAvatarView.getVisibility() != GONE) || (
+                    mCircularIconView.getVisibility() != GONE)) {
                 finalHeight = (int) ViewUtils.dpToPixel(SINGLE_LINE_AVATAR_ITEM_HEIGHT_DP);
             } else {
                 finalHeight = (int) ViewUtils.dpToPixel(SINGLE_LINE_ITEM_HEIGHT_DP);
@@ -328,14 +338,14 @@ public class ListItemView extends FrameLayout {
         mIconDrawable = iconDrawable;
         if (!mUseCircularIcon) {
             mIconView.setImageDrawable(iconDrawable);
-            setIconColor(mIconColor);
             mIconView.setVisibility(iconDrawable == null ? GONE : VISIBLE);
             mCircularIconView.setVisibility(GONE);
         } else {
-            mCircularIconView.setIcon(iconDrawable);
+            mCircularIconView.setIconDrawable(iconDrawable);
             mCircularIconView.setVisibility(iconDrawable == null ? GONE : VISIBLE);
             mIconView.setVisibility(GONE);
         }
+        setIconColor(mIconColor);
     }
 
     /**
@@ -345,9 +355,22 @@ public class ListItemView extends FrameLayout {
      */
     public void setIconColor(@ColorInt int iconColor) {
         mIconColor = iconColor;
-        if (mIconView.getDrawable() != null) {
-            ViewUtils.setIconColor(mIconView, mIconColor);
+        if (!mUseCircularIcon && mIconView.getDrawable() != null) {
+            ViewUtils.setIconColor(mIconView,
+                    mIconColor == Color.TRANSPARENT ? ViewUtils.getDefaultColor(getContext()) : mIconColor);
+
+        } else if (mCircularIconView.getIconDrawable() != null) {
+            mCircularIconView.useMask(mIconColor == Color.TRANSPARENT);
+            Drawable wrappedDrawable = DrawableCompat.wrap(mCircularIconView.getIconDrawable());
+            DrawableCompat.setTint(wrappedDrawable,
+                    mIconColor == Color.TRANSPARENT ? Color.WHITE : mIconColor);
+            mCircularIconView.setIconDrawable(wrappedDrawable);
         }
+    }
+
+    public void setCircularIconColor(@ColorInt int circularIconColor){
+        mCircularIconColor = circularIconColor;
+        mCircularIconView.setCircleColor(circularIconColor);
     }
 
     /**

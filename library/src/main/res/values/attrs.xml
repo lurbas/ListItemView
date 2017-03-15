@@ -14,7 +14,7 @@
         <attr name="liv_forceKeyline" format="boolean" />
         <attr name="liv_icon" format="reference" />
         <attr name="liv_iconColor" format="color" />
-        <attr name="liv_circleIcon" format="boolean" />
-        <attr name="liv_circleIconColor" format="color" />
+        <attr name="liv_circularIcon" format="boolean" />
+        <attr name="liv_circularIconColor" format="color" />
     </declare-styleable>
 </resources>

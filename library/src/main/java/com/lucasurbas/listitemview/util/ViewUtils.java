@@ -65,7 +65,7 @@ public class ViewUtils {
 
     @ColorInt
     public static int getDefaultColor(Context context) {
-        // Get the primary text color of the theme
+        // Get the secondary text color of the theme
         TypedValue typedValue = new TypedValue();
         Resources.Theme theme = context.getTheme();
         theme.resolveAttribute(android.R.attr.textColorSecondary, typedValue, true);

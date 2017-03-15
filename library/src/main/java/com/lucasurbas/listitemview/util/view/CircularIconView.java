@@ -19,7 +19,7 @@ import com.lucasurbas.listitemview.util.ViewUtils;
 /**
  * Description.
  *
- * @author urbl
+ * @author Lucas Urbas
  */
 public class CircularIconView extends View {
 
@@ -34,7 +34,10 @@ public class CircularIconView extends View {
     private Drawable mIconDrawable;
 
     @ColorInt
-    private int mColor;
+    private int mCircleColor;
+
+    private boolean mUseMask;
+
 
     public CircularIconView(final Context context) {
         super(context);
@@ -52,7 +55,8 @@ public class CircularIconView extends View {
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setStyle(Paint.Style.FILL);
-        mColor = ViewUtils.getDefaultColor(getContext());
+        mCircleColor = ViewUtils.getDefaultColor(getContext());
+        mUseMask = true;
     }
 
     @Override
@@ -66,25 +70,22 @@ public class CircularIconView extends View {
     protected void onDraw(final Canvas canvas) {
         if (canvas.getHeight() > 0 && canvas.getWidth() > 0 && mMask != null) {
 
-            int sc = canvas.save(Canvas.ALL_SAVE_FLAG);
+            int sc = canvas.save();
 
-            mPaint.setColor(mColor);
+            mPaint.setColor(mCircleColor);
             mPaint.setXfermode(null);
             canvas.drawOval(mRect, mPaint);
 
-            mPaint.setColor(Color.WHITE);
-            mPaint.setXfermode(xfermode);
-            canvas.drawBitmap(mMask, 0.0f, 0.0f, mPaint);
-
-            mPaint.setXfermode(null);
+            if (mUseMask) {
+                mPaint.setColor(Color.WHITE);
+                mPaint.setXfermode(xfermode);
+                canvas.drawBitmap(mMask, 0.0f, 0.0f, mPaint);
+            } else {
+                mIconDrawable.draw(canvas);
+            }
 
             canvas.restoreToCount(sc);
         }
-    }
-
-    public void setIcon(final Drawable iconDrawable) {
-        mIconDrawable = iconDrawable;
-        swapBitmapMask(makeBitmapMask(iconDrawable));
     }
 
     @Nullable
@@ -93,12 +94,12 @@ public class CircularIconView extends View {
         int mw = getMeasuredWidth();
         if (drawable != null) {
             if (mw > 0 && mh > 0) {
-                Bitmap mask = Bitmap.createBitmap(mw, mh,
-                        Bitmap.Config.ARGB_8888);
+                Bitmap mask = Bitmap.createBitmap(mw, mh, Bitmap.Config.ARGB_8888);
                 Canvas canvas = new Canvas(mask);
                 int h = drawable.getIntrinsicHeight();
                 int w = drawable.getIntrinsicWidth();
-                drawable.setBounds((mw - w) / 2, (mh - h) / 2, ((mw - w) / 2) + w, ((mh - h) / 2) + h);
+                drawable.setBounds((mw - w) / 2, (mh - h) / 2, ((mw - w) / 2) + w,
+                        ((mh - h) / 2) + h);
                 drawable.draw(canvas);
                 return mask;
             }
@@ -113,5 +114,25 @@ public class CircularIconView extends View {
             }
             mMask = newMask;
         }
+    }
+
+    public void setIconDrawable(final Drawable iconDrawable) {
+        mIconDrawable = iconDrawable;
+        swapBitmapMask(makeBitmapMask(iconDrawable));
+        invalidate();
+    }
+
+    public Drawable getIconDrawable(){
+        return mIconDrawable;
+    }
+
+    public void useMask(boolean useMask) {
+        mUseMask = useMask;
+        invalidate();
+    }
+
+    public void setCircleColor(@ColorInt int circleColor){
+        mCircleColor = circleColor;
+        invalidate();
     }
 }
