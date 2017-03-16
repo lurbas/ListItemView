@@ -363,8 +363,8 @@ public class ListItemView extends FrameLayout {
         } else {
             mPaddingVertical = 0;
             mItemLayout.setGravity(Gravity.CENTER_VERTICAL);
-            ((LayoutParams) mIconView.getLayoutParams()).gravity = Gravity.CENTER_VERTICAL;
-            ((LayoutParams) mCircularIconView.getLayoutParams()).gravity = Gravity.CENTER_VERTICAL;
+            ((LayoutParams) mIconView.getLayoutParams()).gravity = Gravity.CENTER_VERTICAL | Gravity.START;
+            ((LayoutParams) mCircularIconView.getLayoutParams()).gravity = Gravity.CENTER_VERTICAL | Gravity.START;
             mTitleView.setMaxLines(1);
             mSubtitleView.setMaxLines(1);
         }
