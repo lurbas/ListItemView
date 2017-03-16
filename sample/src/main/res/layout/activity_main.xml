@@ -1,37 +1,87 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.lucasurbas.listitemviewsample.MainActivity">
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:text="Hello World!"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="vertical">
 
-    <com.lucasurbas.listitemview.ListItemView
-        android:id="@+id/list_item_view"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
-        android:background="?colorItemBackground"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title"
-        app:liv_circularIcon="true"
-        app:liv_forceKeyline="false"
-        app:liv_icon="@drawable/ic_favorite_24dp"
-        app:liv_menu="@menu/list_item"
-        app:liv_menuItemsRoom="2"
-        app:liv_multiline="true"
-        app:liv_subtitle="@string/subtitle_long"
-        app:liv_title="@string/title" />
+        <com.lucasurbas.listitemview.ListItemView
+            android:id="@+id/list_item_view_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?colorItemBackground"
+            app:liv_subtitle="@string/subtitle_long"
+            app:liv_title="@string/title" />
 
-</android.support.constraint.ConstraintLayout>
+        <com.lucasurbas.listitemview.ListItemView
+            android:id="@+id/list_item_view_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?colorItemBackground"
+            app:liv_subtitle="@string/subtitle_long"
+            app:liv_title="@string/title" />
+
+        <com.lucasurbas.listitemview.ListItemView
+            android:id="@+id/list_item_view_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?colorItemBackground"
+            app:liv_subtitle="@string/subtitle_long"
+            app:liv_title="@string/title" />
+
+        <com.lucasurbas.listitemview.ListItemView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:liv_subtitle="@string/attrs" />
+
+        <com.lucasurbas.listitemview.ListItemView
+            android:id="@+id/attr_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:liv_menu="@menu/uncheck_menu"
+            app:liv_title="@string/attr_title" />
+
+        <com.lucasurbas.listitemview.ListItemView
+            android:id="@+id/attr_subtitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:liv_menu="@menu/uncheck_menu"
+            app:liv_title="@string/attr_subtitle" />
+
+        <com.lucasurbas.listitemview.ListItemView
+            android:id="@+id/attr_multiline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:liv_menu="@menu/check_menu"
+            app:liv_title="@string/attr_multiline" />
+
+        <com.lucasurbas.listitemview.ListItemView
+            android:id="@+id/attr_forceKeyline"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:liv_menu="@menu/check_menu"
+            app:liv_title="@string/attr_forceKeyline" />
+
+        <com.lucasurbas.listitemview.ListItemView
+            android:id="@+id/attr_icon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:liv_menu="@menu/check_menu"
+            app:liv_title="@string/attr_icon" />
+
+        <com.lucasurbas.listitemview.ListItemView
+            android:id="@+id/attr_circularIcon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:liv_menu="@menu/check_menu"
+            app:liv_title="@string/attr_circularIcon" />
+
+
+    </LinearLayout>
+</ScrollView>

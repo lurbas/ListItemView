@@ -4,9 +4,25 @@
     <string name="action_heart">Heart</string>
     <string name="action_info">Info</string>
     <string name="action_remove">Remove</string>
+    <string name="action_check">Check</string>
+    <string name="action_uncheck">Uncheck</string>
 
     <string name="title">Single Title</string>
     <string name="title_long">A very interesting and long title</string>
     <string name="subtitle">Single Subtitle</string>
     <string name="subtitle_long">Lorem ipsum dolor sit amet, vide utamur usu ne. Debet nusquam est ut, omnium fabulas usu id, dolor dolore voluptua vis te.</string>
+
+    <string name="attrs">Attributes</string>
+    <string name="attr_title">Title</string>
+    <string name="attr_subtitle">Subtitle</string>
+    <string name="attr_multiline">Multiline</string>
+    <string name="attr_forceKeyline">Force Keyline</string>
+    <string name="attr_icon">Icon</string>
+    <string name="attr_circularIcon">Circular Icon</string>
+    <string name="attr_iconColor">Icon Color</string>
+    <string name="attr_circleColor">Circle Color</string>
+    <string name="attr_menu">Menu</string>
+    <string name="attr_menuItemColor">Menu Item Color</string>
+    <string name="attr_menuOverflowColor">Menu Overflow Color</string>
+
 </resources>
