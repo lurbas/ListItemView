@@ -8,7 +8,9 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v7.view.menu.MenuBuilder;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -73,6 +75,8 @@ public class ListItemView extends FrameLayout {
 
     @ColorInt
     private int mMenuOverflowColor;
+
+    private OnMenuItemClickListener mActionMenuItemListener;
 
     private String mTitle;
 
@@ -182,7 +186,8 @@ public class ListItemView extends FrameLayout {
             mIconDrawable = a.getDrawable(R.styleable.ListItemView_liv_icon);
             mIconColor = a.getColor(R.styleable.ListItemView_liv_iconColor, Color.TRANSPARENT);
             mUseCircularIcon = a.getBoolean(R.styleable.ListItemView_liv_circularIcon, false);
-            mCircularIconColor = a.getColor(R.styleable.ListItemView_liv_circularIconColor, defaultColor);
+            mCircularIconColor = a.getColor(R.styleable.ListItemView_liv_circularIconColor,
+                    defaultColor);
 
         } finally {
             a.recycle();
@@ -278,8 +283,19 @@ public class ListItemView extends FrameLayout {
      */
     public void setTitle(final String title) {
         mTitle = title;
-        mTitleView.setText(title);
-        mTitleView.setVisibility(TextUtils.isEmpty(title) ? GONE : VISIBLE);
+        mTitleView.setText(mTitle);
+        mTitleView.setVisibility(TextUtils.isEmpty(mTitle) ? GONE : VISIBLE);
+    }
+
+    /**
+     * Set a title that will appear in the first line.
+     *
+     * @param titleResId a string title res id
+     */
+    public void setTitle(@StringRes final int titleResId) {
+        mTitle = getContext().getString(titleResId);
+        mTitleView.setText(mTitle);
+        mTitleView.setVisibility(TextUtils.isEmpty(mTitle) ? GONE : VISIBLE);
     }
 
     /**
@@ -289,8 +305,19 @@ public class ListItemView extends FrameLayout {
      */
     public void setSubtitle(final String subtitle) {
         mSubtitle = subtitle;
-        mSubtitleView.setText(subtitle);
-        mSubtitleView.setVisibility(TextUtils.isEmpty(subtitle) ? GONE : VISIBLE);
+        mSubtitleView.setText(mSubtitle);
+        mSubtitleView.setVisibility(TextUtils.isEmpty(mSubtitle) ? GONE : VISIBLE);
+    }
+
+    /**
+     * Set a subtitle that will appear in the second line.
+     *
+     * @param subtitleResId a string subtitle res id
+     */
+    public void setSubtitle(@StringRes final int subtitleResId) {
+        mSubtitle = getContext().getString(subtitleResId);
+        mSubtitleView.setText(mSubtitle);
+        mSubtitleView.setVisibility(TextUtils.isEmpty(mSubtitle) ? GONE : VISIBLE);
     }
 
     /**
@@ -301,6 +328,21 @@ public class ListItemView extends FrameLayout {
      */
     public void inflateMenu(final int menuId) {
         mMenuId = menuId;
+        mMenuView.setMenuCallback(new MenuBuilder.Callback() {
+
+            @Override
+            public boolean onMenuItemSelected(MenuBuilder menu, MenuItem item) {
+                if (mActionMenuItemListener != null) {
+                    mActionMenuItemListener.onActionMenuItemSelected(item);
+                }
+                return true;
+            }
+
+            @Override
+            public void onMenuModeChange(MenuBuilder menu) {
+            }
+
+        });
         mMenuView.reset(menuId, mMenuItemsRoom);
     }
 
@@ -330,6 +372,16 @@ public class ListItemView extends FrameLayout {
     }
 
     /**
+     * Force a keyline offset of title and subtitle.
+     *
+     * @param forceKeyline a keyline flag
+     */
+    public void forceKeyline(boolean forceKeyline) {
+        mForceKeyline = forceKeyline;
+        adjustPadding();
+    }
+
+    /**
      * Set an icon on left side.
      *
      * @param iconDrawable a icon drawable
@@ -346,6 +398,7 @@ public class ListItemView extends FrameLayout {
             mIconView.setVisibility(GONE);
         }
         setIconColor(mIconColor);
+        adjustPadding();
     }
 
     /**
@@ -357,7 +410,8 @@ public class ListItemView extends FrameLayout {
         mIconColor = iconColor;
         if (!mUseCircularIcon && mIconView.getDrawable() != null) {
             ViewUtils.setIconColor(mIconView,
-                    mIconColor == Color.TRANSPARENT ? ViewUtils.getDefaultColor(getContext()) : mIconColor);
+                    mIconColor == Color.TRANSPARENT ? ViewUtils.getDefaultColor(getContext())
+                            : mIconColor);
 
         } else if (mCircularIconView.getIconDrawable() != null) {
             mCircularIconView.useMask(mIconColor == Color.TRANSPARENT);
@@ -368,7 +422,22 @@ public class ListItemView extends FrameLayout {
         }
     }
 
-    public void setCircularIconColor(@ColorInt int circularIconColor){
+    /**
+     * Set an icon on left in circle.
+     *
+     * @param useCircularIcon a circular icon flag
+     */
+    public void useCircularIcon(boolean useCircularIcon) {
+        mUseCircularIcon = useCircularIcon;
+        setIcon(mIconDrawable);
+    }
+
+    /**
+     * Set a color of circular icon on left side.
+     *
+     * @param circularIconColor a icon color
+     */
+    public void setCircularIconColor(@ColorInt int circularIconColor) {
         mCircularIconColor = circularIconColor;
         mCircularIconView.setCircleColor(circularIconColor);
     }
@@ -391,6 +460,16 @@ public class ListItemView extends FrameLayout {
     public void setMenuOverflowColor(@ColorInt int overflowColor) {
         mMenuOverflowColor = overflowColor;
         mMenuView.setOverflowColor(overflowColor);
+    }
+
+    /**
+     * Sets the listener that will be called when
+     * an item in the overflow menu is clicked.
+     *
+     * @param listener listener to listen to menu item clicks
+     */
+    public void setOnMenuItemClickListener(final OnMenuItemClickListener listener) {
+        this.mActionMenuItemListener = listener;
     }
 
     /**
