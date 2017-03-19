@@ -9,6 +9,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.lucasurbas.listitemview.ListItemView;
 
+
 public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.list_item_view)
@@ -31,6 +32,12 @@ public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.attr_circularIcon)
     ListItemView attributeCircularIconView;
+
+    @BindView(R.id.attr_actionMenu)
+    ListItemView attributeActionMenu;
+
+    @BindView(R.id.attr_actionMenuRoom)
+    ListItemView attributeActionMenuRoom;
 
     private boolean attrTitle = true;
 
@@ -83,10 +90,23 @@ public class MainActivity extends AppCompatActivity {
                 onAttrIconClicked();
             }
         });
-        attributeCircularIconView.setOnMenuItemClickListener(new ListItemView.OnMenuItemClickListener() {
+        attributeCircularIconView.setOnMenuItemClickListener(
+                new ListItemView.OnMenuItemClickListener() {
+                    @Override
+                    public void onActionMenuItemSelected(final MenuItem item) {
+                        onAttrCircularIconClicked();
+                    }
+                });
+        attributeActionMenu.setOnMenuItemClickListener(new ListItemView.OnMenuItemClickListener() {
             @Override
             public void onActionMenuItemSelected(final MenuItem item) {
-                onAttrCircularIconClicked();
+                onAttrActionMenuClicked(item.getItemId());
+            }
+        });
+        attributeActionMenuRoom.setOnMenuItemClickListener(new ListItemView.OnMenuItemClickListener() {
+            @Override
+            public void onActionMenuItemSelected(final MenuItem item) {
+                onAttrActionMenuRoomClicked(item.getItemId());
             }
         });
     }
@@ -126,7 +146,48 @@ public class MainActivity extends AppCompatActivity {
 
     private void onAttrCircularIconClicked() {
         circularIcon = !circularIcon;
-        attributeCircularIconView.inflateMenu(circularIcon ? R.menu.uncheck_menu : R.menu.check_menu);
+        attributeCircularIconView.inflateMenu(
+                circularIcon ? R.menu.uncheck_menu : R.menu.check_menu);
         listItemView.useCircularIcon(circularIcon);
+    }
+
+    private void onAttrActionMenuClicked(int itemId) {
+        switch (itemId) {
+            default:
+            case R.id.action_none:
+                listItemView.inflateMenu(ListItemView.NO_ACTION_MENU);
+                attributeActionMenu.setSubtitle(R.string.attr_menu_none);
+                break;
+
+            case R.id.action_single:
+                listItemView.inflateMenu(R.menu.single_action_menu);
+                attributeActionMenu.setSubtitle(R.string.attr_menu_single);
+                break;
+
+            case R.id.action_multiple:
+                listItemView.inflateMenu(R.menu.multiple_action_menu);
+                attributeActionMenu.setSubtitle(R.string.attr_menu_multiple);
+                break;
+        }
+    }
+
+    private void onAttrActionMenuRoomClicked(int itemId) {
+        switch (itemId) {
+            default:
+            case R.id.action_room_1:
+                listItemView.setMenuItemsRoom(1);
+                attributeActionMenuRoom.setSubtitle(R.string.attr_room_1);
+                break;
+
+            case R.id.action_room_2:
+                listItemView.setMenuItemsRoom(2);
+                attributeActionMenuRoom.setSubtitle(R.string.attr_room_2);
+                break;
+
+            case R.id.action_room_3:
+                listItemView.setMenuItemsRoom(3);
+                attributeActionMenuRoom.setSubtitle(R.string.attr_room_3);
+                break;
+        }
     }
 }

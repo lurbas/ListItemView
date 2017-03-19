@@ -119,6 +119,10 @@ public class MenuView extends LinearLayout {
      */
     public void reset(int menu, int menuItemsRoom) {
         mMenuResId = menu;
+
+        //clean view and re-inflate
+        removeAllViews();
+
         if (mMenuResId == -1) {
             return;
         }
@@ -129,8 +133,6 @@ public class MenuView extends LinearLayout {
         mMenuBuilder = new MenuBuilder(getContext());
         mMenuPopupHelper = new MenuPopupHelper(getContext(), mMenuBuilder, this);
 
-        //clean view and re-inflate
-        removeAllViews();
         getMenuInflater().inflate(mMenuResId, mMenuBuilder);
 
         mMenuItems = mMenuBuilder.getActionItems();

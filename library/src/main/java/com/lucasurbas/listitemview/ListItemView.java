@@ -30,6 +30,8 @@ import com.lucasurbas.listitemview.util.view.MenuView;
  */
 public class ListItemView extends FrameLayout {
 
+    public static final int NO_ACTION_MENU = -1;
+
     private static final String TAG = "ListItemView";
 
     private static final int DEFAULT_MENU_ITEMS_ROOM = 2;
@@ -164,7 +166,7 @@ public class ListItemView extends FrameLayout {
 
         try {
 
-            mMenuId = a.getResourceId(R.styleable.ListItemView_liv_menu, NOT_SET);
+            mMenuId = a.getResourceId(R.styleable.ListItemView_liv_menu, NO_ACTION_MENU);
             mMenuItemsRoom = a.getInteger(R.styleable.ListItemView_liv_menuItemsRoom,
                     DEFAULT_MENU_ITEMS_ROOM);
             mMenuActionColor = a.getColor(R.styleable.ListItemView_liv_menuActionColor,
@@ -347,6 +349,16 @@ public class ListItemView extends FrameLayout {
     }
 
     /**
+     * Set the available space for menu items
+     *
+     * @param menuItemsRoom a number of menu actions visible
+     */
+    public void setMenuItemsRoom(int menuItemsRoom) {
+        this.mMenuItemsRoom = menuItemsRoom;
+        mMenuView.reset(mMenuId, mMenuItemsRoom);
+    }
+
+    /**
      * Allows multiline for title and subtitle.
      *
      * @param isMultiline a multiline flag
@@ -363,8 +375,10 @@ public class ListItemView extends FrameLayout {
         } else {
             mPaddingVertical = 0;
             mItemLayout.setGravity(Gravity.CENTER_VERTICAL);
-            ((LayoutParams) mIconView.getLayoutParams()).gravity = Gravity.CENTER_VERTICAL | Gravity.START;
-            ((LayoutParams) mCircularIconView.getLayoutParams()).gravity = Gravity.CENTER_VERTICAL | Gravity.START;
+            ((LayoutParams) mIconView.getLayoutParams()).gravity = Gravity.CENTER_VERTICAL
+                    | Gravity.START;
+            ((LayoutParams) mCircularIconView.getLayoutParams()).gravity = Gravity.CENTER_VERTICAL
+                    | Gravity.START;
             mTitleView.setMaxLines(1);
             mSubtitleView.setMaxLines(1);
         }

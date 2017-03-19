@@ -14,7 +14,8 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="120dp">
+            android:layout_height="wrap_content"
+            android:minHeight="160dp">
 
             <com.lucasurbas.listitemview.ListItemView
                 android:id="@+id/list_item_view"
@@ -22,8 +23,7 @@
                 android:layout_height="wrap_content"
                 android:background="?colorItemBackground"
                 app:liv_subtitle="@string/subtitle_long"
-                app:liv_title="@string/title"
-                app:liv_multiline="true"/>
+                app:liv_title="@string/title" />
         </FrameLayout>
 
         <com.lucasurbas.listitemview.ListItemView
@@ -72,6 +72,22 @@
             android:layout_height="wrap_content"
             app:liv_menu="@menu/check_menu"
             app:liv_title="@string/attr_circularIcon" />
+
+        <com.lucasurbas.listitemview.ListItemView
+            android:id="@+id/attr_actionMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:liv_menu="@menu/attr_actions_menu"
+            app:liv_subtitle="@string/attr_menu_none"
+            app:liv_title="@string/attr_actionMenu" />
+
+        <com.lucasurbas.listitemview.ListItemView
+            android:id="@+id/attr_actionMenuRoom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:liv_menu="@menu/attr_room_menu"
+            app:liv_subtitle="@string/attr_room_2"
+            app:liv_title="@string/attr_actionMenuRoom" />
 
 
     </LinearLayout>
