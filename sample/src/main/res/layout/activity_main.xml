@@ -12,29 +12,19 @@
         android:animateLayoutChanges="true"
         android:orientation="vertical">
 
-        <com.lucasurbas.listitemview.ListItemView
-            android:id="@+id/list_item_view_1"
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?colorItemBackground"
-            app:liv_subtitle="@string/subtitle_long"
-            app:liv_title="@string/title" />
+            android:layout_height="120dp">
 
-        <com.lucasurbas.listitemview.ListItemView
-            android:id="@+id/list_item_view_2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?colorItemBackground"
-            app:liv_subtitle="@string/subtitle_long"
-            app:liv_title="@string/title" />
-
-        <com.lucasurbas.listitemview.ListItemView
-            android:id="@+id/list_item_view_3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?colorItemBackground"
-            app:liv_subtitle="@string/subtitle_long"
-            app:liv_title="@string/title" />
+            <com.lucasurbas.listitemview.ListItemView
+                android:id="@+id/list_item_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?colorItemBackground"
+                app:liv_subtitle="@string/subtitle_long"
+                app:liv_title="@string/title"
+                app:liv_multiline="true"/>
+        </FrameLayout>
 
         <com.lucasurbas.listitemview.ListItemView
             android:layout_width="match_parent"
