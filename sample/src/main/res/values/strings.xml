@@ -6,6 +6,7 @@
     <string name="action_remove">Remove</string>
     <string name="action_check">Check</string>
     <string name="action_uncheck">Uncheck</string>
+    <string name="action_color">Color</string>
 
     <string name="title">Single Title</string>
     <string name="title_long">A very interesting and long title</string>

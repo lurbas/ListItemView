@@ -2,15 +2,22 @@ package com.lucasurbas.listitemviewsample;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.ColorInt;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.jrummyapps.android.colorpicker.ColorPickerDialog;
+import com.jrummyapps.android.colorpicker.ColorPickerDialogListener;
 import com.lucasurbas.listitemview.ListItemView;
 
+import static com.jrummyapps.android.colorpicker.ColorPickerDialog.TYPE_PRESETS;
 
-public class MainActivity extends AppCompatActivity {
+
+public class MainActivity extends AppCompatActivity implements ColorPickerDialogListener {
+
+    private static final int ICON_COLOR_ID = 1;
 
     @BindView(R.id.list_item_view)
     ListItemView listItemView;
@@ -30,14 +37,17 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.attr_icon)
     ListItemView attributeIconView;
 
+    @BindView(R.id.attr_iconColor)
+    ListItemView attributeIconColorView;
+
     @BindView(R.id.attr_circularIcon)
     ListItemView attributeCircularIconView;
 
     @BindView(R.id.attr_actionMenu)
-    ListItemView attributeActionMenu;
+    ListItemView attributeActionMenuView;
 
     @BindView(R.id.attr_actionMenuRoom)
-    ListItemView attributeActionMenuRoom;
+    ListItemView attributeActionMenuRoomView;
 
     private boolean attrTitle = true;
 
@@ -90,6 +100,13 @@ public class MainActivity extends AppCompatActivity {
                 onAttrIconClicked();
             }
         });
+        attributeIconColorView.setOnMenuItemClickListener(
+                new ListItemView.OnMenuItemClickListener() {
+                    @Override
+                    public void onActionMenuItemSelected(final MenuItem item) {
+                        onAttrIconColorClicked();
+                    }
+                });
         attributeCircularIconView.setOnMenuItemClickListener(
                 new ListItemView.OnMenuItemClickListener() {
                     @Override
@@ -97,18 +114,20 @@ public class MainActivity extends AppCompatActivity {
                         onAttrCircularIconClicked();
                     }
                 });
-        attributeActionMenu.setOnMenuItemClickListener(new ListItemView.OnMenuItemClickListener() {
-            @Override
-            public void onActionMenuItemSelected(final MenuItem item) {
-                onAttrActionMenuClicked(item.getItemId());
-            }
-        });
-        attributeActionMenuRoom.setOnMenuItemClickListener(new ListItemView.OnMenuItemClickListener() {
-            @Override
-            public void onActionMenuItemSelected(final MenuItem item) {
-                onAttrActionMenuRoomClicked(item.getItemId());
-            }
-        });
+        attributeActionMenuView.setOnMenuItemClickListener(
+                new ListItemView.OnMenuItemClickListener() {
+                    @Override
+                    public void onActionMenuItemSelected(final MenuItem item) {
+                        onAttrActionMenuClicked(item.getItemId());
+                    }
+                });
+        attributeActionMenuRoomView.setOnMenuItemClickListener(
+                new ListItemView.OnMenuItemClickListener() {
+                    @Override
+                    public void onActionMenuItemSelected(final MenuItem item) {
+                        onAttrActionMenuRoomClicked(item.getItemId());
+                    }
+                });
     }
 
     private void onAttrTitleClicked() {
@@ -144,6 +163,15 @@ public class MainActivity extends AppCompatActivity {
         listItemView.setIcon(iconDrawable);
     }
 
+    private void onAttrIconColorClicked() {
+        ColorPickerDialog.newBuilder()
+                .setDialogType(TYPE_PRESETS)
+                .setDialogId(ICON_COLOR_ID)
+                .setAllowCustom(false)
+                .setShowAlphaSlider(true)
+                .show(this);
+    }
+
     private void onAttrCircularIconClicked() {
         circularIcon = !circularIcon;
         attributeCircularIconView.inflateMenu(
@@ -156,17 +184,17 @@ public class MainActivity extends AppCompatActivity {
             default:
             case R.id.action_none:
                 listItemView.inflateMenu(ListItemView.NO_ACTION_MENU);
-                attributeActionMenu.setSubtitle(R.string.attr_menu_none);
+                attributeActionMenuView.setSubtitle(R.string.attr_menu_none);
                 break;
 
             case R.id.action_single:
                 listItemView.inflateMenu(R.menu.single_action_menu);
-                attributeActionMenu.setSubtitle(R.string.attr_menu_single);
+                attributeActionMenuView.setSubtitle(R.string.attr_menu_single);
                 break;
 
             case R.id.action_multiple:
                 listItemView.inflateMenu(R.menu.multiple_action_menu);
-                attributeActionMenu.setSubtitle(R.string.attr_menu_multiple);
+                attributeActionMenuView.setSubtitle(R.string.attr_menu_multiple);
                 break;
         }
     }
@@ -176,18 +204,32 @@ public class MainActivity extends AppCompatActivity {
             default:
             case R.id.action_room_1:
                 listItemView.setMenuItemsRoom(1);
-                attributeActionMenuRoom.setSubtitle(R.string.attr_room_1);
+                attributeActionMenuRoomView.setSubtitle(R.string.attr_room_1);
                 break;
 
             case R.id.action_room_2:
                 listItemView.setMenuItemsRoom(2);
-                attributeActionMenuRoom.setSubtitle(R.string.attr_room_2);
+                attributeActionMenuRoomView.setSubtitle(R.string.attr_room_2);
                 break;
 
             case R.id.action_room_3:
                 listItemView.setMenuItemsRoom(3);
-                attributeActionMenuRoom.setSubtitle(R.string.attr_room_3);
+                attributeActionMenuRoomView.setSubtitle(R.string.attr_room_3);
                 break;
         }
+    }
+
+    @Override
+    public void onColorSelected(final int dialogId, @ColorInt final int color) {
+        switch (dialogId) {
+            case ICON_COLOR_ID:
+                listItemView.setIconColor(color);
+                break;
+        }
+    }
+
+    @Override
+    public void onDialogDismissed(final int dialogId) {
+        //empty
     }
 }

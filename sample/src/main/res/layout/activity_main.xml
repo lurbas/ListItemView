@@ -67,6 +67,13 @@
             app:liv_title="@string/attr_icon" />
 
         <com.lucasurbas.listitemview.ListItemView
+            android:id="@+id/attr_iconColor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:liv_menu="@menu/color_menu"
+            app:liv_title="@string/attr_iconColor" />
+
+        <com.lucasurbas.listitemview.ListItemView
             android:id="@+id/attr_circularIcon"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
