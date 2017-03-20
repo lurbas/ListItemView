@@ -421,14 +421,14 @@ public class ListItemView extends FrameLayout {
         mIconColor = iconColor;
         if (!mUseCircularIcon && mIconView.getDrawable() != null) {
             ViewUtils.setIconColor(mIconView,
-                    mIconColor == Color.TRANSPARENT ? ViewUtils.getDefaultColor(getContext())
+                    Color.alpha(mIconColor) == 0 ? ViewUtils.getDefaultColor(getContext())
                             : mIconColor);
 
         } else if (mCircularIconView.getIconDrawable() != null) {
-            mCircularIconView.useMask(mIconColor == Color.TRANSPARENT);
+            mCircularIconView.useMask(Color.alpha(mIconColor) == 0);
             Drawable wrappedDrawable = DrawableCompat.wrap(mCircularIconView.getIconDrawable());
             DrawableCompat.setTint(wrappedDrawable,
-                    mIconColor == Color.TRANSPARENT ? Color.WHITE : mIconColor);
+                    Color.alpha(mIconColor) == 0 ? Color.WHITE : mIconColor);
             mCircularIconView.setIconDrawable(wrappedDrawable);
         }
     }
@@ -449,7 +449,7 @@ public class ListItemView extends FrameLayout {
      * @param circularIconColor a icon color
      */
     public void setCircularIconColor(@ColorInt int circularIconColor) {
-        mCircularIconColor = circularIconColor == Color.TRANSPARENT ? ViewUtils.getDefaultColor(
+        mCircularIconColor = Color.alpha(circularIconColor) == 0 ? ViewUtils.getDefaultColor(
                 getContext()) : circularIconColor;
         mCircularIconView.setCircleColor(mCircularIconColor);
     }
@@ -460,7 +460,7 @@ public class ListItemView extends FrameLayout {
      * @param menuActionColor a icon color
      */
     public void setMenuActionColor(@ColorInt int menuActionColor) {
-        mMenuActionColor = menuActionColor == Color.TRANSPARENT ? ViewUtils.getDefaultColor(
+        mMenuActionColor = Color.alpha(menuActionColor) == 0 ? ViewUtils.getDefaultColor(
                 getContext()) : menuActionColor;
         mMenuView.setActionIconColor(mMenuActionColor);
     }
@@ -471,7 +471,7 @@ public class ListItemView extends FrameLayout {
      * @param overflowColor a icon color
      */
     public void setMenuOverflowColor(@ColorInt int overflowColor) {
-        mMenuOverflowColor = overflowColor == Color.TRANSPARENT ? ViewUtils.getDefaultColor(
+        mMenuOverflowColor = Color.alpha(overflowColor) == 0 ? ViewUtils.getDefaultColor(
                 getContext()) : overflowColor;
         mMenuView.setOverflowColor(mMenuOverflowColor);
     }
@@ -511,5 +511,81 @@ public class ListItemView extends FrameLayout {
      */
     public boolean hasIcon() {
         return mIconDrawable != null;
+    }
+
+    /**
+     * Getter for title.
+     *
+     * @return a title
+     */
+    public String getTitle() {
+        return mTitle;
+    }
+
+    /**
+     * Getter for subtitle.
+     *
+     * @return a subtitle
+     */
+    public String getSubtitle() {
+        return mSubtitle;
+    }
+
+    /**
+     * Getter for action menu items room.
+     *
+     * @return a number of action items visible
+     */
+    public int getMenuItemsRoom() {
+        return mMenuItemsRoom;
+    }
+
+    /**
+     * Getter for icon drawable.
+     *
+     * @return a icon drawable
+     */
+    public Drawable getIcon() {
+        return mIconDrawable;
+    }
+
+    /**
+     * Getter for icon color.
+     *
+     * @return a icon color
+     */
+    @ColorInt
+    public int getIconColor() {
+        return mIconColor;
+    }
+
+    /**
+     * Getter for circular icon color.
+     *
+     * @return a circular icon color
+     */
+    @ColorInt
+    public int getCircularIconColor() {
+        return mCircularIconColor;
+    }
+
+    /**
+     * Getter for menu action color.
+     *
+     * @return a menu action color
+     */
+    @ColorInt
+    public int getMenuActionColor() {
+        return mMenuActionColor;
+    }
+
+    /**
+     * Getter for menu overflow color.
+     *
+     * @return a menu overflow color
+     */
+    @ColorInt
+    public int getMenuOverflowColor() {
+        return mMenuOverflowColor;
     }
 }
