@@ -122,6 +122,9 @@ public class ListItemView extends FrameLayout {
     @ColorInt
     private int mCircularIconColor;
 
+    @ColorInt
+    private int mDefaultColor;
+
     /**
      * Interface for implementing a listener to listen
      * when an menu item has been selected.
@@ -158,6 +161,7 @@ public class ListItemView extends FrameLayout {
         mTextsLayout = (LinearLayout) findViewById(R.id.texts_layout);
         mCircularIconView = (CircularIconView) findViewById(R.id.circular_icon_view);
 
+        mDefaultColor = ViewUtils.getDefaultColor(getContext());
         mPaddingEnd = getResources().getDimensionPixelSize(R.dimen.liv_padding_end);
         mPaddingStart = getResources().getDimensionPixelSize(R.dimen.liv_padding_start);
         mKeyline = getResources().getDimensionPixelSize(R.dimen.liv_keyline);
@@ -492,8 +496,7 @@ public class ListItemView extends FrameLayout {
         mIconColor = iconColor;
         if (!mIsCircularIcon && mIconView.getDrawable() != null) {
             ViewUtils.setIconColor(mIconView,
-                    Color.alpha(mIconColor) == 0 ? ViewUtils.getDefaultColor(getContext())
-                            : mIconColor);
+                    Color.alpha(mIconColor) == 0 ? mDefaultColor : mIconColor);
 
         } else if (mCircularIconView.getIconDrawable() != null) {
             mCircularIconView.useMask(Color.alpha(mIconColor) == 0);
@@ -520,8 +523,8 @@ public class ListItemView extends FrameLayout {
      * @param circularIconColor a icon color
      */
     public void setCircularIconColor(@ColorInt final int circularIconColor) {
-        mCircularIconColor = Color.alpha(circularIconColor) == 0 ? ViewUtils.getDefaultColor(
-                getContext()) : circularIconColor;
+        mCircularIconColor = Color.alpha(circularIconColor) == 0 ? mDefaultColor
+                : circularIconColor;
         mCircularIconView.setCircleColor(mCircularIconColor);
     }
 
@@ -531,8 +534,7 @@ public class ListItemView extends FrameLayout {
      * @param menuActionColor a icon color
      */
     public void setMenuActionColor(@ColorInt final int menuActionColor) {
-        mMenuActionColor = Color.alpha(menuActionColor) == 0 ? ViewUtils.getDefaultColor(
-                getContext()) : menuActionColor;
+        mMenuActionColor = Color.alpha(menuActionColor) == 0 ? mDefaultColor : menuActionColor;
         mMenuView.setActionIconColor(mMenuActionColor);
     }
 
@@ -542,8 +544,7 @@ public class ListItemView extends FrameLayout {
      * @param overflowColor a icon color
      */
     public void setMenuOverflowColor(@ColorInt final int overflowColor) {
-        mMenuOverflowColor = Color.alpha(overflowColor) == 0 ? ViewUtils.getDefaultColor(
-                getContext()) : overflowColor;
+        mMenuOverflowColor = Color.alpha(overflowColor) == 0 ? mDefaultColor : overflowColor;
         mMenuView.setOverflowColor(mMenuOverflowColor);
     }
 

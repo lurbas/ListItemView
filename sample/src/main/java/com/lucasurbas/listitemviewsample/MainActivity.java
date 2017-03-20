@@ -23,6 +23,18 @@ public class MainActivity extends AppCompatActivity implements ColorPickerDialog
 
     private static final int OVERFLOW_COLOR_ID = 4;
 
+    private static final String KEY_TITLE = "key_title";
+
+    private static final String KEY_SUBTITLE = "key_subtitle";
+
+    private static final String KEY_MULTILINE = "key_multiline";
+
+    private static final String KEY_KEYLINE = "key_keyline";
+
+    private static final String KEY_ICON = "key_icon";
+
+    private static final String KEY_CIRCULAR_ICON = "key_circular_icon";
+
     @BindView(R.id.list_item_view)
     ListItemView listItemView;
 
@@ -62,17 +74,17 @@ public class MainActivity extends AppCompatActivity implements ColorPickerDialog
     @BindView(R.id.attr_actionMenuOverflowColor)
     ListItemView attributeActionMenuOverflowColorView;
 
-    private boolean attrTitle = true;
+    private boolean isTitle = true;
 
-    private boolean attrSubtitle = true;
+    private boolean isSubtitle = true;
 
-    private boolean multiline;
+    private boolean isMultiline;
 
-    private boolean forceKeyline;
+    private boolean isForceKeyline;
 
-    private boolean icon;
+    private boolean isIcon;
 
-    private boolean circularIcon;
+    private boolean isCircularIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,42 +176,64 @@ public class MainActivity extends AppCompatActivity implements ColorPickerDialog
                 });
     }
 
+    @Override
+    protected void onSaveInstanceState(final Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(KEY_TITLE, isTitle);
+        outState.putBoolean(KEY_SUBTITLE, isSubtitle);
+        outState.putBoolean(KEY_MULTILINE, isMultiline);
+        outState.putBoolean(KEY_KEYLINE, isForceKeyline);
+        outState.putBoolean(KEY_ICON, isIcon);
+        outState.putBoolean(KEY_CIRCULAR_ICON, isCircularIcon);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(final Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        isTitle = savedInstanceState.getBoolean(KEY_TITLE);
+        isSubtitle = savedInstanceState.getBoolean(KEY_SUBTITLE);
+        isMultiline = savedInstanceState.getBoolean(KEY_MULTILINE);
+        isForceKeyline = savedInstanceState.getBoolean(KEY_KEYLINE);
+        isIcon = savedInstanceState.getBoolean(KEY_ICON);
+        isCircularIcon = savedInstanceState.getBoolean(KEY_CIRCULAR_ICON);
+    }
+
     private void onAttrTitleClicked() {
-        attrTitle = !attrTitle;
-        attributeTitleView.inflateMenu(attrTitle ? R.menu.uncheck_menu : R.menu.check_menu);
-        listItemView.setTitle(attrTitle ? getString(R.string.title) : null);
+        isTitle = !isTitle;
+        attributeTitleView.inflateMenu(isTitle ? R.menu.uncheck_menu : R.menu.check_menu);
+        listItemView.setTitle(isTitle ? getString(R.string.title) : null);
     }
 
     private void onAttrSubtitleClicked() {
-        attrSubtitle = !attrSubtitle;
-        attributeSubtitleView.inflateMenu(attrSubtitle ? R.menu.uncheck_menu : R.menu.check_menu);
-        listItemView.setSubtitle(attrSubtitle ? getString(R.string.subtitle_long) : null);
+        isSubtitle = !isSubtitle;
+        attributeSubtitleView.inflateMenu(isSubtitle ? R.menu.uncheck_menu : R.menu.check_menu);
+        listItemView.setSubtitle(isSubtitle ? getString(R.string.subtitle_long) : null);
     }
 
     private void onAttrMultilineClicked() {
-        multiline = !multiline;
-        attributeMultilineView.inflateMenu(multiline ? R.menu.uncheck_menu : R.menu.check_menu);
-        listItemView.setMultiline(multiline);
+        isMultiline = !isMultiline;
+        attributeMultilineView.inflateMenu(isMultiline ? R.menu.uncheck_menu : R.menu.check_menu);
+        listItemView.setMultiline(isMultiline);
     }
 
     private void onAttrForceKeylineClicked() {
-        forceKeyline = !forceKeyline;
+        isForceKeyline = !isForceKeyline;
         attributeForceKeylineView.inflateMenu(
-                forceKeyline ? R.menu.uncheck_menu : R.menu.check_menu);
-        listItemView.forceKeyline(forceKeyline);
+                isForceKeyline ? R.menu.uncheck_menu : R.menu.check_menu);
+        listItemView.forceKeyline(isForceKeyline);
     }
 
     private void onAttrIconClicked() {
-        icon = !icon;
-        attributeIconView.inflateMenu(icon ? R.menu.uncheck_menu : R.menu.check_menu);
-        listItemView.setIconResId(icon ? R.drawable.ic_call_24dp : ListItemView.NULL);
+        isIcon = !isIcon;
+        attributeIconView.inflateMenu(isIcon ? R.menu.uncheck_menu : R.menu.check_menu);
+        listItemView.setIconResId(isIcon ? R.drawable.ic_call_24dp : ListItemView.NULL);
     }
 
     private void onAttrCircularIconClicked() {
-        circularIcon = !circularIcon;
+        isCircularIcon = !isCircularIcon;
         attributeCircularIconView.inflateMenu(
-                circularIcon ? R.menu.uncheck_menu : R.menu.check_menu);
-        listItemView.setCircularIcon(circularIcon);
+                isCircularIcon ? R.menu.uncheck_menu : R.menu.check_menu);
+        listItemView.setCircularIcon(isCircularIcon);
     }
 
     private void onAttrActionMenuClicked(int itemId) {
