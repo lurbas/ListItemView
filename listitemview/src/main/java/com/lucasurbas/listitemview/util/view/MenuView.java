@@ -102,7 +102,6 @@ public class MenuView extends LinearLayout {
     /**
      * Resets the the view to fit into a new
      * available width.
-     * <p/>
      * <p>This clears and then re-inflates the menu items
      * , removes all of its associated action views, and re-creates
      * the menu and action items to fit in the new width.</p>
