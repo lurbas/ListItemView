@@ -68,13 +68,13 @@ It is possible to offset text without setting icon, by using **liv_forceKeyline*
 ```sh
 app:liv_forceKeyline="true"
 ```
-// Screenshot
+![](https://github.com/lurbas/ListItemView/blob/master/readme/keyline.png)
 
 #### Circular Icon
 ```sh
 app:liv_circularIcon="true"
 ```
-// Screenshot
+![](https://github.com/lurbas/ListItemView/blob/master/readme/circular_icon.png)
 
 #### Styling
 
