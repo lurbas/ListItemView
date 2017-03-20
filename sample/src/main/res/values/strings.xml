@@ -21,7 +21,7 @@
     <string name="attr_icon">Icon</string>
     <string name="attr_circularIcon">Circular Icon</string>
     <string name="attr_iconColor">Icon Color</string>
-    <string name="attr_circleColor">Circle Color</string>
+    <string name="attr_circularIconColor">Circular Icon Color</string>
     <string name="attr_actionMenu">Action Menu</string>
     <string name="attr_actionMenuRoom">Action Menu Room</string>
     <string name="attr_actionMenuItemColor">Action Menu Item Color</string>

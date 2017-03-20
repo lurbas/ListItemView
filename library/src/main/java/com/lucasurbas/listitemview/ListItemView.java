@@ -50,8 +50,6 @@ public class ListItemView extends FrameLayout {
 
     private static final int SUBTITLE_LEADING_SP = 20;
 
-    private static final int NOT_SET = -1;
-
     private LinearLayout mItemLayout;
 
     private TextView mTitleView;
@@ -68,7 +66,7 @@ public class ListItemView extends FrameLayout {
 
     // VARIABLES
 
-    private int mMenuId = NOT_SET;
+    private int mMenuId = NO_ACTION_MENU;
 
     private int mMenuItemsRoom;
 
@@ -103,7 +101,7 @@ public class ListItemView extends FrameLayout {
     private Drawable mIconDrawable;
 
     @ColorInt
-    private int mIconColor = Color.TRANSPARENT;
+    private int mIconColor;
 
     private boolean mUseCircularIcon;
 
@@ -162,7 +160,6 @@ public class ListItemView extends FrameLayout {
     private void applyAttrs(final AttributeSet attrs) {
 
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.ListItemView);
-        int defaultColor = ViewUtils.getDefaultColor(getContext());
 
         try {
 
@@ -170,9 +167,9 @@ public class ListItemView extends FrameLayout {
             mMenuItemsRoom = a.getInteger(R.styleable.ListItemView_liv_menuItemsRoom,
                     DEFAULT_MENU_ITEMS_ROOM);
             mMenuActionColor = a.getColor(R.styleable.ListItemView_liv_menuActionColor,
-                    defaultColor);
+                    Color.TRANSPARENT);
             mMenuOverflowColor = a.getColor(R.styleable.ListItemView_liv_menuOverflowColor,
-                    defaultColor);
+                    Color.TRANSPARENT);
 
             mTitle = a.getString(R.styleable.ListItemView_liv_title);
             mSubtitle = a.getString(R.styleable.ListItemView_liv_subtitle);
@@ -189,7 +186,7 @@ public class ListItemView extends FrameLayout {
             mIconColor = a.getColor(R.styleable.ListItemView_liv_iconColor, Color.TRANSPARENT);
             mUseCircularIcon = a.getBoolean(R.styleable.ListItemView_liv_circularIcon, false);
             mCircularIconColor = a.getColor(R.styleable.ListItemView_liv_circularIconColor,
-                    defaultColor);
+                    Color.TRANSPARENT);
 
         } finally {
             a.recycle();
@@ -452,8 +449,9 @@ public class ListItemView extends FrameLayout {
      * @param circularIconColor a icon color
      */
     public void setCircularIconColor(@ColorInt int circularIconColor) {
-        mCircularIconColor = circularIconColor;
-        mCircularIconView.setCircleColor(circularIconColor);
+        mCircularIconColor = circularIconColor == Color.TRANSPARENT ? ViewUtils.getDefaultColor(
+                getContext()) : circularIconColor;
+        mCircularIconView.setCircleColor(mCircularIconColor);
     }
 
     /**
@@ -462,8 +460,9 @@ public class ListItemView extends FrameLayout {
      * @param menuActionColor a icon color
      */
     public void setMenuActionColor(@ColorInt int menuActionColor) {
-        mMenuActionColor = menuActionColor;
-        mMenuView.setActionIconColor(menuActionColor);
+        mMenuActionColor = menuActionColor == Color.TRANSPARENT ? ViewUtils.getDefaultColor(
+                getContext()) : menuActionColor;
+        mMenuView.setActionIconColor(mMenuActionColor);
     }
 
     /**
@@ -472,8 +471,9 @@ public class ListItemView extends FrameLayout {
      * @param overflowColor a icon color
      */
     public void setMenuOverflowColor(@ColorInt int overflowColor) {
-        mMenuOverflowColor = overflowColor;
-        mMenuView.setOverflowColor(overflowColor);
+        mMenuOverflowColor = overflowColor == Color.TRANSPARENT ? ViewUtils.getDefaultColor(
+                getContext()) : overflowColor;
+        mMenuView.setOverflowColor(mMenuOverflowColor);
     }
 
     /**

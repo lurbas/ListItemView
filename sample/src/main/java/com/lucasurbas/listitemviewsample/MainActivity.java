@@ -19,6 +19,8 @@ public class MainActivity extends AppCompatActivity implements ColorPickerDialog
 
     private static final int ICON_COLOR_ID = 1;
 
+    private static final int CIRCLE_COLOR_ID = 2;
+
     @BindView(R.id.list_item_view)
     ListItemView listItemView;
 
@@ -42,6 +44,9 @@ public class MainActivity extends AppCompatActivity implements ColorPickerDialog
 
     @BindView(R.id.attr_circularIcon)
     ListItemView attributeCircularIconView;
+
+    @BindView(R.id.attr_circularIconColor)
+    ListItemView attributeCircularIconColorView;
 
     @BindView(R.id.attr_actionMenu)
     ListItemView attributeActionMenuView;
@@ -114,6 +119,13 @@ public class MainActivity extends AppCompatActivity implements ColorPickerDialog
                         onAttrCircularIconClicked();
                     }
                 });
+        attributeCircularIconColorView.setOnMenuItemClickListener(
+                new ListItemView.OnMenuItemClickListener() {
+                    @Override
+                    public void onActionMenuItemSelected(final MenuItem item) {
+                        onAttrCircularIconColorClicked();
+                    }
+                });
         attributeActionMenuView.setOnMenuItemClickListener(
                 new ListItemView.OnMenuItemClickListener() {
                     @Override
@@ -179,6 +191,15 @@ public class MainActivity extends AppCompatActivity implements ColorPickerDialog
         listItemView.useCircularIcon(circularIcon);
     }
 
+    private void onAttrCircularIconColorClicked() {
+        ColorPickerDialog.newBuilder()
+                .setDialogType(TYPE_PRESETS)
+                .setDialogId(CIRCLE_COLOR_ID)
+                .setAllowCustom(false)
+                .setShowAlphaSlider(true)
+                .show(this);
+    }
+
     private void onAttrActionMenuClicked(int itemId) {
         switch (itemId) {
             default:
@@ -224,6 +245,12 @@ public class MainActivity extends AppCompatActivity implements ColorPickerDialog
         switch (dialogId) {
             case ICON_COLOR_ID:
                 listItemView.setIconColor(color);
+                attributeIconColorView.setMenuActionColor(color);
+                break;
+
+            case CIRCLE_COLOR_ID:
+                listItemView.setCircularIconColor(color);
+                attributeCircularIconColorView.setMenuActionColor(color);
                 break;
         }
     }
