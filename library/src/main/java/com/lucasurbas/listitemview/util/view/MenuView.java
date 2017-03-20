@@ -30,10 +30,6 @@ import java.util.List;
  */
 public class MenuView extends LinearLayout {
 
-    private static final float ACTION_BUTTON_SIZE_DP = 48;
-
-    private final int mActionButtonSize;
-
     private int mMenuResId = -1;
 
     private MenuBuilder mMenuBuilder;
@@ -65,7 +61,6 @@ public class MenuView extends LinearLayout {
 
     public MenuView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mActionButtonSize = (int) ViewUtils.dpToPixel(ACTION_BUTTON_SIZE_DP);
         init();
     }
 

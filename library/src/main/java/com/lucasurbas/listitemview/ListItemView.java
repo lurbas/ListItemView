@@ -23,6 +23,7 @@ import com.lucasurbas.listitemview.util.ViewUtils;
 import com.lucasurbas.listitemview.util.view.CircularIconView;
 import com.lucasurbas.listitemview.util.view.MenuView;
 
+
 /**
  * Description.
  *
@@ -44,6 +45,8 @@ public class ListItemView extends FrameLayout {
 
     private static final int AVATAR_WIDTH_DP = 40;
 
+    private static final int ACTION_ICON_PADDING_DP = 12;
+
     private static final int ICON_WIDTH_DP = 24;
 
     private static final int TITLE_LEADING_SP = 24;
@@ -51,6 +54,8 @@ public class ListItemView extends FrameLayout {
     private static final int SUBTITLE_LEADING_SP = 20;
 
     private LinearLayout mItemLayout;
+
+    private LinearLayout mTextsLayout;
 
     private TextView mTitleView;
 
@@ -141,6 +146,7 @@ public class ListItemView extends FrameLayout {
         mTitleView = (TextView) findViewById(R.id.title_view);
         mSubtitleView = (TextView) findViewById(R.id.subtitle_view);
         mIconView = (ImageView) findViewById(R.id.icon_view);
+        mTextsLayout = (LinearLayout) findViewById(R.id.texts_layout);
         mCircularIconView = (CircularIconView) findViewById(R.id.circular_icon_view);
 
         mPaddingEnd = getResources().getDimensionPixelSize(R.dimen.liv_padding_end);
@@ -232,10 +238,15 @@ public class ListItemView extends FrameLayout {
     }
 
     private void adjustPadding() {
+        int paddingEnd = mPaddingEnd - (hasActionMenu() ? (int) ViewUtils.dpToPixel(
+                ACTION_ICON_PADDING_DP) : 0);
         mItemLayout.setPaddingRelative(useKeyline() ? mKeyline : mPaddingStart, mPaddingVertical,
-                mPaddingEnd, mPaddingVertical);
+                paddingEnd, mPaddingVertical);
         ((MarginLayoutParams) mIconView.getLayoutParams()).setMarginStart(mPaddingStart);
         ((MarginLayoutParams) mCircularIconView.getLayoutParams()).setMarginStart(mPaddingStart);
+        MarginLayoutParams textsLayoutParams = (MarginLayoutParams) mTextsLayout.getLayoutParams();
+        textsLayoutParams.setMarginEnd(hasActionMenu() ? (int) ViewUtils.dpToPixel(4) : 0);
+        textsLayoutParams.resolveLayoutDirection(textsLayoutParams.getLayoutDirection());
     }
 
     private void setupTextView(final TextView textView, final int leading, final int step) {
@@ -343,6 +354,7 @@ public class ListItemView extends FrameLayout {
 
         });
         mMenuView.reset(menuId, mMenuItemsRoom);
+        adjustPadding();
     }
 
     /**
@@ -353,6 +365,7 @@ public class ListItemView extends FrameLayout {
     public void setMenuItemsRoom(int menuItemsRoom) {
         this.mMenuItemsRoom = menuItemsRoom;
         mMenuView.reset(mMenuId, mMenuItemsRoom);
+        adjustPadding();
     }
 
     /**
@@ -511,6 +524,15 @@ public class ListItemView extends FrameLayout {
      */
     public boolean hasIcon() {
         return mIconDrawable != null;
+    }
+
+    /**
+     * Check if item should display action menu.
+     *
+     * @return if item has action menu
+     */
+    public boolean hasActionMenu() {
+        return mMenuId != NO_ACTION_MENU;
     }
 
     /**
