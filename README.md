@@ -1,5 +1,5 @@
 # ListItemView
-Implementation of list item from Material Design [guidelines](https://material.io/guidelines/components/lists.html#lists-specs).
+Implementation of List Item from Material Design [guidelines](https://material.io/guidelines/components/lists.html#lists-specs).
 
 ### Screenshot
 // Screenshot
@@ -60,11 +60,11 @@ app:liv_paddingStart="@dimen/padding_start"
 app:liv_paddingEnd="@dimen/padding_end"
 app:liv_keyline="@dimen/keyline"
 ```
-By default liv_paddingStart and liv_paddingEnd are set to 16dp on mobile and 24dp on tablet.
-liv_keyline is line to which text will be offset when icon or avatar is present. Default value is 72dp on mobile and 80dp on tablet.
+By default `liv_paddingStart` and `liv_paddingEnd` are set to **16dp** on mobile and **24dp** on tablet.
+Keline `liv_keyline` is a line to which text will be offset when icon or avatar is present. Default value is **72dp** on mobile and **80dp** on tablet.
 The view is RTL ready.
 
-It is possible to offset text without setting icon, by using forceKeyline flag
+It is possible to offset text without setting icon, by using **liv_forceKeyline** flag
 ```sh
 app:liv_forceKeyline="true"
 ```
@@ -78,8 +78,8 @@ app:liv_circularIcon="true"
 
 #### Styling
 
-Title color uses ?android:textColorPrimary and Subtitle uses ?android:textColorSecondary. All icons by default are also tinted
-with ?android:textColorSecondary color. This means view can handle respectfully light and dark theme.
+Title color uses `?android:textColorPrimary` and Subtitle uses `?android:textColorSecondary`. All icons by default are also tinted
+with `?android:textColorSecondary` color. This means view can handle respectfully light and dark theme.
 
 To change icons color use accordingly:
 ```sh
