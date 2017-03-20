@@ -2,7 +2,7 @@
 Implementation of List Item from Material Design [guidelines](https://material.io/guidelines/components/lists.html#lists-specs).
 
 ### Screenshot
-// Screenshot
+![](https://github.com/lurbas/ListItemView/blob/master/readme/cover.png)
 
 ### Usage
 ```sh
