@@ -113,6 +113,19 @@
                 app:liv_subtitle="@string/attr_room_2"
                 app:liv_title="@string/attr_actionMenuRoom" />
 
+            <com.lucasurbas.listitemview.ListItemView
+                android:id="@+id/attr_actionMenuItemColor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:liv_menu="@menu/color_menu"
+                app:liv_title="@string/attr_actionMenuItemColor" />
+
+            <com.lucasurbas.listitemview.ListItemView
+                android:id="@+id/attr_actionMenuOverflowColor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:liv_menu="@menu/color_menu"
+                app:liv_title="@string/attr_actionMenuOverflowColor" />
 
         </LinearLayout>
     </ScrollView>

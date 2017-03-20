@@ -21,6 +21,10 @@ public class MainActivity extends AppCompatActivity implements ColorPickerDialog
 
     private static final int CIRCLE_COLOR_ID = 2;
 
+    private static final int ACTION_MENU_COLOR_ID = 3;
+
+    private static final int OVERFLOW_COLOR_ID = 4;
+
     @BindView(R.id.list_item_view)
     ListItemView listItemView;
 
@@ -53,6 +57,12 @@ public class MainActivity extends AppCompatActivity implements ColorPickerDialog
 
     @BindView(R.id.attr_actionMenuRoom)
     ListItemView attributeActionMenuRoomView;
+
+    @BindView(R.id.attr_actionMenuItemColor)
+    ListItemView attributeActionMenuItemColorView;
+
+    @BindView(R.id.attr_actionMenuOverflowColor)
+    ListItemView attributeActionMenuOverflowColorView;
 
     private boolean attrTitle = true;
 
@@ -109,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements ColorPickerDialog
                 new ListItemView.OnMenuItemClickListener() {
                     @Override
                     public void onActionMenuItemSelected(final MenuItem item) {
-                        onAttrIconColorClicked();
+                        showColorPicker(ICON_COLOR_ID);
                     }
                 });
         attributeCircularIconView.setOnMenuItemClickListener(
@@ -123,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements ColorPickerDialog
                 new ListItemView.OnMenuItemClickListener() {
                     @Override
                     public void onActionMenuItemSelected(final MenuItem item) {
-                        onAttrCircularIconColorClicked();
+                        showColorPicker(CIRCLE_COLOR_ID);
                     }
                 });
         attributeActionMenuView.setOnMenuItemClickListener(
@@ -138,6 +148,20 @@ public class MainActivity extends AppCompatActivity implements ColorPickerDialog
                     @Override
                     public void onActionMenuItemSelected(final MenuItem item) {
                         onAttrActionMenuRoomClicked(item.getItemId());
+                    }
+                });
+        attributeActionMenuItemColorView.setOnMenuItemClickListener(
+                new ListItemView.OnMenuItemClickListener() {
+                    @Override
+                    public void onActionMenuItemSelected(final MenuItem item) {
+                        showColorPicker(ACTION_MENU_COLOR_ID);
+                    }
+                });
+        attributeActionMenuOverflowColorView.setOnMenuItemClickListener(
+                new ListItemView.OnMenuItemClickListener() {
+                    @Override
+                    public void onActionMenuItemSelected(final MenuItem item) {
+                        showColorPicker(OVERFLOW_COLOR_ID);
                     }
                 });
     }
@@ -175,29 +199,11 @@ public class MainActivity extends AppCompatActivity implements ColorPickerDialog
         listItemView.setIcon(iconDrawable);
     }
 
-    private void onAttrIconColorClicked() {
-        ColorPickerDialog.newBuilder()
-                .setDialogType(TYPE_PRESETS)
-                .setDialogId(ICON_COLOR_ID)
-                .setAllowCustom(false)
-                .setShowAlphaSlider(true)
-                .show(this);
-    }
-
     private void onAttrCircularIconClicked() {
         circularIcon = !circularIcon;
         attributeCircularIconView.inflateMenu(
                 circularIcon ? R.menu.uncheck_menu : R.menu.check_menu);
         listItemView.useCircularIcon(circularIcon);
-    }
-
-    private void onAttrCircularIconColorClicked() {
-        ColorPickerDialog.newBuilder()
-                .setDialogType(TYPE_PRESETS)
-                .setDialogId(CIRCLE_COLOR_ID)
-                .setAllowCustom(false)
-                .setShowAlphaSlider(true)
-                .show(this);
     }
 
     private void onAttrActionMenuClicked(int itemId) {
@@ -240,6 +246,15 @@ public class MainActivity extends AppCompatActivity implements ColorPickerDialog
         }
     }
 
+    private void showColorPicker(final int pickerId) {
+        ColorPickerDialog.newBuilder()
+                .setDialogType(TYPE_PRESETS)
+                .setDialogId(pickerId)
+                .setAllowCustom(false)
+                .setShowAlphaSlider(true)
+                .show(this);
+    }
+
     @Override
     public void onColorSelected(final int dialogId, @ColorInt final int color) {
         switch (dialogId) {
@@ -251,6 +266,16 @@ public class MainActivity extends AppCompatActivity implements ColorPickerDialog
             case CIRCLE_COLOR_ID:
                 listItemView.setCircularIconColor(color);
                 attributeCircularIconColorView.setMenuActionColor(color);
+                break;
+
+            case ACTION_MENU_COLOR_ID:
+                listItemView.setMenuActionColor(color);
+                attributeActionMenuItemColorView.setMenuActionColor(color);
+                break;
+
+            case OVERFLOW_COLOR_ID:
+                listItemView.setMenuOverflowColor(color);
+                attributeActionMenuOverflowColorView.setMenuActionColor(color);
                 break;
         }
     }
