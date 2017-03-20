@@ -24,7 +24,7 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * Description.
+ * View to represent action items on the right.
  *
  * @author urbl
  */
@@ -72,12 +72,12 @@ public class MenuView extends LinearLayout {
         mOverflowIconColor = color;
     }
 
-    public void setActionIconColor(int actionColor) {
+    public void setActionIconColor(final int actionColor) {
         this.mActionIconColor = actionColor;
         refreshColors();
     }
 
-    public void setOverflowColor(int overflowColor) {
+    public void setOverflowColor(final int overflowColor) {
         this.mOverflowIconColor = overflowColor;
         refreshColors();
     }
@@ -95,7 +95,7 @@ public class MenuView extends LinearLayout {
      * Set the callback that will be called when menu
      * items a selected.
      */
-    public void setMenuCallback(MenuBuilder.Callback menuCallback) {
+    public void setMenuCallback(final MenuBuilder.Callback menuCallback) {
         this.mMenuCallback = menuCallback;
     }
 
@@ -112,7 +112,7 @@ public class MenuView extends LinearLayout {
      *                      android:showAsAction="ifRoom" or android:showAsAction="always"
      *                      will show as actions.
      */
-    public void reset(int menu, int menuItemsRoom) {
+    public void reset(final int menu, int menuItemsRoom) {
         mMenuResId = menu;
 
         //clean view and re-inflate

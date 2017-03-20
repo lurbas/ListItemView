@@ -30,11 +30,13 @@ import com.lucasurbas.listitemview.util.view.MenuView;
 
 
 /**
- * Description.
+ * Implementation of List Item from Material Design guidelines.
  *
  * @author Lucas Urbas
  */
 public class ListItemView extends FrameLayout {
+
+    // CONSTANTS
 
     public static final int NULL = -1;
 
@@ -57,6 +59,8 @@ public class ListItemView extends FrameLayout {
     private static final int TITLE_LEADING_SP = 24;
 
     private static final int SUBTITLE_LEADING_SP = 20;
+
+    // CHILD VIEWS
 
     private LinearLayout mItemLayout;
 
@@ -227,7 +231,6 @@ public class ListItemView extends FrameLayout {
         setMenuActionColor(mMenuActionColor);
         setMenuOverflowColor(mMenuOverflowColor);
         inflateMenu(mMenuId);
-
     }
 
     private void assertPadding() {
@@ -499,7 +502,7 @@ public class ListItemView extends FrameLayout {
                     Color.alpha(mIconColor) == 0 ? mDefaultColor : mIconColor);
 
         } else if (mCircularIconView.getIconDrawable() != null) {
-            mCircularIconView.useMask(Color.alpha(mIconColor) == 0);
+            mCircularIconView.setMask(Color.alpha(mIconColor) == 0);
             Drawable wrappedDrawable = DrawableCompat.wrap(mCircularIconView.getIconDrawable());
             DrawableCompat.setTint(wrappedDrawable,
                     Color.alpha(mIconColor) == 0 ? Color.WHITE : mIconColor);

@@ -17,7 +17,7 @@ import android.view.View;
 import com.lucasurbas.listitemview.util.ViewUtils;
 
 /**
- * Description.
+ * Item icon rendered in the circle.
  *
  * @author Lucas Urbas
  */
@@ -29,14 +29,14 @@ public class CircularIconView extends View {
 
     private Bitmap mMask;
 
-    private Xfermode xfermode;
+    private Xfermode mXfermode;
 
     private Drawable mIconDrawable;
 
     @ColorInt
     private int mCircleColor;
 
-    private boolean mUseMask;
+    private boolean mIsMask;
 
 
     public CircularIconView(final Context context) {
@@ -51,12 +51,12 @@ public class CircularIconView extends View {
 
     private void init() {
         setLayerType(View.LAYER_TYPE_SOFTWARE, null);
-        xfermode = new PorterDuffXfermode(PorterDuff.Mode.DST_OUT);
+        mXfermode = new PorterDuffXfermode(PorterDuff.Mode.DST_OUT);
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setStyle(Paint.Style.FILL);
         mCircleColor = ViewUtils.getDefaultColor(getContext());
-        mUseMask = true;
+        mIsMask = true;
     }
 
     @Override
@@ -76,9 +76,9 @@ public class CircularIconView extends View {
             mPaint.setXfermode(null);
             canvas.drawOval(mRect, mPaint);
 
-            if (mUseMask) {
+            if (mIsMask) {
                 mPaint.setColor(Color.WHITE);
-                mPaint.setXfermode(xfermode);
+                mPaint.setXfermode(mXfermode);
                 canvas.drawBitmap(mMask, 0.0f, 0.0f, mPaint);
             } else {
                 mIconDrawable.draw(canvas);
@@ -89,7 +89,7 @@ public class CircularIconView extends View {
     }
 
     @Nullable
-    private Bitmap makeBitmapMask(@Nullable Drawable drawable) {
+    private Bitmap makeBitmapMask(@Nullable final Drawable drawable) {
         int mh = getMeasuredHeight();
         int mw = getMeasuredWidth();
         if (drawable != null) {
@@ -107,7 +107,7 @@ public class CircularIconView extends View {
         return null;
     }
 
-    private void swapBitmapMask(@Nullable Bitmap newMask) {
+    private void swapBitmapMask(@Nullable final Bitmap newMask) {
         if (newMask != null) {
             if (mMask != null && !mMask.isRecycled()) {
                 mMask.recycle();
@@ -126,12 +126,12 @@ public class CircularIconView extends View {
         return mIconDrawable;
     }
 
-    public void useMask(boolean useMask) {
-        mUseMask = useMask;
+    public void setMask(final boolean isMask) {
+        mIsMask = isMask;
         invalidate();
     }
 
-    public void setCircleColor(@ColorInt int circleColor){
+    public void setCircleColor(@ColorInt final int circleColor){
         mCircleColor = circleColor;
         invalidate();
     }
