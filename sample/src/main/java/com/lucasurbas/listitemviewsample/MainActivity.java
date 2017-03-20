@@ -1,9 +1,7 @@
 package com.lucasurbas.listitemviewsample;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import butterknife.BindView;
@@ -194,23 +192,21 @@ public class MainActivity extends AppCompatActivity implements ColorPickerDialog
     private void onAttrIconClicked() {
         icon = !icon;
         attributeIconView.inflateMenu(icon ? R.menu.uncheck_menu : R.menu.check_menu);
-        Drawable iconDrawable = icon ? ContextCompat.getDrawable(this, R.drawable.ic_call_24dp)
-                : null;
-        listItemView.setIcon(iconDrawable);
+        listItemView.setIconResId(icon ? R.drawable.ic_call_24dp : ListItemView.NULL);
     }
 
     private void onAttrCircularIconClicked() {
         circularIcon = !circularIcon;
         attributeCircularIconView.inflateMenu(
                 circularIcon ? R.menu.uncheck_menu : R.menu.check_menu);
-        listItemView.useCircularIcon(circularIcon);
+        listItemView.setCircularIcon(circularIcon);
     }
 
     private void onAttrActionMenuClicked(int itemId) {
         switch (itemId) {
             default:
             case R.id.action_none:
-                listItemView.inflateMenu(ListItemView.NO_ACTION_MENU);
+                listItemView.inflateMenu(ListItemView.NULL);
                 attributeActionMenuView.setSubtitle(R.string.attr_menu_none);
                 break;
 
