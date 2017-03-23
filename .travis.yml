@@ -22,5 +22,8 @@ android:
     - extra-google-m2repository
     - extra-android-m2repository
 
+before_script:
+  - printf 'bintray.user=dummy_user\nbintray.apikey=dummy_api_key' > local.properties
+  
 script:
   - ./gradlew listitemview:build
