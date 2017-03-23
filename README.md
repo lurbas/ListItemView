@@ -1,4 +1,6 @@
 # ListItemView
+[![Build Status](https://travis-ci.org/lurbas/ListItemView.svg?branch=master)](https://travis-ci.org/lurbas/ListItemView)
+
 Implementation of List Item from Material Design [guidelines](https://material.io/guidelines/components/lists.html#lists-specs).
 
 ### Screenshot
