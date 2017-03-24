@@ -113,6 +113,8 @@ public class ListItemView extends FrameLayout {
 
     private int mIconWidth;
 
+    private String mAvatarUrl;
+
     @DrawableRes
     private int mIconResId;
 
@@ -283,6 +285,15 @@ public class ListItemView extends FrameLayout {
                 textView.getPaddingRight(), textView.getPaddingBottom() + alignBottomExtra);
     }
 
+    private void loadAvatar(String avatarUrl) {
+        mAvatarView.setVisibility(VISIBLE);
+        mCircularIconView.setVisibility(GONE);
+        mIconView.setVisibility(GONE);
+        adjustPadding();
+
+        // TODO load image with third party library
+    }
+
     @Override
     protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
         if (mIsMultiline) {
@@ -319,6 +330,7 @@ public class ListItemView extends FrameLayout {
         savedState.isCircularIcon = this.mIsCircularIcon;
         savedState.circularIconColor = this.mCircularIconColor;
         savedState.iconResId = this.mIconResId;
+        savedState.avatarUrl = this.mAvatarUrl;
         return savedState;
     }
 
@@ -341,6 +353,10 @@ public class ListItemView extends FrameLayout {
         this.mIconResId = savedState.iconResId;
         if (this.mIconResId != 0) {
             setIconResId(mIconResId);
+        }
+        this.mAvatarUrl = savedState.avatarUrl;
+        if (this.mAvatarUrl != null) {
+            loadAvatar(mAvatarUrl);
         }
         setupView();
     }
@@ -481,10 +497,12 @@ public class ListItemView extends FrameLayout {
             mIconView.setImageDrawable(mIconDrawable);
             mIconView.setVisibility(mIconDrawable == null ? GONE : VISIBLE);
             mCircularIconView.setVisibility(GONE);
+            mAvatarView.setVisibility(GONE);
         } else {
             mCircularIconView.setIconDrawable(mIconDrawable);
             mCircularIconView.setVisibility(mIconDrawable == null ? GONE : VISIBLE);
             mIconView.setVisibility(GONE);
+            mAvatarView.setVisibility(GONE);
         }
         setIconColor(mIconColor);
         adjustPadding();
@@ -562,12 +580,22 @@ public class ListItemView extends FrameLayout {
     }
 
     /**
+     * Set a avatar url and start loading.
+     *
+     * @param avatarUrl a avatar url
+     */
+    public void setAvatarUrl(final String avatarUrl) {
+        this.mAvatarUrl = avatarUrl;
+        loadAvatar(mAvatarUrl);
+    }
+
+    /**
      * Check if item should display avatar.
      *
      * @return if item has avatar
      */
     public boolean hasAvatar() {
-        return false;
+        return mAvatarUrl != null;
     }
 
     /**
@@ -664,7 +692,7 @@ public class ListItemView extends FrameLayout {
         return mMenuOverflowColor;
     }
 
-    static class SavedState extends BaseSavedState {
+    private static class SavedState extends BaseSavedState {
 
         private int menuId;
 
@@ -690,6 +718,8 @@ public class ListItemView extends FrameLayout {
 
         private int iconResId;
 
+        private String avatarUrl;
+
         SavedState(Parcelable superState) {
             super(superState);
         }
@@ -708,6 +738,7 @@ public class ListItemView extends FrameLayout {
             isCircularIcon = in.readInt() == 1;
             circularIconColor = in.readInt();
             iconResId = in.readInt();
+            avatarUrl = in.readString();
         }
 
         @Override
@@ -725,6 +756,7 @@ public class ListItemView extends FrameLayout {
             out.writeInt(isCircularIcon ? 1 : 0);
             out.writeInt(circularIconColor);
             out.writeInt(iconResId);
+            out.writeString(avatarUrl);
         }
 
         public static final Creator<SavedState> CREATOR = new Creator<SavedState>() {
