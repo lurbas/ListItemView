@@ -19,13 +19,15 @@ android {
     }
 }
 
+ext.supportLibraryVersion = '25.3.0'
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile project(':listitemview')
-    compile 'com.android.support:appcompat-v7:25.3.0'
+    compile "com.android.support:appcompat-v7:$supportLibraryVersion"
     compile 'com.jakewharton:butterknife:8.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
     compile 'com.jrummyapps:colorpicker:2.1.6'
