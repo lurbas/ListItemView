@@ -46,9 +46,7 @@ public class ListItemView extends FrameLayout {
 
     @Retention(SOURCE)
     @IntDef({ MODE_STANDARD, MODE_ICON, MODE_CIRCULAR_ICON, MODE_AVATAR })
-    public @interface DisplayMode {
-
-    }
+    private @interface DisplayMode {}
 
     public static final int MODE_STANDARD = 0;
 
@@ -241,8 +239,8 @@ public class ListItemView extends FrameLayout {
 
         setupTextView(mTitleView, (int) ViewUtils.spToPixel(TITLE_LEADING_SP), 1);
         setupTextView(mSubtitleView, (int) ViewUtils.spToPixel(SUBTITLE_LEADING_SP), 1);
-        setDisplayMode(mDisplayMode);
 
+        setDisplayMode(mDisplayMode);
         setCircularIconColor(mCircularIconColor);
         setIconDrawable(mIconDrawable);
         setMultiline(mIsMultiline);
