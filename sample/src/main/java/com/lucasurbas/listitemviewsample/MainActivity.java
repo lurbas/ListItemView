@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements ColorPickerDialog
 
     private static final String KEY_KEYLINE = "key_keyline";
 
-    private static final String AVATAR_URL = "https://source.unsplash.com/category/people/300x300";
+    private static final String AVATAR_URL = "https://s-media-cache-ak0.pinimg.com/originals/a8/eb/5e/a8eb5e1e919fa1784d621549f3c2c259.jpg";
 
     @BindView(R.id.list_item_view)
     ListItemView listItemView;
@@ -248,6 +248,7 @@ public class MainActivity extends AppCompatActivity implements ColorPickerDialog
 
                 picasso.load(AVATAR_URL)
                         .placeholder(R.drawable.placeholder)
+                        .transform(new CircleTransform())
                         .into(listItemView.getAvatarView());
                 break;
         }
