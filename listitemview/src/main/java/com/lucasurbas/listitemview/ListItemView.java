@@ -9,6 +9,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.IntDef;
 import android.support.annotation.MenuRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -27,6 +28,9 @@ import android.widget.TextView;
 import com.lucasurbas.listitemview.util.ViewUtils;
 import com.lucasurbas.listitemview.util.view.CircularIconView;
 import com.lucasurbas.listitemview.util.view.MenuView;
+import java.lang.annotation.Retention;
+
+import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 
 /**
@@ -40,7 +44,21 @@ public class ListItemView extends FrameLayout {
 
     public static final int NULL = -1;
 
-    private static final String TAG = "ListItemView";
+    @Retention(SOURCE)
+    @IntDef({ MODE_STANDARD, MODE_ICON, MODE_CIRCULAR_ICON, MODE_AVATAR })
+    public @interface DisplayMode {
+
+    }
+
+    public static final int MODE_STANDARD = 0;
+
+    public static final int MODE_ICON = 1;
+
+    public static final int MODE_CIRCULAR_ICON = 2;
+
+    public static final int MODE_AVATAR = 3;
+
+    // PRIVATE CONSTANTS
 
     private static final int DEFAULT_MENU_ITEMS_ROOM = 2;
 
@@ -113,7 +131,7 @@ public class ListItemView extends FrameLayout {
 
     private int mIconWidth;
 
-    private boolean mIsAvatar;
+    private int mDisplayMode;
 
     @DrawableRes
     private int mIconResId;
@@ -122,8 +140,6 @@ public class ListItemView extends FrameLayout {
 
     @ColorInt
     private int mIconColor;
-
-    private boolean mIsCircularIcon;
 
     @ColorInt
     private int mCircularIconColor;
@@ -200,6 +216,7 @@ public class ListItemView extends FrameLayout {
             mTitle = a.getString(R.styleable.ListItemView_liv_title);
             mSubtitle = a.getString(R.styleable.ListItemView_liv_subtitle);
             mIsMultiline = a.getBoolean(R.styleable.ListItemView_liv_multiline, false);
+            mDisplayMode = a.getInt(R.styleable.ListItemView_liv_displayMode, mDisplayMode);
 
             mPaddingEnd = a.getDimensionPixelSize(R.styleable.ListItemView_liv_paddingEnd,
                     mPaddingEnd);
@@ -210,7 +227,6 @@ public class ListItemView extends FrameLayout {
 
             mIconDrawable = a.getDrawable(R.styleable.ListItemView_liv_icon);
             mIconColor = a.getColor(R.styleable.ListItemView_liv_iconColor, Color.TRANSPARENT);
-            mIsCircularIcon = a.getBoolean(R.styleable.ListItemView_liv_circularIcon, false);
             mCircularIconColor = a.getColor(R.styleable.ListItemView_liv_circularIconColor,
                     Color.TRANSPARENT);
 
@@ -225,6 +241,7 @@ public class ListItemView extends FrameLayout {
 
         setupTextView(mTitleView, (int) ViewUtils.spToPixel(TITLE_LEADING_SP), 1);
         setupTextView(mSubtitleView, (int) ViewUtils.spToPixel(SUBTITLE_LEADING_SP), 1);
+        setDisplayMode(mDisplayMode);
 
         setCircularIconColor(mCircularIconColor);
         setIconDrawable(mIconDrawable);
@@ -237,27 +254,35 @@ public class ListItemView extends FrameLayout {
     }
 
     private void assertPadding() {
-        if (hasAvatar() || hasCircularIcon()) {
-            if (mKeyline - mAvatarWidth < mPaddingStart) {
-                throw new IllegalArgumentException("keyline value is to small");
-            }
-        } else if (hasIcon()) {
-            if (mKeyline - mIconWidth < mPaddingStart) {
-                throw new IllegalArgumentException("keyline value is to small");
-            }
-        } else {
-            if (mKeyline < mPaddingStart) {
-                throw new IllegalArgumentException("keyline value is to small");
-            }
+        switch (mDisplayMode) {
+            case MODE_AVATAR:
+            case MODE_CIRCULAR_ICON:
+                if (mKeyline - mAvatarWidth < mPaddingStart) {
+                    throw new IllegalArgumentException("keyline value is to small");
+                }
+                break;
+
+            case MODE_ICON:
+                if (mKeyline - mIconWidth < mPaddingStart) {
+                    throw new IllegalArgumentException("keyline value is to small");
+                }
+                break;
+
+            case MODE_STANDARD:
+            default:
+                if (mKeyline < mPaddingStart) {
+                    throw new IllegalArgumentException("keyline value is to small");
+                }
+                break;
         }
     }
 
     private boolean useKeyline() {
-        return mForceKeyline || hasIcon() || hasCircularIcon() || hasAvatar();
+        return mForceKeyline || mDisplayMode != MODE_STANDARD;
     }
 
     private void adjustPadding() {
-        int paddingEnd = mPaddingEnd - (hasActionMenu() ? (int) ViewUtils.dpToPixel(
+        int paddingEnd = mPaddingEnd - (isActionMenu() ? (int) ViewUtils.dpToPixel(
                 ACTION_ICON_PADDING_DP) : 0);
         mItemLayout.setPaddingRelative(useKeyline() ? mKeyline : mPaddingStart, mPaddingVertical,
                 paddingEnd, mPaddingVertical);
@@ -265,7 +290,7 @@ public class ListItemView extends FrameLayout {
         ((MarginLayoutParams) mCircularIconView.getLayoutParams()).setMarginStart(mPaddingStart);
         ((MarginLayoutParams) mAvatarView.getLayoutParams()).setMarginStart(mPaddingStart);
         MarginLayoutParams textsLayoutParams = (MarginLayoutParams) mTextsLayout.getLayoutParams();
-        textsLayoutParams.setMarginEnd(hasActionMenu() ? (int) ViewUtils.dpToPixel(4) : 0);
+        textsLayoutParams.setMarginEnd(isActionMenu() ? (int) ViewUtils.dpToPixel(4) : 0);
         textsLayoutParams.resolveLayoutDirection(textsLayoutParams.getLayoutDirection());
     }
 
@@ -289,17 +314,8 @@ public class ListItemView extends FrameLayout {
 
     private void setIconDrawable(Drawable iconDrawable) {
         mIconDrawable = iconDrawable;
-        if (!mIsCircularIcon) {
-            mIconView.setImageDrawable(mIconDrawable);
-            mIconView.setVisibility(mIconDrawable == null ? GONE : VISIBLE);
-            mCircularIconView.setVisibility(GONE);
-            mAvatarView.setVisibility(GONE);
-        } else {
-            mCircularIconView.setIconDrawable(mIconDrawable);
-            mCircularIconView.setVisibility(mIconDrawable == null ? GONE : VISIBLE);
-            mIconView.setVisibility(GONE);
-            mAvatarView.setVisibility(GONE);
-        }
+        mIconView.setImageDrawable(mIconDrawable);
+        mCircularIconView.setIconDrawable(mIconDrawable);
         setIconColor(mIconColor);
         adjustPadding();
     }
@@ -337,10 +353,9 @@ public class ListItemView extends FrameLayout {
         savedState.isMultiline = this.mIsMultiline;
         savedState.forceKeyline = this.mForceKeyline;
         savedState.iconColor = this.mIconColor;
-        savedState.isCircularIcon = this.mIsCircularIcon;
         savedState.circularIconColor = this.mCircularIconColor;
         savedState.iconResId = this.mIconResId;
-        savedState.isAvatar = this.mIsAvatar;
+        savedState.displayMode = this.mDisplayMode;
         return savedState;
     }
 
@@ -358,13 +373,12 @@ public class ListItemView extends FrameLayout {
         this.mIsMultiline = savedState.isMultiline;
         this.mForceKeyline = savedState.forceKeyline;
         this.mIconColor = savedState.iconColor;
-        this.mIsCircularIcon = savedState.isCircularIcon;
         this.mCircularIconColor = savedState.circularIconColor;
         this.mIconResId = savedState.iconResId;
         if (this.mIconResId != 0) {
             setIconResId(mIconResId);
         }
-        this.mIsAvatar = savedState.isAvatar;
+        this.mDisplayMode = savedState.displayMode;
         setupView();
     }
 
@@ -491,6 +505,42 @@ public class ListItemView extends FrameLayout {
     }
 
     /**
+     * Set display mode on left side. Can be NONE, ICON, CIRCULAR_ICON or AVATAR
+     *
+     * @param displayMode a displayMode enum
+     */
+    public void setDisplayMode(@DisplayMode final int displayMode) {
+        mDisplayMode = displayMode;
+        switch (mDisplayMode) {
+            case MODE_ICON:
+                mIconView.setVisibility(VISIBLE);
+                mCircularIconView.setVisibility(GONE);
+                mAvatarView.setVisibility(GONE);
+                break;
+
+            case MODE_CIRCULAR_ICON:
+                mIconView.setVisibility(GONE);
+                mCircularIconView.setVisibility(VISIBLE);
+                mAvatarView.setVisibility(GONE);
+                break;
+
+            case MODE_AVATAR:
+                mIconView.setVisibility(GONE);
+                mCircularIconView.setVisibility(GONE);
+                mAvatarView.setVisibility(VISIBLE);
+                break;
+
+            case MODE_STANDARD:
+            default:
+                mIconView.setVisibility(GONE);
+                mCircularIconView.setVisibility(GONE);
+                mAvatarView.setVisibility(GONE);
+                break;
+        }
+        adjustPadding();
+    }
+
+    /**
      * Set an icon on left side.
      *
      * @param iconResId a icon resource id
@@ -508,27 +558,18 @@ public class ListItemView extends FrameLayout {
      */
     public void setIconColor(@ColorInt final int iconColor) {
         mIconColor = iconColor;
-        if (!mIsCircularIcon && mIconView.getDrawable() != null) {
+        if (mIconView.getDrawable() != null) {
             ViewUtils.setIconColor(mIconView,
                     Color.alpha(mIconColor) == 0 ? mDefaultColor : mIconColor);
 
-        } else if (mCircularIconView.getIconDrawable() != null) {
+        }
+        if (mCircularIconView.getIconDrawable() != null) {
             mCircularIconView.setMask(Color.alpha(mIconColor) == 0);
             Drawable wrappedDrawable = DrawableCompat.wrap(mCircularIconView.getIconDrawable());
             DrawableCompat.setTint(wrappedDrawable,
                     Color.alpha(mIconColor) == 0 ? Color.WHITE : mIconColor);
             mCircularIconView.setIconDrawable(wrappedDrawable);
         }
-    }
-
-    /**
-     * Set an icon on left in circle.
-     *
-     * @param isCircularIcon a circular icon flag
-     */
-    public void setCircularIcon(final boolean isCircularIcon) {
-        mIsCircularIcon = isCircularIcon;
-        setIconDrawable(mIconDrawable);
     }
 
     /**
@@ -573,47 +614,13 @@ public class ListItemView extends FrameLayout {
     }
 
     /**
-     * Show avatar view.
+     * Getter for display mode.
      *
-     * @param isAvatar an avatar flag
+     * @return a display mode
      */
-    public void setAvatar(boolean isAvatar) {
-        this.mIsAvatar = isAvatar;
-        if (mIsAvatar) {
-            mAvatarView.setVisibility(VISIBLE);
-            mCircularIconView.setVisibility(GONE);
-            mIconView.setVisibility(GONE);
-        } else {
-            mAvatarView.setVisibility(GONE);
-        }
-        adjustPadding();
-    }
-
-    /**
-     * Check if item should display avatar.
-     *
-     * @return if item has avatar
-     */
-    public boolean hasAvatar() {
-        return mIsAvatar;
-    }
-
-    /**
-     * Check if item should display circular icon.
-     *
-     * @return if item has circular icon
-     */
-    public boolean hasCircularIcon() {
-        return mIconDrawable != null && mIsCircularIcon;
-    }
-
-    /**
-     * Check if item should display icon.
-     *
-     * @return if item has icon
-     */
-    public boolean hasIcon() {
-        return mIconDrawable != null;
+    @DisplayMode
+    public int getDisplayMode() {
+        return mDisplayMode;
     }
 
     /**
@@ -621,7 +628,7 @@ public class ListItemView extends FrameLayout {
      *
      * @return if item has action menu
      */
-    public boolean hasActionMenu() {
+    public boolean isActionMenu() {
         return mMenuId != NULL;
     }
 
@@ -721,13 +728,11 @@ public class ListItemView extends FrameLayout {
 
         private int iconColor;
 
-        private boolean isCircularIcon;
-
         private int circularIconColor;
 
         private int iconResId;
 
-        private boolean isAvatar;
+        private int displayMode;
 
         SavedState(Parcelable superState) {
             super(superState);
@@ -744,10 +749,9 @@ public class ListItemView extends FrameLayout {
             isMultiline = in.readInt() == 1;
             forceKeyline = in.readInt() == 1;
             iconColor = in.readInt();
-            isCircularIcon = in.readInt() == 1;
             circularIconColor = in.readInt();
             iconResId = in.readInt();
-            isAvatar = in.readInt() == 1;
+            displayMode = in.readInt();
         }
 
         @Override
@@ -762,10 +766,9 @@ public class ListItemView extends FrameLayout {
             out.writeInt(isMultiline ? 1 : 0);
             out.writeInt(forceKeyline ? 1 : 0);
             out.writeInt(iconColor);
-            out.writeInt(isCircularIcon ? 1 : 0);
             out.writeInt(circularIconColor);
             out.writeInt(iconResId);
-            out.writeInt(isAvatar ? 1 : 0);
+            out.writeInt(displayMode);
         }
 
         public static final Creator<SavedState> CREATOR = new Creator<SavedState>() {

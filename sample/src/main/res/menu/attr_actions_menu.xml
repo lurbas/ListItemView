@@ -4,14 +4,14 @@
 
     <item
         android:id="@+id/action_none"
-        android:title="@string/attr_menu_none"
+        android:title="@string/attr_menuNone"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_single"
-        android:title="@string/attr_menu_single"
+        android:title="@string/attr_menuSingle"
         app:showAsAction="never" />
     <item
         android:id="@+id/action_multiple"
-        android:title="@string/attr_menu_multiple"
+        android:title="@string/attr_menuMultiple"
         app:showAsAction="never" />
 </menu>

@@ -12,9 +12,14 @@
         <attr name="liv_paddingEnd" format="dimension" />
         <attr name="liv_keyline" format="dimension" />
         <attr name="liv_forceKeyline" format="boolean" />
+        <attr name="liv_displayMode" format="enum">
+            <enum name="standard" value="0" />
+            <enum name="icon" value="1" />
+            <enum name="circularIcon" value="2" />
+            <enum name="avatar" value="3" />
+        </attr>
         <attr name="liv_icon" format="reference" />
         <attr name="liv_iconColor" format="color" />
-        <attr name="liv_circularIcon" format="boolean" />
         <attr name="liv_circularIconColor" format="color" />
     </declare-styleable>
 </resources>
