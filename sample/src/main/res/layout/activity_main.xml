@@ -127,6 +127,13 @@
                 app:liv_menu="@menu/color_menu"
                 app:liv_title="@string/attr_actionMenuOverflowColor" />
 
+            <com.lucasurbas.listitemview.ListItemView
+                android:id="@+id/attr_avatar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:liv_menu="@menu/check_menu"
+                app:liv_title="@string/attr_avatar" />
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

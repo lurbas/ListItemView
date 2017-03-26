@@ -35,6 +35,10 @@ public class MainActivity extends AppCompatActivity implements ColorPickerDialog
 
     private static final String KEY_CIRCULAR_ICON = "key_circular_icon";
 
+    private static final String KEY_AVATAR = "key_avatar";
+
+    private static final String AVATAR_URL = "https://source.unsplash.com/category/people/600x600";
+
     @BindView(R.id.list_item_view)
     ListItemView listItemView;
 
@@ -74,6 +78,9 @@ public class MainActivity extends AppCompatActivity implements ColorPickerDialog
     @BindView(R.id.attr_actionMenuOverflowColor)
     ListItemView attributeActionMenuOverflowColorView;
 
+    @BindView(R.id.attr_avatar)
+    ListItemView attributeAvatarView;
+
     private boolean isTitle = true;
 
     private boolean isSubtitle = true;
@@ -85,6 +92,8 @@ public class MainActivity extends AppCompatActivity implements ColorPickerDialog
     private boolean isIcon;
 
     private boolean isCircularIcon;
+
+    private boolean isAvatar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -174,6 +183,12 @@ public class MainActivity extends AppCompatActivity implements ColorPickerDialog
                         showColorPicker(OVERFLOW_COLOR_ID);
                     }
                 });
+        attributeAvatarView.setOnMenuItemClickListener(new ListItemView.OnMenuItemClickListener() {
+            @Override
+            public void onActionMenuItemSelected(final MenuItem item) {
+                onAttrAvatarClicked();
+            }
+        });
     }
 
     @Override
@@ -185,6 +200,7 @@ public class MainActivity extends AppCompatActivity implements ColorPickerDialog
         outState.putBoolean(KEY_KEYLINE, isForceKeyline);
         outState.putBoolean(KEY_ICON, isIcon);
         outState.putBoolean(KEY_CIRCULAR_ICON, isCircularIcon);
+        outState.putBoolean(KEY_AVATAR, isAvatar);
     }
 
     @Override
@@ -196,6 +212,7 @@ public class MainActivity extends AppCompatActivity implements ColorPickerDialog
         isForceKeyline = savedInstanceState.getBoolean(KEY_KEYLINE);
         isIcon = savedInstanceState.getBoolean(KEY_ICON);
         isCircularIcon = savedInstanceState.getBoolean(KEY_CIRCULAR_ICON);
+        isAvatar = savedInstanceState.getBoolean(KEY_AVATAR);
     }
 
     private void onAttrTitleClicked() {
@@ -313,5 +330,11 @@ public class MainActivity extends AppCompatActivity implements ColorPickerDialog
     @Override
     public void onDialogDismissed(final int dialogId) {
         //empty
+    }
+
+    private void onAttrAvatarClicked() {
+        isAvatar = !isAvatar;
+        attributeAvatarView.inflateMenu(isAvatar ? R.menu.uncheck_menu : R.menu.check_menu);
+        listItemView.setAvatarUrl(isAvatar ? AVATAR_URL : null);
     }
 }

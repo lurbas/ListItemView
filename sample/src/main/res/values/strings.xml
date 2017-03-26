@@ -26,6 +26,7 @@
     <string name="attr_actionMenuRoom">Action Menu Room</string>
     <string name="attr_actionMenuItemColor">Action Menu Item Color</string>
     <string name="attr_actionMenuOverflowColor">Action Menu Overflow Color</string>
+    <string name="attr_avatar">Avatar</string>
 
     <string name="attr_menu_none">None</string>
     <string name="attr_menu_single">Single Action</string>

@@ -166,6 +166,7 @@ public class ListItemView extends FrameLayout {
         mIconView = (ImageView) findViewById(R.id.icon_view);
         mTextsLayout = (LinearLayout) findViewById(R.id.texts_layout);
         mCircularIconView = (CircularIconView) findViewById(R.id.circular_icon_view);
+        mAvatarView = (ImageView) findViewById(R.id.avatar_view);
 
         mDefaultColor = ViewUtils.getDefaultColor(getContext());
         mPaddingEnd = getResources().getDimensionPixelSize(R.dimen.liv_padding_end);
@@ -262,6 +263,7 @@ public class ListItemView extends FrameLayout {
                 paddingEnd, mPaddingVertical);
         ((MarginLayoutParams) mIconView.getLayoutParams()).setMarginStart(mPaddingStart);
         ((MarginLayoutParams) mCircularIconView.getLayoutParams()).setMarginStart(mPaddingStart);
+        ((MarginLayoutParams) mAvatarView.getLayoutParams()).setMarginStart(mPaddingStart);
         MarginLayoutParams textsLayoutParams = (MarginLayoutParams) mTextsLayout.getLayoutParams();
         textsLayoutParams.setMarginEnd(hasActionMenu() ? (int) ViewUtils.dpToPixel(4) : 0);
         textsLayoutParams.resolveLayoutDirection(textsLayoutParams.getLayoutDirection());
@@ -455,6 +457,7 @@ public class ListItemView extends FrameLayout {
             mItemLayout.setGravity(Gravity.TOP);
             ((LayoutParams) mIconView.getLayoutParams()).gravity = Gravity.TOP;
             ((LayoutParams) mCircularIconView.getLayoutParams()).gravity = Gravity.TOP;
+            ((LayoutParams) mAvatarView.getLayoutParams()).gravity = Gravity.TOP;
             mTitleView.setMaxLines(Integer.MAX_VALUE);
             mSubtitleView.setMaxLines(Integer.MAX_VALUE);
         } else {
@@ -463,6 +466,8 @@ public class ListItemView extends FrameLayout {
             ((LayoutParams) mIconView.getLayoutParams()).gravity = Gravity.CENTER_VERTICAL
                     | Gravity.START;
             ((LayoutParams) mCircularIconView.getLayoutParams()).gravity = Gravity.CENTER_VERTICAL
+                    | Gravity.START;
+            ((LayoutParams) mAvatarView.getLayoutParams()).gravity = Gravity.CENTER_VERTICAL
                     | Gravity.START;
             mTitleView.setMaxLines(1);
             mSubtitleView.setMaxLines(1);
