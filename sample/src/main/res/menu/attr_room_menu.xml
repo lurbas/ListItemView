@@ -3,15 +3,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/action_room_1"
-        android:title="@string/attr_room_1"
+        android:id="@+id/action_room1"
+        android:title="@string/attr_room1"
         app:showAsAction="never" />
     <item
-        android:id="@+id/action_room_2"
-        android:title="@string/attr_room_2"
+        android:id="@+id/action_room2"
+        android:title="@string/attr_room2"
         app:showAsAction="never" />
     <item
-        android:id="@+id/action_room_3"
-        android:title="@string/attr_room_3"
+        android:id="@+id/action_room3"
+        android:title="@string/attr_room3"
         app:showAsAction="never" />
 </menu>

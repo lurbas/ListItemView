@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/action_modeStandard"
+        android:title="@string/attr_modeStandard"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_modeIcon"
+        android:title="@string/attr_modeIcon"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_modeCircularIcon"
+        android:title="@string/attr_modeCircularIcon"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_modeAvatar"
+        android:title="@string/attr_modeAvatar"
+        app:showAsAction="never" />
+</menu>

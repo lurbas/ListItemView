@@ -70,11 +70,12 @@
                 app:liv_title="@string/attr_forceKeyline" />
 
             <com.lucasurbas.listitemview.ListItemView
-                android:id="@+id/attr_icon"
+                android:id="@+id/attr_displayMode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:liv_menu="@menu/check_menu"
-                app:liv_title="@string/attr_icon" />
+                app:liv_menu="@menu/attr_display_mode_menu"
+                app:liv_subtitle="@string/attr_modeStandard"
+                app:liv_title="@string/attr_displayMode" />
 
             <com.lucasurbas.listitemview.ListItemView
                 android:id="@+id/attr_iconColor"
@@ -82,13 +83,6 @@
                 android:layout_height="wrap_content"
                 app:liv_menu="@menu/color_menu"
                 app:liv_title="@string/attr_iconColor" />
-
-            <com.lucasurbas.listitemview.ListItemView
-                android:id="@+id/attr_circularIcon"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:liv_menu="@menu/check_menu"
-                app:liv_title="@string/attr_circularIcon" />
 
             <com.lucasurbas.listitemview.ListItemView
                 android:id="@+id/attr_circularIconColor"
@@ -102,7 +96,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:liv_menu="@menu/attr_actions_menu"
-                app:liv_subtitle="@string/attr_menu_none"
+                app:liv_subtitle="@string/attr_menuNone"
                 app:liv_title="@string/attr_actionMenu" />
 
             <com.lucasurbas.listitemview.ListItemView
@@ -110,7 +104,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:liv_menu="@menu/attr_room_menu"
-                app:liv_subtitle="@string/attr_room_2"
+                app:liv_subtitle="@string/attr_room2"
                 app:liv_title="@string/attr_actionMenuRoom" />
 
             <com.lucasurbas.listitemview.ListItemView
