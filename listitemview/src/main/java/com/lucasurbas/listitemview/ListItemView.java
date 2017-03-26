@@ -314,8 +314,11 @@ public class ListItemView extends FrameLayout {
 
     private void setIconDrawable(Drawable iconDrawable) {
         mIconDrawable = iconDrawable;
-        mIconView.setImageDrawable(mIconDrawable);
-        mCircularIconView.setIconDrawable(mIconDrawable);
+        if (mDisplayMode == MODE_ICON) {
+            mIconView.setImageDrawable(mIconDrawable);
+        } else if (mDisplayMode == MODE_CIRCULAR_ICON) {
+            mCircularIconView.setIconDrawable(mIconDrawable);
+        }
         setIconColor(mIconColor);
         adjustPadding();
     }
@@ -558,12 +561,12 @@ public class ListItemView extends FrameLayout {
      */
     public void setIconColor(@ColorInt final int iconColor) {
         mIconColor = iconColor;
-        if (mIconView.getDrawable() != null) {
+        if (mDisplayMode == MODE_ICON && mIconView.getDrawable() != null) {
             ViewUtils.setIconColor(mIconView,
                     Color.alpha(mIconColor) == 0 ? mDefaultColor : mIconColor);
 
-        }
-        if (mCircularIconView.getIconDrawable() != null) {
+        } else if (mDisplayMode == MODE_CIRCULAR_ICON
+                && mCircularIconView.getIconDrawable() != null) {
             mCircularIconView.setMask(Color.alpha(mIconColor) == 0);
             Drawable wrappedDrawable = DrawableCompat.wrap(mCircularIconView.getIconDrawable());
             DrawableCompat.setTint(wrappedDrawable,
