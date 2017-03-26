@@ -113,7 +113,7 @@ public class ListItemView extends FrameLayout {
 
     private int mIconWidth;
 
-    private String mAvatarUrl;
+    private boolean mIsAvatar;
 
     @DrawableRes
     private int mIconResId;
@@ -287,13 +287,21 @@ public class ListItemView extends FrameLayout {
                 textView.getPaddingRight(), textView.getPaddingBottom() + alignBottomExtra);
     }
 
-    private void loadAvatar(String avatarUrl) {
-        mAvatarView.setVisibility(VISIBLE);
-        mCircularIconView.setVisibility(GONE);
-        mIconView.setVisibility(GONE);
+    private void setIconDrawable(Drawable iconDrawable) {
+        mIconDrawable = iconDrawable;
+        if (!mIsCircularIcon) {
+            mIconView.setImageDrawable(mIconDrawable);
+            mIconView.setVisibility(mIconDrawable == null ? GONE : VISIBLE);
+            mCircularIconView.setVisibility(GONE);
+            mAvatarView.setVisibility(GONE);
+        } else {
+            mCircularIconView.setIconDrawable(mIconDrawable);
+            mCircularIconView.setVisibility(mIconDrawable == null ? GONE : VISIBLE);
+            mIconView.setVisibility(GONE);
+            mAvatarView.setVisibility(GONE);
+        }
+        setIconColor(mIconColor);
         adjustPadding();
-
-        // TODO load image with third party library
     }
 
     @Override
@@ -332,7 +340,7 @@ public class ListItemView extends FrameLayout {
         savedState.isCircularIcon = this.mIsCircularIcon;
         savedState.circularIconColor = this.mCircularIconColor;
         savedState.iconResId = this.mIconResId;
-        savedState.avatarUrl = this.mAvatarUrl;
+        savedState.isAvatar = this.mIsAvatar;
         return savedState;
     }
 
@@ -356,10 +364,7 @@ public class ListItemView extends FrameLayout {
         if (this.mIconResId != 0) {
             setIconResId(mIconResId);
         }
-        this.mAvatarUrl = savedState.avatarUrl;
-        if (this.mAvatarUrl != null) {
-            loadAvatar(mAvatarUrl);
-        }
+        this.mIsAvatar = savedState.isAvatar;
         setupView();
     }
 
@@ -496,23 +501,6 @@ public class ListItemView extends FrameLayout {
                 mIconResId != NULL ? ContextCompat.getDrawable(getContext(), mIconResId) : null);
     }
 
-    private void setIconDrawable(Drawable iconDrawable) {
-        mIconDrawable = iconDrawable;
-        if (!mIsCircularIcon) {
-            mIconView.setImageDrawable(mIconDrawable);
-            mIconView.setVisibility(mIconDrawable == null ? GONE : VISIBLE);
-            mCircularIconView.setVisibility(GONE);
-            mAvatarView.setVisibility(GONE);
-        } else {
-            mCircularIconView.setIconDrawable(mIconDrawable);
-            mCircularIconView.setVisibility(mIconDrawable == null ? GONE : VISIBLE);
-            mIconView.setVisibility(GONE);
-            mAvatarView.setVisibility(GONE);
-        }
-        setIconColor(mIconColor);
-        adjustPadding();
-    }
-
     /**
      * Set a color of icon on left side.
      *
@@ -585,13 +573,20 @@ public class ListItemView extends FrameLayout {
     }
 
     /**
-     * Set a avatar url and start loading.
+     * Show avatar view.
      *
-     * @param avatarUrl a avatar url
+     * @param isAvatar an avatar flag
      */
-    public void setAvatarUrl(final String avatarUrl) {
-        this.mAvatarUrl = avatarUrl;
-        loadAvatar(mAvatarUrl);
+    public void setAvatar(boolean isAvatar) {
+        this.mIsAvatar = isAvatar;
+        if (mIsAvatar) {
+            mAvatarView.setVisibility(VISIBLE);
+            mCircularIconView.setVisibility(GONE);
+            mIconView.setVisibility(GONE);
+        } else {
+            mAvatarView.setVisibility(GONE);
+        }
+        adjustPadding();
     }
 
     /**
@@ -600,7 +595,7 @@ public class ListItemView extends FrameLayout {
      * @return if item has avatar
      */
     public boolean hasAvatar() {
-        return mAvatarUrl != null;
+        return mIsAvatar;
     }
 
     /**
@@ -697,6 +692,15 @@ public class ListItemView extends FrameLayout {
         return mMenuOverflowColor;
     }
 
+    /**
+     * Getter for avatar view. Used for loading image.
+     *
+     * @return an avatar image view
+     */
+    public ImageView getAvatarView() {
+        return mAvatarView;
+    }
+
     private static class SavedState extends BaseSavedState {
 
         private int menuId;
@@ -723,7 +727,7 @@ public class ListItemView extends FrameLayout {
 
         private int iconResId;
 
-        private String avatarUrl;
+        private boolean isAvatar;
 
         SavedState(Parcelable superState) {
             super(superState);
@@ -743,7 +747,7 @@ public class ListItemView extends FrameLayout {
             isCircularIcon = in.readInt() == 1;
             circularIconColor = in.readInt();
             iconResId = in.readInt();
-            avatarUrl = in.readString();
+            isAvatar = in.readInt() == 1;
         }
 
         @Override
@@ -761,7 +765,7 @@ public class ListItemView extends FrameLayout {
             out.writeInt(isCircularIcon ? 1 : 0);
             out.writeInt(circularIconColor);
             out.writeInt(iconResId);
-            out.writeString(avatarUrl);
+            out.writeInt(isAvatar ? 1 : 0);
         }
 
         public static final Creator<SavedState> CREATOR = new Creator<SavedState>() {

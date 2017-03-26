@@ -1,14 +1,18 @@
 package com.lucasurbas.listitemviewsample;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.jakewharton.picasso.OkHttp3Downloader;
 import com.jrummyapps.android.colorpicker.ColorPickerDialog;
 import com.jrummyapps.android.colorpicker.ColorPickerDialogListener;
 import com.lucasurbas.listitemview.ListItemView;
+import com.squareup.picasso.Picasso;
+import okhttp3.OkHttpClient;
 
 import static com.jrummyapps.android.colorpicker.ColorPickerDialog.TYPE_PRESETS;
 
@@ -37,7 +41,8 @@ public class MainActivity extends AppCompatActivity implements ColorPickerDialog
 
     private static final String KEY_AVATAR = "key_avatar";
 
-    private static final String AVATAR_URL = "https://source.unsplash.com/category/people/600x600";
+    private static final String AVATAR_URL
+            = "https://source.unsplash.com/category/people/300x300";
 
     @BindView(R.id.list_item_view)
     ListItemView listItemView;
@@ -335,6 +340,25 @@ public class MainActivity extends AppCompatActivity implements ColorPickerDialog
     private void onAttrAvatarClicked() {
         isAvatar = !isAvatar;
         attributeAvatarView.inflateMenu(isAvatar ? R.menu.uncheck_menu : R.menu.check_menu);
-        listItemView.setAvatarUrl(isAvatar ? AVATAR_URL : null);
+        listItemView.setAvatar(isAvatar);
+
+        if (isAvatar) {
+            OkHttpClient client = new OkHttpClient();
+            Picasso picasso = new Picasso.Builder(this)
+                    .loggingEnabled(true)
+                    .downloader(new OkHttp3Downloader(client))
+                    .listener(new Picasso.Listener() {
+                        @Override
+                        public void onImageLoadFailed(final Picasso picasso, final Uri uri,
+                                final Exception e) {
+                            e.printStackTrace();
+                        }
+                    })
+                    .build();
+
+            picasso.load(AVATAR_URL)
+                    .placeholder(R.drawable.placeholder)
+                    .into(listItemView.getAvatarView());
+        }
     }
 }
