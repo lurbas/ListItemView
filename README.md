@@ -88,7 +88,7 @@ Picasso.with(context)
         .load(avaratUrl)
         .placeholder(R.drawable.placeholder)
         .transform(new CropCircleTransform())
-        .into(**listItemView.getAvatarView()**);
+        .into(<b>listItemView.getAvatarView()</b>);
 </pre>
 
 #### Styling
@@ -107,7 +107,7 @@ app:liv_menuOverflowColor="@color/icon_color"
 ### Download (JCenter)
 ```sh
 dependencies {
-    compile 'com.lucasurbas:listitemview:0.9.0'
+    compile 'com.lucasurbas:listitemview:1.0.0'
 }
 ```
 
