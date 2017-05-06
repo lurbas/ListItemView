@@ -97,7 +97,7 @@ public class ListItemView extends FrameLayout {
     // VARIABLES
 
     @MenuRes
-    private int mMenuId;
+    private int mMenuId = NULL;
 
     private int mMenuItemsRoom;
 
