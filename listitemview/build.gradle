@@ -13,7 +13,7 @@ ext {
     siteUrl = 'https://github.com/lurbas/ListItemView'
     gitUrl = 'https://github.com/lurbas/ListItemView.git'
 
-    libraryVersion = '1.0.0'
+    libraryVersion = '1.0.1'
 
     developerId = 'lurbas'
     developerName = 'Lucas Urbas'
@@ -49,7 +49,7 @@ android {
     }
 }
 
-ext.supportLibraryVersion = '25.3.0'
+ext.supportLibraryVersion = '25.3.1'
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
