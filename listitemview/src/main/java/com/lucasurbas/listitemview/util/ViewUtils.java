@@ -63,23 +63,19 @@ public class ViewUtils {
         });
     }
 
+
+    /**
+     * Get the secondary text color of the theme
+     */
     @ColorInt
     public static int getDefaultColor(Context context) {
-        // Get the secondary text color of the theme
         TypedValue typedValue = new TypedValue();
-        Resources.Theme theme = context.getTheme();
-        theme.resolveAttribute(android.R.attr.textColorSecondary, typedValue, true);
-        TypedArray a = context.obtainStyledAttributes(typedValue.data, new int[] {
-                android.R.attr.textColorSecondary
-        });
-        int colorFallback = ContextCompat.getColor(context, R.color.liv_gray_active_icon);
-        int color = colorFallback;
+        TypedArray a = context.obtainStyledAttributes(typedValue.data, new int[]{android.R.attr.textColorSecondary});
         try {
-            color = a.getColor(0, colorFallback);
+            return a.getColor(0, ContextCompat.getColor(context, R.color.liv_gray_active_icon));
         } finally {
             a.recycle();
         }
-        return color;
     }
 
     public static void setIconColor(ImageView iconHolder, int color) {
