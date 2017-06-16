@@ -249,6 +249,8 @@ public class ListItemView extends FrameLayout {
         setMenuActionColor(mMenuActionColor);
         setMenuOverflowColor(mMenuOverflowColor);
         inflateMenu(mMenuId);
+
+        addRipple();
     }
 
     private void assertPadding() {
@@ -290,6 +292,18 @@ public class ListItemView extends FrameLayout {
         MarginLayoutParams textsLayoutParams = (MarginLayoutParams) mTextsLayout.getLayoutParams();
         textsLayoutParams.setMarginEnd(isActionMenu() ? (int) ViewUtils.dpToPixel(4) : 0);
         textsLayoutParams.resolveLayoutDirection(textsLayoutParams.getLayoutDirection());
+    }
+
+    /**
+     * adds android:background="?selectableItemBackground" programmatically to this view adds
+     * a ripple effect when this view is clickable
+     */
+    private void addRipple() {
+        int[] attrs = new int[]{R.attr.selectableItemBackground};
+        TypedArray typedArray = getContext().obtainStyledAttributes(attrs);
+        int backgroundResource = typedArray.getResourceId(0, 0);
+        setBackgroundResource(backgroundResource);
+        typedArray.recycle();
     }
 
     private void setupTextView(final TextView textView, final int leading, final int step) {
