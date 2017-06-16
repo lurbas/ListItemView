@@ -16,6 +16,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.view.menu.MenuBuilder;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -223,7 +224,9 @@ public class ListItemView extends FrameLayout {
             mKeyline = a.getDimensionPixelSize(R.styleable.ListItemView_liv_keyline, mKeyline);
             mForceKeyline = a.getBoolean(R.styleable.ListItemView_liv_forceKeyline, false);
 
-            mIconDrawable = a.getDrawable(R.styleable.ListItemView_liv_icon);
+            int iconDrawableResId = a.getResourceId(R.styleable.ListItemView_liv_icon, -1);
+            mIconDrawable = AppCompatResources.getDrawable(getContext(), iconDrawableResId);
+
             mIconColor = a.getColor(R.styleable.ListItemView_liv_iconColor, Color.TRANSPARENT);
             mCircularIconColor = a.getColor(R.styleable.ListItemView_liv_circularIconColor,
                     Color.TRANSPARENT);
