@@ -99,6 +99,8 @@ public class ListItemView extends FrameLayout {
     @MenuRes
     private int mMenuId = NULL;
 
+    private MenuBuilder mMenuBuilder;
+
     private int mMenuItemsRoom;
 
     @ColorInt
@@ -441,6 +443,28 @@ public class ListItemView extends FrameLayout {
         mSubtitleView.setVisibility(TextUtils.isEmpty(mSubtitle) ? GONE : VISIBLE);
     }
 
+    public void setMenu(final MenuBuilder menuBuilder) {
+        mMenuBuilder = menuBuilder;
+        mMenuId = NULL;
+        mMenuView.setMenuCallback(new MenuBuilder.Callback() {
+
+            @Override
+            public boolean onMenuItemSelected(MenuBuilder menu, MenuItem item) {
+                if (mActionMenuItemListener != null) {
+                    mActionMenuItemListener.onActionMenuItemSelected(item);
+                }
+                return true;
+            }
+
+            @Override
+            public void onMenuModeChange(MenuBuilder menu) {
+            }
+
+        });
+        mMenuView.reset(menuBuilder, mMenuItemsRoom);
+        adjustPadding();
+    }
+
     /**
      * Inflates the menu items from
      * an xml resource.
@@ -449,6 +473,7 @@ public class ListItemView extends FrameLayout {
      */
     public void inflateMenu(@MenuRes final int menuId) {
         mMenuId = menuId;
+        mMenuBuilder = null;
         mMenuView.setMenuCallback(new MenuBuilder.Callback() {
 
             @Override
