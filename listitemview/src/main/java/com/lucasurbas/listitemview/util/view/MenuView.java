@@ -1,16 +1,12 @@
 package com.lucasurbas.listitemview.util.view;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.content.res.TypedArray;
-import android.support.annotation.ColorInt;
-import android.support.v4.content.ContextCompat;
+import android.support.annotation.NonNull;
 import android.support.v7.view.SupportMenuInflater;
 import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.view.menu.MenuItemImpl;
 import android.support.v7.view.menu.MenuPopupHelper;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
@@ -28,6 +24,7 @@ import java.util.List;
  *
  * @author urbl
  */
+@SuppressWarnings("RestrictedApi")
 public class MenuView extends LinearLayout {
 
     private int mMenuResId = -1;
@@ -65,8 +62,6 @@ public class MenuView extends LinearLayout {
     }
 
     private void init() {
-        mMenuBuilder = new MenuBuilder(getContext());
-        mMenuPopupHelper = new MenuPopupHelper(getContext(), mMenuBuilder, this);
         int color = ViewUtils.getDefaultColor(getContext());
         mActionIconColor = color;
         mOverflowIconColor = color;
@@ -99,35 +94,31 @@ public class MenuView extends LinearLayout {
         this.mMenuCallback = menuCallback;
     }
 
+
     /**
-     * Resets the the view to fit into a new
-     * available width.
-     * <p>This clears and then re-inflates the menu items
-     * , removes all of its associated action views, and re-creates
-     * the menu and action items to fit in the new width.</p>
+     * Resets the the view to fit into a new available width.
+     * <p>
+     * This clears and then re-inflates the menu items, removes all of its associated action
+     * views, and re-creates the menu and action items to fit in the new width.
+     * </p>
      *
+     * @param menuBuilder   builder containing the items to display
      * @param menuItemsRoom the number of the menu items to show. If
      *                      there is room, menu items that are flagged with
      *                      android:showAsAction="ifRoom" or android:showAsAction="always"
      *                      will show as actions.
      */
-    public void reset(final int menu, int menuItemsRoom) {
-        mMenuResId = menu;
+    public void reset(@NonNull final MenuBuilder menuBuilder, int menuItemsRoom) {
 
         //clean view and re-inflate
         removeAllViews();
 
-        if (mMenuResId == -1) {
-            return;
-        }
+        mMenuBuilder = menuBuilder;
+        mMenuPopupHelper = new MenuPopupHelper(getContext(), mMenuBuilder, this);
 
         mActionShowAlwaysItems = new ArrayList<>();
         mActionItems = new ArrayList<>();
         mMenuItems = new ArrayList<>();
-        mMenuBuilder = new MenuBuilder(getContext());
-        mMenuPopupHelper = new MenuPopupHelper(getContext(), mMenuBuilder, this);
-
-        getMenuInflater().inflate(mMenuResId, mMenuBuilder);
 
         mMenuItems = mMenuBuilder.getActionItems();
         mMenuItems.addAll(mMenuBuilder.getNonActionItems());
@@ -210,6 +201,33 @@ public class MenuView extends LinearLayout {
             mMenuBuilder.removeItem(id);
         }
         actionItemsIds = null;
+    }
+
+    /**
+     * Resets the the view to fit into a new available width.
+     * <p>
+     * This clears and then re-inflates the menu items, removes all of its associated action
+     * views, and re-creates the menu and action items to fit in the new width.
+     * </p>
+     *
+     * @param menuItemsRoom the number of the menu items to show. If
+     *                      there is room, menu items that are flagged with
+     *                      android:showAsAction="ifRoom" or android:showAsAction="always"
+     *                      will show as actions.
+     */
+    public void reset(final int menu, int menuItemsRoom) {
+        mMenuResId = menu;
+
+        //clean view and re-inflate
+        removeAllViews();
+
+        if (mMenuResId == -1) {
+            return;
+        }
+
+        final MenuBuilder builder = new MenuBuilder(getContext());
+        getMenuInflater().inflate(mMenuResId, builder);
+        reset(builder, menuItemsRoom);
     }
 
     private ImageView createActionView() {
