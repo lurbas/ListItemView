@@ -13,7 +13,7 @@ ext {
     siteUrl = 'https://github.com/lurbas/ListItemView'
     gitUrl = 'https://github.com/lurbas/ListItemView.git'
 
-    libraryVersion = '1.0.4'
+    libraryVersion = '1.0.5'
 
     developerId = 'lurbas'
     developerName = 'Lucas Urbas'
@@ -34,7 +34,6 @@ android {
         versionName "$libraryVersion"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
 
     buildTypes {
