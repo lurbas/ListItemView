@@ -25,12 +25,12 @@ ext {
 }
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 27
+    buildToolsVersion "26.0.3"
 
     defaultConfig {
         minSdkVersion 17
-        targetSdkVersion 25
+        targetSdkVersion 27
         versionName "$libraryVersion"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -48,7 +48,7 @@ android {
     }
 }
 
-ext.supportLibraryVersion = '25.3.1'
+ext.supportLibraryVersion = '27.0.2'
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])

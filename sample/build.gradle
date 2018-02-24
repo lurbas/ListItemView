@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 27
+    buildToolsVersion "26.0.3"
     defaultConfig {
         applicationId "com.lucasurbas.listitemview"
         minSdkVersion 17
-        targetSdkVersion 25
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -19,7 +19,7 @@ android {
     }
 }
 
-ext.supportLibraryVersion = '25.3.0'
+ext.supportLibraryVersion = '27.0.2'
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
