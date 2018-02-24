@@ -20,19 +20,20 @@ android {
 }
 
 ext.supportLibraryVersion = '27.0.2'
+ext.butterknifeVersion = '8.8.1'
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile project(':listitemview')
-    compile "com.android.support:appcompat-v7:$supportLibraryVersion"
-    compile 'com.jakewharton:butterknife:8.5.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
-    compile 'com.jrummyapps:colorpicker:2.1.6'
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.squareup.okhttp3:okhttp:3.6.0'
-    compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
-    testCompile 'junit:junit:4.12'
+    implementation project(':listitemview')
+    implementation "com.android.support:appcompat-v7:$supportLibraryVersion"
+    implementation "com.jakewharton:butterknife:$butterknifeVersion"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$butterknifeVersion"
+    implementation 'com.jrummyapps:colorpicker:2.1.6'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.squareup.okhttp3:okhttp:3.8.1'
+    implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
+    testImplementation 'junit:junit:4.12'
 }
