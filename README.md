@@ -107,7 +107,7 @@ app:liv_menuOverflowColor="@color/icon_color"
 ### Download (JCenter)
 ```sh
 dependencies {
-    compile 'com.lucasurbas:listitemview:1.0.4'
+    compile 'com.lucasurbas:listitemview:1.0.5'
 }
 ```
 
