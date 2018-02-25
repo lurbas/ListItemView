@@ -79,7 +79,7 @@ public class ViewUtils {
     }
 
     public static void setIconColor(ImageView iconHolder, int color) {
-        Drawable wrappedDrawable = DrawableCompat.wrap(iconHolder.getDrawable());
+        Drawable wrappedDrawable = DrawableCompat.wrap(iconHolder.getDrawable()).mutate();
         DrawableCompat.setTint(wrappedDrawable, color);
         iconHolder.setImageDrawable(wrappedDrawable);
         iconHolder.invalidate();

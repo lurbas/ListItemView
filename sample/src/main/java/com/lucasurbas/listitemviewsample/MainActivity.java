@@ -1,20 +1,22 @@
 package com.lucasurbas.listitemviewsample;
 
+import static com.jrummyapps.android.colorpicker.ColorPickerDialog.TYPE_PRESETS;
+
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
-import butterknife.BindView;
-import butterknife.ButterKnife;
+
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.jrummyapps.android.colorpicker.ColorPickerDialog;
 import com.jrummyapps.android.colorpicker.ColorPickerDialogListener;
 import com.lucasurbas.listitemview.ListItemView;
 import com.squareup.picasso.Picasso;
-import okhttp3.OkHttpClient;
 
-import static com.jrummyapps.android.colorpicker.ColorPickerDialog.TYPE_PRESETS;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import okhttp3.OkHttpClient;
 
 
 public class MainActivity extends AppCompatActivity implements ColorPickerDialogListener {
