@@ -1,5 +1,7 @@
 package com.lucasurbas.listitemview;
 
+import static java.lang.annotation.RetentionPolicy.SOURCE;
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -21,16 +23,17 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.MenuItem;
+import android.widget.Checkable;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.lucasurbas.listitemview.util.ViewUtils;
 import com.lucasurbas.listitemview.util.view.CircularIconView;
 import com.lucasurbas.listitemview.util.view.MenuView;
-import java.lang.annotation.Retention;
 
-import static java.lang.annotation.RetentionPolicy.SOURCE;
+import java.lang.annotation.Retention;
 
 
 /**
@@ -38,7 +41,7 @@ import static java.lang.annotation.RetentionPolicy.SOURCE;
  *
  * @author Lucas Urbas
  */
-public class ListItemView extends FrameLayout {
+public class ListItemView extends FrameLayout implements Checkable {
 
     // CONSTANTS
 
@@ -75,6 +78,10 @@ public class ListItemView extends FrameLayout {
     private static final int TITLE_LEADING_SP = 24;
 
     private static final int SUBTITLE_LEADING_SP = 20;
+
+    private static final int[] CHECKED_STATE_SET = {
+            android.R.attr.state_checked
+    };
 
     // CHILD VIEWS
 
@@ -132,6 +139,8 @@ public class ListItemView extends FrameLayout {
     private int mIconWidth;
 
     private int mDisplayMode;
+
+    private boolean mChecked;
 
     @DrawableRes
     private int mIconResId;
@@ -377,6 +386,7 @@ public class ListItemView extends FrameLayout {
         savedState.circularIconColor = this.mCircularIconColor;
         savedState.iconResId = this.mIconResId;
         savedState.displayMode = this.mDisplayMode;
+        savedState.checked = this.mChecked;
         return savedState;
     }
 
@@ -400,6 +410,7 @@ public class ListItemView extends FrameLayout {
             setIconResId(mIconResId);
         }
         this.mDisplayMode = savedState.displayMode;
+        this.mChecked = savedState.checked;
         setupView();
     }
 
@@ -752,6 +763,60 @@ public class ListItemView extends FrameLayout {
         return mAvatarView;
     }
 
+
+    @Override
+    public void setChecked(boolean checked) {
+        if (mChecked != checked) {
+            mChecked = checked;
+            refreshDrawableState();
+        }
+    }
+
+    @Override
+    public boolean isChecked() {
+        return mChecked;
+    }
+
+    @Override
+    public void toggle() {
+        setChecked(!mChecked);
+    }
+
+    @Override
+    protected int[] onCreateDrawableState(int extraSpace) {
+        final int[] drawableState = super.onCreateDrawableState(extraSpace + 1);
+        if (isChecked()) {
+            mergeDrawableStates(drawableState, CHECKED_STATE_SET);
+        }
+        return drawableState;
+    }
+
+    @Override
+    protected void drawableStateChanged() {
+        super.drawableStateChanged();
+
+//        final Drawable buttonDrawable = mButtonDrawable;
+//        if (buttonDrawable != null && buttonDrawable.isStateful()
+//                && buttonDrawable.setState(getDrawableState())) {
+//            invalidateDrawable(buttonDrawable);
+//        }
+    }
+
+//    @Override
+//    public void drawableHotspotChanged(float x, float y) {
+//        super.drawableHotspotChanged(x, y);
+//
+//        if (mButtonDrawable != null) {
+//            mButtonDrawable.setHotspot(x, y);
+//        }
+//    }
+
+//    @Override
+//    public void jumpDrawablesToCurrentState() {
+//        super.jumpDrawablesToCurrentState();
+//        if (mButtonDrawable != null) mButtonDrawable.jumpToCurrentState();
+//    }
+
     private static class SavedState extends BaseSavedState {
 
         private int menuId;
@@ -778,6 +843,8 @@ public class ListItemView extends FrameLayout {
 
         private int displayMode;
 
+        private boolean checked;
+
         SavedState(Parcelable superState) {
             super(superState);
         }
@@ -796,6 +863,7 @@ public class ListItemView extends FrameLayout {
             circularIconColor = in.readInt();
             iconResId = in.readInt();
             displayMode = in.readInt();
+            checked = in.readInt() == 1;
         }
 
         @Override
@@ -813,6 +881,7 @@ public class ListItemView extends FrameLayout {
             out.writeInt(circularIconColor);
             out.writeInt(iconResId);
             out.writeInt(displayMode);
+            out.writeInt(checked ? 1 : 0);
         }
 
         public static final Creator<SavedState> CREATOR = new Creator<SavedState>() {

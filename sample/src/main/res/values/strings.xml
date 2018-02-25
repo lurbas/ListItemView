@@ -39,4 +39,7 @@
     <string name="attr_room2">2</string>
     <string name="attr_room3">3</string>
 
+    <string name="attrs_checkable">Checkable attributes</string>
+    <string name="title_checked">Single Title Checked</string>
+
 </resources>
