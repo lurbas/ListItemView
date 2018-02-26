@@ -50,6 +50,14 @@
                 app:liv_title="@string/attr_displayMode" />
 
             <com.lucasurbas.listitemview.ListItemView
+                android:id="@+id/attr_actionMenu"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:liv_menu="@menu/attr_actions_menu"
+                app:liv_subtitle="@string/attr_menuNone"
+                app:liv_title="@string/attr_actionMenu" />
+
+            <com.lucasurbas.listitemview.ListItemView
                 android:id="@+id/attr_iconCheckedColor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -61,22 +69,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:liv_menu="@menu/color_menu"
-                app:liv_title="@string/attr_circularIconColor" />
-
-            <com.lucasurbas.listitemview.ListItemView
-                android:id="@+id/attr_actionMenu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:liv_menu="@menu/attr_actions_menu"
-                app:liv_subtitle="@string/attr_menuNone"
-                app:liv_title="@string/attr_actionMenu" />
+                app:liv_title="@string/attr_circularIconCheckedColor" />
 
             <com.lucasurbas.listitemview.ListItemView
                 android:id="@+id/attr_actionMenuItemColor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:liv_menu="@menu/color_menu"
-                app:liv_title="@string/attr_actionMenuItemColor" />
+                app:liv_title="@string/attr_actionMenuItemCheckedColor" />
 
         </LinearLayout>
     </ScrollView>

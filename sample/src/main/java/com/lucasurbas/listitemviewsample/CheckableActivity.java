@@ -27,7 +27,7 @@ public class CheckableActivity extends AppCompatActivity implements ColorPickerD
 
     private static final int ICON_CHECKED_COLOR_ID = 1;
 
-    private static final int CIRCLE_COLOR_ID = 2;
+    private static final int CIRCLE_CHECKED_COLOR_ID = 2;
 
     private static final int ACTION_MENU_COLOR_ID = 3;
 
@@ -91,7 +91,7 @@ public class CheckableActivity extends AppCompatActivity implements ColorPickerD
                 new ListItemView.OnMenuItemClickListener() {
                     @Override
                     public void onActionMenuItemSelected(final MenuItem item) {
-                        showColorPicker(CIRCLE_COLOR_ID);
+                        showColorPicker(CIRCLE_CHECKED_COLOR_ID);
                     }
                 });
         attributeActionMenuView.setOnMenuItemClickListener(
@@ -197,20 +197,28 @@ public class CheckableActivity extends AppCompatActivity implements ColorPickerD
 
     @Override
     public void onColorSelected(final int dialogId, @ColorInt final int color) {
+        int[][] states;
+        int[] colors;
         switch (dialogId) {
             case ICON_CHECKED_COLOR_ID:
-                int[][] states = new int[][] {
-                        new int[] {android.R.attr.state_checked}
+                states = new int[][]{
+                        new int[]{android.R.attr.state_checked}
                 };
-                int[] colors = new int[] {
+                colors = new int[]{
                         color
                 };
                 listItemView.setIconColor(new ColorStateList(states, colors));
                 attributeIconCheckedColorView.setMenuActionColor(color);
                 break;
 
-            case CIRCLE_COLOR_ID:
-                listItemView.setCircularIconColor(color);
+            case CIRCLE_CHECKED_COLOR_ID:
+                states = new int[][]{
+                        new int[]{android.R.attr.state_checked}
+                };
+                colors = new int[]{
+                        color
+                };
+                listItemView.setCircularIconColor(new ColorStateList(states, colors));
                 attributeCircularIconColorView.setMenuActionColor(color);
                 break;
 
