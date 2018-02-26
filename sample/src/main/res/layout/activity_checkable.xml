@@ -50,11 +50,11 @@
                 app:liv_title="@string/attr_displayMode" />
 
             <com.lucasurbas.listitemview.ListItemView
-                android:id="@+id/attr_iconColor"
+                android:id="@+id/attr_iconCheckedColor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:liv_menu="@menu/color_menu"
-                app:liv_title="@string/attr_iconColor" />
+                app:liv_title="@string/attr_iconCheckedColor" />
 
             <com.lucasurbas.listitemview.ListItemView
                 android:id="@+id/attr_circularIconColor"

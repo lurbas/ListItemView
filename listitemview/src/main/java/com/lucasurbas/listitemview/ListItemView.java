@@ -3,6 +3,7 @@ package com.lucasurbas.listitemview;
 import static java.lang.annotation.RetentionPolicy.SOURCE;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -156,6 +157,8 @@ public class ListItemView extends FrameLayout implements Checkable {
     @ColorInt
     private int mDefaultColor;
 
+    private ColorStateList mIconColorStateList;
+
     /**
      * Interface for implementing a listener to listen
      * when an menu item has been selected.
@@ -184,14 +187,14 @@ public class ListItemView extends FrameLayout implements Checkable {
 
         inflate(getContext(), R.layout.liv_list_item_layout, this);
 
-        mItemLayout = (LinearLayout) findViewById(R.id.item_layout);
-        mMenuView = (MenuView) findViewById(R.id.menu_view);
-        mTitleView = (TextView) findViewById(R.id.title_view);
-        mSubtitleView = (TextView) findViewById(R.id.subtitle_view);
-        mIconView = (ImageView) findViewById(R.id.icon_view);
-        mTextsLayout = (LinearLayout) findViewById(R.id.texts_layout);
-        mCircularIconView = (CircularIconView) findViewById(R.id.circular_icon_view);
-        mAvatarView = (ImageView) findViewById(R.id.avatar_view);
+        mItemLayout = findViewById(R.id.item_layout);
+        mMenuView = findViewById(R.id.menu_view);
+        mTitleView = findViewById(R.id.title_view);
+        mSubtitleView = findViewById(R.id.subtitle_view);
+        mIconView = findViewById(R.id.icon_view);
+        mTextsLayout = findViewById(R.id.texts_layout);
+        mCircularIconView = findViewById(R.id.circular_icon_view);
+        mAvatarView = findViewById(R.id.avatar_view);
 
         mDefaultColor = ViewUtils.getDefaultColor(getContext());
         mPaddingEnd = getResources().getDimensionPixelSize(R.dimen.liv_padding_end);
@@ -387,6 +390,7 @@ public class ListItemView extends FrameLayout implements Checkable {
         savedState.iconResId = this.mIconResId;
         savedState.displayMode = this.mDisplayMode;
         savedState.checked = this.mChecked;
+        savedState.iconColorStateList = this.mIconColorStateList;
         return savedState;
     }
 
@@ -411,6 +415,7 @@ public class ListItemView extends FrameLayout implements Checkable {
         }
         this.mDisplayMode = savedState.displayMode;
         this.mChecked = savedState.checked;
+        this.mIconColorStateList = savedState.iconColorStateList;
         setupView();
     }
 
@@ -628,6 +633,16 @@ public class ListItemView extends FrameLayout implements Checkable {
     }
 
     /**
+     * Set a color state list of icon on left side.
+     *
+     * @param colorStateList a icon colorStateList
+     */
+    public void setIconColor(final ColorStateList colorStateList) {
+        mIconColorStateList = colorStateList;
+        refreshDrawableState();
+    }
+
+    /**
      * Set a color of circular icon on left side.
      *
      * @param circularIconColor a icon color
@@ -795,11 +810,10 @@ public class ListItemView extends FrameLayout implements Checkable {
     protected void drawableStateChanged() {
         super.drawableStateChanged();
 
-//        final Drawable buttonDrawable = mButtonDrawable;
-//        if (buttonDrawable != null && buttonDrawable.isStateful()
-//                && buttonDrawable.setState(getDrawableState())) {
-//            invalidateDrawable(buttonDrawable);
-//        }
+        if (mIconColorStateList != null) {
+            int color = mIconColorStateList.getColorForState(getDrawableState(), Color.TRANSPARENT);
+            setIconColor(color);
+        }
     }
 
 //    @Override
@@ -845,6 +859,8 @@ public class ListItemView extends FrameLayout implements Checkable {
 
         private boolean checked;
 
+        private ColorStateList iconColorStateList;
+
         SavedState(Parcelable superState) {
             super(superState);
         }
@@ -864,6 +880,7 @@ public class ListItemView extends FrameLayout implements Checkable {
             iconResId = in.readInt();
             displayMode = in.readInt();
             checked = in.readInt() == 1;
+            iconColorStateList = in.readParcelable(ColorStateList.class.getClassLoader());
         }
 
         @Override
@@ -882,6 +899,7 @@ public class ListItemView extends FrameLayout implements Checkable {
             out.writeInt(iconResId);
             out.writeInt(displayMode);
             out.writeInt(checked ? 1 : 0);
+            out.writeParcelable(iconColorStateList, flags);
         }
 
         public static final Creator<SavedState> CREATOR = new Creator<SavedState>() {

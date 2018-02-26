@@ -41,5 +41,6 @@
 
     <string name="attrs_checkable">Checkable attributes</string>
     <string name="title_checked">Single Title Checked</string>
+    <string name="attr_iconCheckedColor">Icon Checked Color</string>
 
 </resources>

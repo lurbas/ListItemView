@@ -2,6 +2,7 @@ package com.lucasurbas.listitemviewsample;
 
 import static com.jrummyapps.android.colorpicker.ColorPickerDialog.TYPE_PRESETS;
 
+import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
@@ -24,7 +25,7 @@ import okhttp3.OkHttpClient;
  */
 public class CheckableActivity extends AppCompatActivity implements ColorPickerDialogListener {
 
-    private static final int ICON_COLOR_ID = 1;
+    private static final int ICON_CHECKED_COLOR_ID = 1;
 
     private static final int CIRCLE_COLOR_ID = 2;
 
@@ -46,8 +47,8 @@ public class CheckableActivity extends AppCompatActivity implements ColorPickerD
     @BindView(R.id.attr_displayMode)
     ListItemView attributeDisplayModeView;
 
-    @BindView(R.id.attr_iconColor)
-    ListItemView attributeIconColorView;
+    @BindView(R.id.attr_iconCheckedColor)
+    ListItemView attributeIconCheckedColorView;
 
     @BindView(R.id.attr_circularIconColor)
     ListItemView attributeCircularIconColorView;
@@ -79,11 +80,11 @@ public class CheckableActivity extends AppCompatActivity implements ColorPickerD
                         onAttrDisplayModeClicked(item.getItemId());
                     }
                 });
-        attributeIconColorView.setOnMenuItemClickListener(
+        attributeIconCheckedColorView.setOnMenuItemClickListener(
                 new ListItemView.OnMenuItemClickListener() {
                     @Override
                     public void onActionMenuItemSelected(final MenuItem item) {
-                        showColorPicker(ICON_COLOR_ID);
+                        showColorPicker(ICON_CHECKED_COLOR_ID);
                     }
                 });
         attributeCircularIconColorView.setOnMenuItemClickListener(
@@ -197,9 +198,15 @@ public class CheckableActivity extends AppCompatActivity implements ColorPickerD
     @Override
     public void onColorSelected(final int dialogId, @ColorInt final int color) {
         switch (dialogId) {
-            case ICON_COLOR_ID:
-                listItemView.setIconColor(color);
-                attributeIconColorView.setMenuActionColor(color);
+            case ICON_CHECKED_COLOR_ID:
+                int[][] states = new int[][] {
+                        new int[] {android.R.attr.state_checked}
+                };
+                int[] colors = new int[] {
+                        color
+                };
+                listItemView.setIconColor(new ColorStateList(states, colors));
+                attributeIconCheckedColorView.setMenuActionColor(color);
                 break;
 
             case CIRCLE_COLOR_ID:
