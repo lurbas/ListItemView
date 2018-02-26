@@ -29,7 +29,7 @@ public class CheckableActivity extends AppCompatActivity implements ColorPickerD
 
     private static final int CIRCLE_CHECKED_COLOR_ID = 2;
 
-    private static final int ACTION_MENU_COLOR_ID = 3;
+    private static final int ACTION_MENU_CHECKED_COLOR_ID = 3;
 
     private static final String KEY_TITLE = "key_title";
 
@@ -80,6 +80,13 @@ public class CheckableActivity extends AppCompatActivity implements ColorPickerD
                         onAttrDisplayModeClicked(item.getItemId());
                     }
                 });
+        attributeActionMenuView.setOnMenuItemClickListener(
+                new ListItemView.OnMenuItemClickListener() {
+                    @Override
+                    public void onActionMenuItemSelected(final MenuItem item) {
+                        onAttrActionMenuClicked(item.getItemId());
+                    }
+                });
         attributeIconCheckedColorView.setOnMenuItemClickListener(
                 new ListItemView.OnMenuItemClickListener() {
                     @Override
@@ -94,18 +101,11 @@ public class CheckableActivity extends AppCompatActivity implements ColorPickerD
                         showColorPicker(CIRCLE_CHECKED_COLOR_ID);
                     }
                 });
-        attributeActionMenuView.setOnMenuItemClickListener(
-                new ListItemView.OnMenuItemClickListener() {
-                    @Override
-                    public void onActionMenuItemSelected(final MenuItem item) {
-                        onAttrActionMenuClicked(item.getItemId());
-                    }
-                });
         attributeActionMenuItemColorView.setOnMenuItemClickListener(
                 new ListItemView.OnMenuItemClickListener() {
                     @Override
                     public void onActionMenuItemSelected(final MenuItem item) {
-                        showColorPicker(ACTION_MENU_COLOR_ID);
+                        showColorPicker(ACTION_MENU_CHECKED_COLOR_ID);
                     }
                 });
     }
@@ -222,8 +222,14 @@ public class CheckableActivity extends AppCompatActivity implements ColorPickerD
                 attributeCircularIconColorView.setMenuActionColor(color);
                 break;
 
-            case ACTION_MENU_COLOR_ID:
-                listItemView.setMenuActionColor(color);
+            case ACTION_MENU_CHECKED_COLOR_ID:
+                states = new int[][]{
+                        new int[]{android.R.attr.state_checked}
+                };
+                colors = new int[]{
+                        color
+                };
+                listItemView.setMenuActionColor(new ColorStateList(states, colors));
                 attributeActionMenuItemColorView.setMenuActionColor(color);
                 break;
         }

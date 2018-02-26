@@ -161,6 +161,8 @@ public class ListItemView extends FrameLayout implements Checkable {
 
     private ColorStateList mCircularIconColorStateList;
 
+    private ColorStateList mMenuActionColorStateList;
+
     /**
      * Interface for implementing a listener to listen
      * when an menu item has been selected.
@@ -394,6 +396,7 @@ public class ListItemView extends FrameLayout implements Checkable {
         savedState.checked = this.mChecked;
         savedState.iconColorStateList = this.mIconColorStateList;
         savedState.circularIconColorStateList = this.mCircularIconColorStateList;
+        savedState.menuActionColorStateList = this.mMenuActionColorStateList;
         return savedState;
     }
 
@@ -420,6 +423,7 @@ public class ListItemView extends FrameLayout implements Checkable {
         this.mChecked = savedState.checked;
         this.mIconColorStateList = savedState.iconColorStateList;
         this.mCircularIconColorStateList = savedState.circularIconColorStateList;
+        this.mMenuActionColorStateList = savedState.menuActionColorStateList;
         setupView();
     }
 
@@ -637,7 +641,7 @@ public class ListItemView extends FrameLayout implements Checkable {
     }
 
     /**
-     * Set a color state list of icon on left side.
+     * Set a colorStateList of icon on left side.
      *
      * @param colorStateList a icon colorStateList
      */
@@ -658,7 +662,7 @@ public class ListItemView extends FrameLayout implements Checkable {
     }
 
     /**
-     * Set a color state list of circular icon on left side.
+     * Set a colorStateList of circular icon on left side.
      *
      * @param colorStateList a icon colorStateList
      */
@@ -678,6 +682,16 @@ public class ListItemView extends FrameLayout implements Checkable {
     }
 
     /**
+     * Set a colorStateList of an action icon in menu.
+     *
+     * @param colorStateList a icon colorStateList
+     */
+    public void setMenuActionColor(final ColorStateList colorStateList) {
+        mMenuActionColorStateList = colorStateList;
+        refreshDrawableState();
+    }
+
+    /**
      * Set a color of an overflow icon in menu.
      *
      * @param overflowColor a icon color
@@ -688,7 +702,7 @@ public class ListItemView extends FrameLayout implements Checkable {
     }
 
     /**
-     * Sets the listener that will be called when
+     * Set the listener that will be called when
      * an item in the overflow menu is clicked.
      *
      * @param listener listener to listen to menu item clicks
@@ -792,7 +806,11 @@ public class ListItemView extends FrameLayout implements Checkable {
         return mAvatarView;
     }
 
-
+    /**
+     * Set a checked state of the item.
+     *
+     * @param checked a new item checked state
+     */
     @Override
     public void setChecked(boolean checked) {
         if (mChecked != checked) {
@@ -801,11 +819,19 @@ public class ListItemView extends FrameLayout implements Checkable {
         }
     }
 
+    /**
+     * Check if item is checked.
+     *
+     * @return if item is checked
+     */
     @Override
     public boolean isChecked() {
         return mChecked;
     }
 
+    /**
+     * Change the checked state of the item to the opposite.
+     */
     @Override
     public void toggle() {
         setChecked(!mChecked);
@@ -829,19 +855,16 @@ public class ListItemView extends FrameLayout implements Checkable {
             setIconColor(color);
         }
         if (mCircularIconColorStateList != null) {
-            int color = mCircularIconColorStateList.getColorForState(getDrawableState(), Color.TRANSPARENT);
+            int color = mCircularIconColorStateList.getColorForState(getDrawableState(),
+                    Color.TRANSPARENT);
             setCircularIconColor(color);
         }
+        if (mMenuActionColorStateList != null) {
+            int color = mMenuActionColorStateList.getColorForState(getDrawableState(),
+                    Color.TRANSPARENT);
+            setMenuActionColor(color);
+        }
     }
-
-//    @Override
-//    public void drawableHotspotChanged(float x, float y) {
-//        super.drawableHotspotChanged(x, y);
-//
-//        if (mButtonDrawable != null) {
-//            mButtonDrawable.setHotspot(x, y);
-//        }
-//    }
 
 //    @Override
 //    public void jumpDrawablesToCurrentState() {
@@ -881,6 +904,8 @@ public class ListItemView extends FrameLayout implements Checkable {
 
         private ColorStateList circularIconColorStateList;
 
+        private ColorStateList menuActionColorStateList;
+
         SavedState(Parcelable superState) {
             super(superState);
         }
@@ -902,6 +927,7 @@ public class ListItemView extends FrameLayout implements Checkable {
             checked = in.readInt() == 1;
             iconColorStateList = in.readParcelable(ColorStateList.class.getClassLoader());
             circularIconColorStateList = in.readParcelable(ColorStateList.class.getClassLoader());
+            menuActionColorStateList = in.readParcelable(ColorStateList.class.getClassLoader());
         }
 
         @Override
@@ -922,6 +948,7 @@ public class ListItemView extends FrameLayout implements Checkable {
             out.writeInt(checked ? 1 : 0);
             out.writeParcelable(iconColorStateList, flags);
             out.writeParcelable(circularIconColorStateList, flags);
+            out.writeParcelable(menuActionColorStateList, flags);
         }
 
         public static final Creator<SavedState> CREATOR = new Creator<SavedState>() {
