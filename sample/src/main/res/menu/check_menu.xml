@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/action_check"
-        android:icon="@drawable/ic_check_24dp"
+        android:icon="@drawable/ic_check_box_unchecked_24dp"
         android:title="@string/action_check"
         app:showAsAction="always" />
 </menu>

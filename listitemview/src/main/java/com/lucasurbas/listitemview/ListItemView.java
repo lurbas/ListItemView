@@ -252,8 +252,14 @@ public class ListItemView extends FrameLayout implements Checkable {
             } else {
                 mIconColor = Color.TRANSPARENT;
             }
-            mCircularIconColor = a.getColor(R.styleable.ListItemView_liv_circularIconColor,
-                    Color.TRANSPARENT);
+
+            mCircularIconColorStateList = a.getColorStateList(R.styleable.ListItemView_liv_circularIconColor);
+            if (mCircularIconColorStateList == null) {
+                mCircularIconColor = a.getColor(R.styleable.ListItemView_liv_circularIconColor,
+                        Color.TRANSPARENT);
+            } else {
+                mCircularIconColor = Color.TRANSPARENT;
+            }
 
         } finally {
             a.recycle();
@@ -268,7 +274,11 @@ public class ListItemView extends FrameLayout implements Checkable {
         setupTextView(mSubtitleView, (int) ViewUtils.spToPixel(SUBTITLE_LEADING_SP), 1);
 
         setDisplayMode(mDisplayMode);
-        setCircularIconColor(mCircularIconColor);
+        if (mCircularIconColorStateList != null) {
+            setCircularIconColorList(mCircularIconColorStateList);
+        } else {
+            setCircularIconColor(mCircularIconColor);
+        }
         setIconDrawable(mIconDrawable);
         setMultiline(mIsMultiline);
         setTitle(mTitle);
@@ -656,6 +666,9 @@ public class ListItemView extends FrameLayout implements Checkable {
      */
     public void setIconColorList(final ColorStateList colorStateList) {
         mIconColorStateList = colorStateList;
+        if (mDisplayMode == MODE_ICON && mIconView.getDrawable() != null) {
+            ViewUtils.setIconColor(mIconView, mIconColorStateList);
+        }
         refreshDrawableState();
     }
 
@@ -859,27 +872,27 @@ public class ListItemView extends FrameLayout implements Checkable {
     protected void drawableStateChanged() {
         super.drawableStateChanged();
 
-        if (mIconColorStateList != null) {
-            int color = mIconColorStateList.getColorForState(getDrawableState(), Color.TRANSPARENT);
-            setIconColor(color);
-        }
+//        if (mIconColorStateList != null) {
+//            int color = mIconColorStateList.getColorForState(getDrawableState(), Color.TRANSPARENT);
+//            setIconColor(color);
+//        }
         if (mCircularIconColorStateList != null) {
             int color = mCircularIconColorStateList.getColorForState(getDrawableState(),
                     Color.TRANSPARENT);
             setCircularIconColor(color);
         }
-        if (mMenuActionColorStateList != null) {
-            int color = mMenuActionColorStateList.getColorForState(getDrawableState(),
-                    Color.TRANSPARENT);
-            setMenuActionColor(color);
-        }
+//        if (mMenuActionColorStateList != null) {
+//            int color = mMenuActionColorStateList.getColorForState(getDrawableState(),
+//                    Color.TRANSPARENT);
+//            setMenuActionColor(color);
+//        }
     }
 
-//    @Override
-//    public void jumpDrawablesToCurrentState() {
-//        super.jumpDrawablesToCurrentState();
-//        if (mButtonDrawable != null) mButtonDrawable.jumpToCurrentState();
-//    }
+    @Override
+    public void jumpDrawablesToCurrentState() {
+        super.jumpDrawablesToCurrentState();
+//        if (mIconView.getDrawable() != null) mIconView.getDrawable().jumpToCurrentState();
+    }
 
     private static class SavedState extends BaseSavedState {
 

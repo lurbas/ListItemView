@@ -1,6 +1,7 @@
 package com.lucasurbas.listitemview.util;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
@@ -13,6 +14,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
+
 import com.lucasurbas.listitemview.R;
 
 /**
@@ -81,6 +83,13 @@ public class ViewUtils {
     public static void setIconColor(ImageView iconHolder, int color) {
         Drawable wrappedDrawable = DrawableCompat.wrap(iconHolder.getDrawable()).mutate();
         DrawableCompat.setTint(wrappedDrawable, color);
+        iconHolder.setImageDrawable(wrappedDrawable);
+        iconHolder.invalidate();
+    }
+
+    public static void setIconColor(ImageView iconHolder, ColorStateList colorStateList) {
+        Drawable wrappedDrawable = DrawableCompat.wrap(iconHolder.getDrawable()).mutate();
+        DrawableCompat.setTintList(wrappedDrawable, colorStateList);
         iconHolder.setImageDrawable(wrappedDrawable);
         iconHolder.invalidate();
     }
