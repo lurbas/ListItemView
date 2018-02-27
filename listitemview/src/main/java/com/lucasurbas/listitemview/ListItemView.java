@@ -246,7 +246,12 @@ public class ListItemView extends FrameLayout implements Checkable {
                 mIconDrawable = AppCompatResources.getDrawable(getContext(), iconDrawableResId);
             }
 
-            mIconColor = a.getColor(R.styleable.ListItemView_liv_iconColor, Color.TRANSPARENT);
+            mIconColorStateList = a.getColorStateList(R.styleable.ListItemView_liv_iconColor);
+            if (mIconColorStateList == null) {
+                mIconColor = a.getColor(R.styleable.ListItemView_liv_iconColor, Color.TRANSPARENT);
+            } else {
+                mIconColor = Color.TRANSPARENT;
+            }
             mCircularIconColor = a.getColor(R.styleable.ListItemView_liv_circularIconColor,
                     Color.TRANSPARENT);
 
@@ -353,7 +358,11 @@ public class ListItemView extends FrameLayout implements Checkable {
         } else if (mDisplayMode == MODE_CIRCULAR_ICON) {
             mCircularIconView.setIconDrawable(mIconDrawable);
         }
-        setIconColor(mIconColor);
+        if (mIconColorStateList != null) {
+            setIconColorList(mIconColorStateList);
+        } else {
+            setIconColor(mIconColor);
+        }
         adjustPadding();
     }
 
@@ -645,7 +654,7 @@ public class ListItemView extends FrameLayout implements Checkable {
      *
      * @param colorStateList a icon colorStateList
      */
-    public void setIconColor(final ColorStateList colorStateList) {
+    public void setIconColorList(final ColorStateList colorStateList) {
         mIconColorStateList = colorStateList;
         refreshDrawableState();
     }
@@ -666,7 +675,7 @@ public class ListItemView extends FrameLayout implements Checkable {
      *
      * @param colorStateList a icon colorStateList
      */
-    public void setCircularIconColor(final ColorStateList colorStateList) {
+    public void setCircularIconColorList(final ColorStateList colorStateList) {
         mCircularIconColorStateList = colorStateList;
         refreshDrawableState();
     }
@@ -686,7 +695,7 @@ public class ListItemView extends FrameLayout implements Checkable {
      *
      * @param colorStateList a icon colorStateList
      */
-    public void setMenuActionColor(final ColorStateList colorStateList) {
+    public void setMenuActionColorList(final ColorStateList colorStateList) {
         mMenuActionColorStateList = colorStateList;
         refreshDrawableState();
     }

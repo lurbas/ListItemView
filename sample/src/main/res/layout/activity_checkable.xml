@@ -10,21 +10,24 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="160dp">
+        android:background="@color/white">
 
         <com.lucasurbas.listitemview.ListItemView
             android:id="@+id/list_item_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?selectableItemBackground"
-            app:liv_subtitle="@string/subtitle_long"
-            app:liv_title="@string/title"/>
+            app:liv_displayMode="icon"
+            app:liv_icon="@drawable/ic_call_24dp"
+            app:liv_iconColor="@color/color_state_checked"
+            app:liv_subtitle="@string/checkable_unchecked"
+            app:liv_title="@string/checkable_title"/>
     </FrameLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#bbbbbb" />
+        android:background="#bbbbbb"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -39,15 +42,67 @@
             <com.lucasurbas.listitemview.ListItemView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:liv_subtitle="@string/attrs_checkable" />
+                app:liv_subtitle="@string/checkable_iconExamples"/>
 
             <com.lucasurbas.listitemview.ListItemView
-                android:id="@+id/attr_displayMode"
+                android:id="@+id/checkable_exampleNoIcon"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:liv_menu="@menu/attr_display_mode_menu"
-                app:liv_subtitle="@string/attr_modeStandard"
-                app:liv_title="@string/attr_displayMode" />
+                android:background="?selectableItemBackground"
+                app:liv_displayMode="icon"
+                app:liv_icon="@drawable/ic_radio_button_checked_24dp"
+                app:liv_iconColor="@color/color_state_checked"
+                app:liv_subtitle="@string/checkable_modeStandard"
+                app:liv_title="@string/checkable_exampleNoIcon"/>
+
+            <com.lucasurbas.listitemview.ListItemView
+                android:id="@+id/checkable_exampleSimple"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackground"
+                app:liv_displayMode="icon"
+                app:liv_icon="@drawable/ic_radio_button_checked_24dp"
+                app:liv_iconColor="@color/color_state_checked"
+                app:liv_subtitle="@string/checkable_modeIcon"
+                app:liv_title="@string/checkable_exampleSimple"/>
+
+            <com.lucasurbas.listitemview.ListItemView
+                android:id="@+id/checkable_exampleTwoStates"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackground"
+                app:liv_displayMode="icon"
+                app:liv_icon="@drawable/ic_radio_button_checked_24dp"
+                app:liv_iconColor="@color/color_state_checked"
+                app:liv_subtitle="@string/checkable_modeIcon"
+                app:liv_title="@string/checkable_exampleTwoStates"/>
+
+            <com.lucasurbas.listitemview.ListItemView
+                android:id="@+id/checkable_exampleAnimated"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackground"
+                app:liv_displayMode="icon"
+                app:liv_icon="@drawable/ic_radio_button_checked_24dp"
+                app:liv_iconColor="@color/color_state_checked"
+                app:liv_subtitle="@string/checkable_modeIcon"
+                app:liv_title="@string/checkable_exampleAnimated"/>
+
+            <com.lucasurbas.listitemview.ListItemView
+                android:id="@+id/checkable_exampleCircular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?selectableItemBackground"
+                app:liv_displayMode="icon"
+                app:liv_icon="@drawable/ic_radio_button_checked_24dp"
+                app:liv_iconColor="@color/color_state_checked"
+                app:liv_subtitle="@string/checkable_modeCircularIcon"
+                app:liv_title="@string/checkable_exampleCircular"/>
+
+            <com.lucasurbas.listitemview.ListItemView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:liv_subtitle="@string/checkable_menuExamples"/>
 
             <com.lucasurbas.listitemview.ListItemView
                 android:id="@+id/attr_actionMenu"
@@ -55,28 +110,29 @@
                 android:layout_height="wrap_content"
                 app:liv_menu="@menu/attr_actions_menu"
                 app:liv_subtitle="@string/attr_menuNone"
-                app:liv_title="@string/attr_actionMenu" />
+                app:liv_title="@string/attr_actionMenu"/>
 
             <com.lucasurbas.listitemview.ListItemView
                 android:id="@+id/attr_iconCheckedColor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:liv_menu="@menu/color_menu"
-                app:liv_title="@string/attr_iconCheckedColor" />
+                app:liv_menuActionColor="?colorAccent"
+                app:liv_title="@string/attr_iconCheckedColor"/>
 
             <com.lucasurbas.listitemview.ListItemView
                 android:id="@+id/attr_circularIconColor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:liv_menu="@menu/color_menu"
-                app:liv_title="@string/attr_circularIconCheckedColor" />
+                app:liv_title="@string/attr_circularIconCheckedColor"/>
 
             <com.lucasurbas.listitemview.ListItemView
                 android:id="@+id/attr_actionMenuItemColor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:liv_menu="@menu/color_menu"
-                app:liv_title="@string/attr_actionMenuItemCheckedColor" />
+                app:liv_title="@string/attr_actionMenuItemCheckedColor"/>
 
         </LinearLayout>
     </ScrollView>
