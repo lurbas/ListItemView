@@ -20,9 +20,9 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * View to represent action items on the right.
+ * View to represent action items on the right side of list item.
  *
- * @author urbl
+ * @author Lucas Urbas
  */
 @SuppressWarnings("RestrictedApi")
 public class MenuView extends LinearLayout {

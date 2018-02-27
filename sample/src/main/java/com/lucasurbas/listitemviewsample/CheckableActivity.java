@@ -6,8 +6,6 @@ import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
-import android.view.View;
 
 import com.jrummyapps.android.colorpicker.ColorPickerDialog;
 import com.jrummyapps.android.colorpicker.ColorPickerDialogListener;
@@ -18,7 +16,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * @author lurbas on 25/02/2018
+ * Sample of checkable attributes.
+ *
+ * @author Lucas Urbas
  */
 public class CheckableActivity extends AppCompatActivity implements ColorPickerDialogListener {
 
@@ -64,113 +64,75 @@ public class CheckableActivity extends AppCompatActivity implements ColorPickerD
         setContentView(R.layout.activity_checkable);
         ButterKnife.bind(this);
 
-        listItemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listItemView.toggle();
-                listItemView.setSubtitle(listItemView.isChecked() ? R.string.checkable_checked
-                        : R.string.checkable_unchecked);
-            }
+        listItemView.setOnClickListener(v -> {
+            listItemView.toggle();
+            listItemView.setSubtitle(listItemView.isChecked() ? R.string.checkable_checked
+                    : R.string.checkable_unchecked);
         });
 
-        checkableExampleNoIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listItemView.setDisplayMode(ListItemView.MODE_STANDARD);
-                listItemView.setIconResId(ListItemView.NULL);
+        checkableExampleNoIcon.setOnClickListener(v -> {
+            listItemView.setDisplayMode(ListItemView.MODE_STANDARD);
+            listItemView.setIconResId(ListItemView.NULL);
 
-                checkableExampleNoIcon.setChecked(true);
-                checkableExampleSimple.setChecked(false);
-                checkableExampleTwoStates.setChecked(false);
-                checkableExampleAnimated.setChecked(false);
-                checkableExampleCircular.setChecked(false);
-            }
+            checkableExampleNoIcon.setChecked(true);
+            checkableExampleSimple.setChecked(false);
+            checkableExampleTwoStates.setChecked(false);
+            checkableExampleAnimated.setChecked(false);
+            checkableExampleCircular.setChecked(false);
         });
 
-        checkableExampleSimple.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listItemView.setDisplayMode(ListItemView.MODE_ICON);
-                listItemView.setIconResId(R.drawable.ic_call_24dp);
+        checkableExampleSimple.setOnClickListener(v -> {
+            listItemView.setDisplayMode(ListItemView.MODE_ICON);
+            listItemView.setIconResId(R.drawable.ic_call_24dp);
 
-                checkableExampleNoIcon.setChecked(false);
-                checkableExampleSimple.setChecked(true);
-                checkableExampleTwoStates.setChecked(false);
-                checkableExampleAnimated.setChecked(false);
-                checkableExampleCircular.setChecked(false);
-            }
+            checkableExampleNoIcon.setChecked(false);
+            checkableExampleSimple.setChecked(true);
+            checkableExampleTwoStates.setChecked(false);
+            checkableExampleAnimated.setChecked(false);
+            checkableExampleCircular.setChecked(false);
         });
 
-        checkableExampleTwoStates.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listItemView.setDisplayMode(ListItemView.MODE_ICON);
-                listItemView.setIconResId(R.drawable.selector_ic_check);
+        checkableExampleTwoStates.setOnClickListener(v -> {
+            listItemView.setDisplayMode(ListItemView.MODE_ICON);
+            listItemView.setIconResId(R.drawable.selector_ic_check);
 
-                checkableExampleNoIcon.setChecked(false);
-                checkableExampleSimple.setChecked(false);
-                checkableExampleTwoStates.setChecked(true);
-                checkableExampleAnimated.setChecked(false);
-                checkableExampleCircular.setChecked(false);
-            }
+            checkableExampleNoIcon.setChecked(false);
+            checkableExampleSimple.setChecked(false);
+            checkableExampleTwoStates.setChecked(true);
+            checkableExampleAnimated.setChecked(false);
+            checkableExampleCircular.setChecked(false);
         });
 
-        checkableExampleAnimated.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listItemView.setDisplayMode(ListItemView.MODE_ICON);
-                listItemView.setIconResId(R.drawable.selector_ic_check);
+        checkableExampleAnimated.setOnClickListener(v -> {
+            listItemView.setDisplayMode(ListItemView.MODE_ICON);
+            listItemView.setIconResId(R.drawable.selector_ic_check);
 
-                checkableExampleNoIcon.setChecked(false);
-                checkableExampleSimple.setChecked(false);
-                checkableExampleTwoStates.setChecked(false);
-                checkableExampleAnimated.setChecked(true);
-                checkableExampleCircular.setChecked(false);
-            }
+            checkableExampleNoIcon.setChecked(false);
+            checkableExampleSimple.setChecked(false);
+            checkableExampleTwoStates.setChecked(false);
+            checkableExampleAnimated.setChecked(true);
+            checkableExampleCircular.setChecked(false);
         });
 
-        checkableExampleCircular.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                listItemView.setDisplayMode(ListItemView.MODE_CIRCULAR_ICON);
-                listItemView.setIconResId(R.drawable.ic_call_24dp);
+        checkableExampleCircular.setOnClickListener(v -> {
+            listItemView.setDisplayMode(ListItemView.MODE_CIRCULAR_ICON);
+            listItemView.setIconResId(R.drawable.ic_call_24dp);
 
-                checkableExampleNoIcon.setChecked(false);
-                checkableExampleSimple.setChecked(false);
-                checkableExampleTwoStates.setChecked(false);
-                checkableExampleAnimated.setChecked(false);
-                checkableExampleCircular.setChecked(true);
-            }
+            checkableExampleNoIcon.setChecked(false);
+            checkableExampleSimple.setChecked(false);
+            checkableExampleTwoStates.setChecked(false);
+            checkableExampleAnimated.setChecked(false);
+            checkableExampleCircular.setChecked(true);
         });
 
         attributeActionMenuView.setOnMenuItemClickListener(
-                new ListItemView.OnMenuItemClickListener() {
-                    @Override
-                    public void onActionMenuItemSelected(final MenuItem item) {
-                        onAttrActionMenuClicked(item.getItemId());
-                    }
-                });
+                item -> onAttrActionMenuClicked(item.getItemId()));
         attributeIconCheckedColorView.setOnMenuItemClickListener(
-                new ListItemView.OnMenuItemClickListener() {
-                    @Override
-                    public void onActionMenuItemSelected(final MenuItem item) {
-                        showColorPicker(ICON_CHECKED_COLOR_ID);
-                    }
-                });
+                item -> showColorPicker(ICON_CHECKED_COLOR_ID));
         attributeCircularIconColorView.setOnMenuItemClickListener(
-                new ListItemView.OnMenuItemClickListener() {
-                    @Override
-                    public void onActionMenuItemSelected(final MenuItem item) {
-                        showColorPicker(CIRCLE_CHECKED_COLOR_ID);
-                    }
-                });
+                item -> showColorPicker(CIRCLE_CHECKED_COLOR_ID));
         attributeActionMenuItemColorView.setOnMenuItemClickListener(
-                new ListItemView.OnMenuItemClickListener() {
-                    @Override
-                    public void onActionMenuItemSelected(final MenuItem item) {
-                        showColorPicker(ACTION_MENU_CHECKED_COLOR_ID);
-                    }
-                });
+                item -> showColorPicker(ACTION_MENU_CHECKED_COLOR_ID));
 
         if (savedInstanceState == null) {
             checkableExampleSimple.setChecked(true);

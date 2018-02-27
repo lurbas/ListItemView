@@ -2,11 +2,9 @@ package com.lucasurbas.listitemviewsample;
 
 import static com.jrummyapps.android.colorpicker.ColorPickerDialog.TYPE_PRESETS;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.v7.app.AppCompatActivity;
-import android.view.MenuItem;
 
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.jrummyapps.android.colorpicker.ColorPickerDialog;
@@ -18,7 +16,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import okhttp3.OkHttpClient;
 
-
+/**
+ * Sample of general attributes.
+ *
+ * @author Lucas Urbas
+ */
 public class MainActivity extends AppCompatActivity implements ColorPickerDialogListener {
 
     private static final int ICON_COLOR_ID = 1;
@@ -89,82 +91,27 @@ public class MainActivity extends AppCompatActivity implements ColorPickerDialog
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        attributeTitleView.setOnMenuItemClickListener(new ListItemView.OnMenuItemClickListener() {
-            @Override
-            public void onActionMenuItemSelected(final MenuItem item) {
-                onAttrTitleClicked();
-            }
-        });
-        attributeSubtitleView.setOnMenuItemClickListener(
-                new ListItemView.OnMenuItemClickListener() {
-                    @Override
-                    public void onActionMenuItemSelected(final MenuItem item) {
-                        onAttrSubtitleClicked();
-                    }
-                });
-        attributeMultilineView.setOnMenuItemClickListener(
-                new ListItemView.OnMenuItemClickListener() {
-                    @Override
-                    public void onActionMenuItemSelected(final MenuItem item) {
-                        onAttrMultilineClicked();
-                    }
-                });
-        attributeForceKeylineView.setOnMenuItemClickListener(
-                new ListItemView.OnMenuItemClickListener() {
-                    @Override
-                    public void onActionMenuItemSelected(final MenuItem item) {
-                        onAttrForceKeylineClicked();
-                    }
-                });
-        attributeDisplayModeView.setOnMenuItemClickListener(
-                new ListItemView.OnMenuItemClickListener() {
-                    @Override
-                    public void onActionMenuItemSelected(final MenuItem item) {
-                        onAttrDisplayModeClicked(item.getItemId());
-                    }
-                });
-        attributeIconColorView.setOnMenuItemClickListener(
-                new ListItemView.OnMenuItemClickListener() {
-                    @Override
-                    public void onActionMenuItemSelected(final MenuItem item) {
-                        showColorPicker(ICON_COLOR_ID);
-                    }
-                });
-        attributeCircularIconColorView.setOnMenuItemClickListener(
-                new ListItemView.OnMenuItemClickListener() {
-                    @Override
-                    public void onActionMenuItemSelected(final MenuItem item) {
-                        showColorPicker(CIRCLE_COLOR_ID);
-                    }
-                });
-        attributeActionMenuView.setOnMenuItemClickListener(
-                new ListItemView.OnMenuItemClickListener() {
-                    @Override
-                    public void onActionMenuItemSelected(final MenuItem item) {
-                        onAttrActionMenuClicked(item.getItemId());
-                    }
-                });
-        attributeActionMenuRoomView.setOnMenuItemClickListener(
-                new ListItemView.OnMenuItemClickListener() {
-                    @Override
-                    public void onActionMenuItemSelected(final MenuItem item) {
-                        onAttrActionMenuRoomClicked(item.getItemId());
-                    }
-                });
-        attributeActionMenuItemColorView.setOnMenuItemClickListener(
-                new ListItemView.OnMenuItemClickListener() {
-                    @Override
-                    public void onActionMenuItemSelected(final MenuItem item) {
-                        showColorPicker(ACTION_MENU_COLOR_ID);
-                    }
-                });
-        attributeActionMenuOverflowColorView.setOnMenuItemClickListener(
-                new ListItemView.OnMenuItemClickListener() {
-                    @Override
-                    public void onActionMenuItemSelected(final MenuItem item) {
-                        showColorPicker(OVERFLOW_COLOR_ID);
-                    }
-                });
+        attributeTitleView.setOnMenuItemClickListener(item -> onAttrTitleClicked());
+
+        attributeSubtitleView.setOnMenuItemClickListener(item -> onAttrSubtitleClicked());
+
+        attributeMultilineView.setOnMenuItemClickListener(item -> onAttrMultilineClicked());
+
+        attributeForceKeylineView.setOnMenuItemClickListener(item -> onAttrForceKeylineClicked());
+
+        attributeDisplayModeView.setOnMenuItemClickListener(item -> onAttrDisplayModeClicked(item.getItemId()));
+
+        attributeIconColorView.setOnMenuItemClickListener(item -> showColorPicker(ICON_COLOR_ID));
+
+        attributeCircularIconColorView.setOnMenuItemClickListener(item -> showColorPicker(CIRCLE_COLOR_ID));
+
+        attributeActionMenuView.setOnMenuItemClickListener(item -> onAttrActionMenuClicked(item.getItemId()));
+
+        attributeActionMenuRoomView.setOnMenuItemClickListener(item -> onAttrActionMenuRoomClicked(item.getItemId()));
+
+        attributeActionMenuItemColorView.setOnMenuItemClickListener(item -> showColorPicker(ACTION_MENU_COLOR_ID));
+
+        attributeActionMenuOverflowColorView.setOnMenuItemClickListener(item -> showColorPicker(OVERFLOW_COLOR_ID));
     }
 
     @Override
@@ -239,13 +186,6 @@ public class MainActivity extends AppCompatActivity implements ColorPickerDialog
                 OkHttpClient client = new OkHttpClient();
                 Picasso picasso = new Picasso.Builder(this).loggingEnabled(true)
                         .downloader(new OkHttp3Downloader(client))
-                        .listener(new Picasso.Listener() {
-                            @Override
-                            public void onImageLoadFailed(final Picasso picasso, final Uri uri,
-                                    final Exception e) {
-                                e.printStackTrace();
-                            }
-                        })
                         .build();
 
                 picasso.load(AVATAR_URL)
