@@ -6,5 +6,4 @@
     android:layout_centerInParent="true"
     android:scaleType="centerInside"
     android:alpha="1"
-    android:background="?selectableItemBackgroundBorderless"
-    android:clickable="true" />
+    android:background="?selectableItemBackgroundBorderless" />

@@ -160,15 +160,16 @@ public class MenuView extends LinearLayout {
                     mActionItems.add(menuItem);
                     actionItemsIds.add(menuItem.getItemId());
 
-                    action.setOnClickListener(new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-
-                            if (mMenuCallback != null) {
+                    if (mMenuCallback != null) {
+                        action.setOnClickListener(new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
                                 mMenuCallback.onMenuItemSelected(mMenuBuilder, menuItem);
                             }
-                        }
-                    });
+                        });
+                    } else {
+                        action.setBackground(null);
+                    }
 
                     menuItemsRoom--;
                     if (menuItemsRoom == 0) {

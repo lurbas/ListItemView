@@ -127,12 +127,12 @@ public class CheckableActivity extends AppCompatActivity implements ColorPickerD
 
         attributeActionMenuView.setOnMenuItemClickListener(
                 item -> onAttrActionMenuClicked(item.getItemId()));
-        attributeIconCheckedColorView.setOnMenuItemClickListener(
-                item -> showColorPicker(ICON_CHECKED_COLOR_ID));
-        attributeCircularIconColorView.setOnMenuItemClickListener(
-                item -> showColorPicker(CIRCLE_CHECKED_COLOR_ID));
-        attributeActionMenuItemColorView.setOnMenuItemClickListener(
-                item -> showColorPicker(ACTION_MENU_CHECKED_COLOR_ID));
+
+        attributeIconCheckedColorView.setOnClickListener(v -> showColorPicker(ICON_CHECKED_COLOR_ID));
+
+        attributeCircularIconColorView.setOnClickListener(v -> showColorPicker(CIRCLE_CHECKED_COLOR_ID));
+
+        attributeActionMenuItemColorView.setOnClickListener(v -> showColorPicker(ACTION_MENU_CHECKED_COLOR_ID));
 
         if (savedInstanceState == null) {
             checkableExampleSimple.setChecked(true);

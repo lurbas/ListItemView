@@ -117,7 +117,7 @@ public class ListItemView extends FrameLayout implements Checkable {
     @ColorInt
     private int mMenuOverflowColor;
 
-    private OnMenuItemClickListener mActionMenuItemListener;
+//    private OnMenuItemClickListener mActionMenuItemListener;
 
     private String mTitle;
 
@@ -490,28 +490,6 @@ public class ListItemView extends FrameLayout implements Checkable {
         mSubtitleView.setVisibility(TextUtils.isEmpty(mSubtitle) ? GONE : VISIBLE);
     }
 
-    public void setMenu(final MenuBuilder menuBuilder) {
-        mMenuBuilder = menuBuilder;
-        mMenuId = NULL;
-        mMenuView.setMenuCallback(new MenuBuilder.Callback() {
-
-            @Override
-            public boolean onMenuItemSelected(MenuBuilder menu, MenuItem item) {
-                if (mActionMenuItemListener != null) {
-                    mActionMenuItemListener.onActionMenuItemSelected(item);
-                }
-                return true;
-            }
-
-            @Override
-            public void onMenuModeChange(MenuBuilder menu) {
-            }
-
-        });
-        mMenuView.reset(menuBuilder, mMenuItemsRoom);
-        adjustPadding();
-    }
-
     /**
      * Inflates the menu items from
      * an xml resource.
@@ -521,21 +499,6 @@ public class ListItemView extends FrameLayout implements Checkable {
     public void inflateMenu(@MenuRes final int menuId) {
         mMenuId = menuId;
         mMenuBuilder = null;
-        mMenuView.setMenuCallback(new MenuBuilder.Callback() {
-
-            @Override
-            public boolean onMenuItemSelected(MenuBuilder menu, MenuItem item) {
-                if (mActionMenuItemListener != null) {
-                    mActionMenuItemListener.onActionMenuItemSelected(item);
-                }
-                return true;
-            }
-
-            @Override
-            public void onMenuModeChange(MenuBuilder menu) {
-            }
-
-        });
         mMenuView.reset(menuId, mMenuItemsRoom);
         adjustPadding();
     }
@@ -730,7 +693,25 @@ public class ListItemView extends FrameLayout implements Checkable {
      * @param listener listener to listen to menu item clicks
      */
     public void setOnMenuItemClickListener(final OnMenuItemClickListener listener) {
-        this.mActionMenuItemListener = listener;
+//        this.mActionMenuItemListener = listener;
+        if(listener != null) {
+            mMenuView.setMenuCallback(new MenuBuilder.Callback() {
+
+                @Override
+                public boolean onMenuItemSelected(MenuBuilder menu, MenuItem item) {
+                    listener.onActionMenuItemSelected(item);
+                    return true;
+                }
+
+                @Override
+                public void onMenuModeChange(MenuBuilder menu) {
+                }
+
+            });
+        } else {
+            mMenuView.setMenuCallback(null);
+        }
+        mMenuView.reset(mMenuId, mMenuItemsRoom);
     }
 
     /**
@@ -872,10 +853,11 @@ public class ListItemView extends FrameLayout implements Checkable {
     protected void drawableStateChanged() {
         super.drawableStateChanged();
 
-//        if (mIconColorStateList != null) {
-//            int color = mIconColorStateList.getColorForState(getDrawableState(), Color.TRANSPARENT);
-//            setIconColor(color);
-//        }
+        if (mDisplayMode == MODE_CIRCULAR_ICON && mIconColorStateList != null) {
+            int color = mIconColorStateList.getColorForState(getDrawableState(), Color.TRANSPARENT);
+            setIconColor(color);
+        }
+
         if (mCircularIconColorStateList != null) {
             int color = mCircularIconColorStateList.getColorForState(getDrawableState(),
                     Color.TRANSPARENT);
