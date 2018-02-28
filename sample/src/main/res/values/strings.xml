@@ -7,6 +7,7 @@
     <string name="action_check">Check</string>
     <string name="action_uncheck">Uncheck</string>
     <string name="action_color">Color</string>
+    <string name="action_checkable">Checkable</string>
 
     <string name="title">Single Title</string>
     <string name="title_long">A very interesting and long title</string>
@@ -52,8 +53,12 @@
     <string name="checkable_modeCircularIcon">Display Mode - Circular Icon</string>
     <string name="checkable_exampleNoIcon">No Icon</string>
     <string name="checkable_exampleSimple">Simple - only color change</string>
-    <string name="checkable_exampleTwoStates">Two states</string>
+    <string name="checkable_exampleTwoStates">Two States</string>
     <string name="checkable_exampleAnimated">Animated</string>
     <string name="checkable_exampleCircular">Circular Icon - only color change</string>
+    <string name="checkable_exampleNoMenu">No Action Menu</string>
+    <string name="checkable_exampleSimpleMenu">Simple Menu - only color change</string>
+    <string name="checkable_exampleTwoStatesMenu">Two States Menu</string>
+    <string name="checkable_exampleAnimatedMenu">Animated Menu</string>
 
 </resources>

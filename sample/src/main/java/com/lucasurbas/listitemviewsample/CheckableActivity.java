@@ -46,8 +46,17 @@ public class CheckableActivity extends AppCompatActivity implements ColorPickerD
     @BindView(R.id.checkable_exampleCircular)
     ListItemView checkableExampleCircular;
 
-    @BindView(R.id.attr_actionMenu)
-    ListItemView attributeActionMenuView;
+    @BindView(R.id.checkable_exampleNoMenu)
+    ListItemView checkableExampleNoMenu;
+
+    @BindView(R.id.checkable_exampleSimpleMenu)
+    ListItemView checkableExampleSimpleMenu;
+
+    @BindView(R.id.checkable_exampleTwoStatesMenu)
+    ListItemView checkableExampleTwoStatesMenu;
+
+    @BindView(R.id.checkable_exampleAnimatedMenu)
+    ListItemView checkableExampleAnimatedMenu;
 
     @BindView(R.id.attr_iconCheckedColor)
     ListItemView attributeIconCheckedColorView;
@@ -125,8 +134,41 @@ public class CheckableActivity extends AppCompatActivity implements ColorPickerD
             checkableExampleCircular.setChecked(true);
         });
 
-        attributeActionMenuView.setOnMenuItemClickListener(
-                item -> onAttrActionMenuClicked(item.getItemId()));
+        checkableExampleNoMenu.setOnClickListener(v -> {
+            listItemView.inflateMenu(ListItemView.NULL);
+
+            checkableExampleNoMenu.setChecked(true);
+            checkableExampleSimpleMenu.setChecked(false);
+            checkableExampleTwoStatesMenu.setChecked(false);
+            checkableExampleAnimatedMenu.setChecked(false);
+        });
+
+        checkableExampleSimpleMenu.setOnClickListener(v -> {
+            listItemView.inflateMenu(R.menu.single_action_menu);
+
+            checkableExampleNoMenu.setChecked(false);
+            checkableExampleSimpleMenu.setChecked(true);
+            checkableExampleTwoStatesMenu.setChecked(false);
+            checkableExampleAnimatedMenu.setChecked(false);
+        });
+
+        checkableExampleTwoStatesMenu.setOnClickListener(v -> {
+            listItemView.inflateMenu(R.menu.checkable_action_menu);
+
+            checkableExampleNoMenu.setChecked(false);
+            checkableExampleSimpleMenu.setChecked(false);
+            checkableExampleTwoStatesMenu.setChecked(true);
+            checkableExampleAnimatedMenu.setChecked(false);
+        });
+
+        checkableExampleAnimatedMenu.setOnClickListener(v -> {
+            listItemView.inflateMenu(R.menu.checkable_action_menu);
+
+            checkableExampleNoMenu.setChecked(false);
+            checkableExampleSimpleMenu.setChecked(false);
+            checkableExampleTwoStatesMenu.setChecked(false);
+            checkableExampleAnimatedMenu.setChecked(true);
+        });
 
         attributeIconCheckedColorView.setOnClickListener(v -> showColorPicker(ICON_CHECKED_COLOR_ID));
 
@@ -136,6 +178,7 @@ public class CheckableActivity extends AppCompatActivity implements ColorPickerD
 
         if (savedInstanceState == null) {
             checkableExampleSimple.setChecked(true);
+            checkableExampleNoMenu.setChecked(true);
         }
     }
 
@@ -147,26 +190,6 @@ public class CheckableActivity extends AppCompatActivity implements ColorPickerD
     @Override
     protected void onRestoreInstanceState(final Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-    }
-
-    private void onAttrActionMenuClicked(int itemId) {
-        switch (itemId) {
-            default:
-            case R.id.action_none:
-                listItemView.inflateMenu(ListItemView.NULL);
-                attributeActionMenuView.setSubtitle(R.string.attr_menuNone);
-                break;
-
-            case R.id.action_single:
-                listItemView.inflateMenu(R.menu.single_action_menu);
-                attributeActionMenuView.setSubtitle(R.string.attr_menuSingle);
-                break;
-
-            case R.id.action_multiple:
-                listItemView.inflateMenu(R.menu.multiple_action_menu);
-                attributeActionMenuView.setSubtitle(R.string.attr_menuMultiple);
-                break;
-        }
     }
 
     private void showColorPicker(final int pickerId) {
