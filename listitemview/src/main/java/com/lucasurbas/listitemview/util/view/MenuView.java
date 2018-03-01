@@ -1,6 +1,7 @@
 package com.lucasurbas.listitemview.util.view;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.support.annotation.NonNull;
 import android.support.v7.view.SupportMenuInflater;
 import android.support.v7.view.menu.MenuBuilder;
@@ -42,6 +43,8 @@ public class MenuView extends LinearLayout implements Checkable {
 
     private int mActionIconColor;
 
+    private ColorStateList mActionIconColorList;
+
     private int mOverflowIconColor;
 
     //all menu items
@@ -75,6 +78,13 @@ public class MenuView extends LinearLayout implements Checkable {
     public void setActionIconColor(final int actionColor) {
         this.mActionIconColor = actionColor;
         refreshColors();
+    }
+
+    public void setActionIconColorList(final ColorStateList colorStateList) {
+        this.mActionIconColorList = colorStateList;
+        for (int i = 0; i < getChildCount(); i++) {
+            ViewUtils.setIconColor(((ImageView) getChildAt(i)), mActionIconColorList);
+        }
     }
 
     public void setOverflowColor(final int overflowColor) {
@@ -160,7 +170,11 @@ public class MenuView extends LinearLayout implements Checkable {
 
                     ImageView action = createActionView();
                     action.setImageDrawable(menuItem.getIcon());
-                    ViewUtils.setIconColor(action, mActionIconColor);
+                    if (mActionIconColorList != null) {
+                        ViewUtils.setIconColor(action, mActionIconColorList);
+                    } else {
+                        ViewUtils.setIconColor(action, mActionIconColor);
+                    }
                     addView(action);
                     mActionItems.add(menuItem);
                     actionItemsIds.add(menuItem.getItemId());
@@ -281,6 +295,9 @@ public class MenuView extends LinearLayout implements Checkable {
         if (mChecked != checked) {
             mChecked = checked;
             for(int i = 0; i < getChildCount(); i++){
+                if (mHasOverflow && i == getChildCount() - 1) {
+                    continue;
+                }
                 ImageView child = (ImageView) getChildAt(i);
                 final int[] stateSet = {android.R.attr.state_checked * (isChecked() ? 1 : -1)};
                 child.setImageState(stateSet, true);

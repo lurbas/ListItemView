@@ -224,10 +224,15 @@ public class ListItemView extends FrameLayout implements Checkable {
             mMenuId = a.getResourceId(R.styleable.ListItemView_liv_menu, NULL);
             mMenuItemsRoom = a.getInteger(R.styleable.ListItemView_liv_menuItemsRoom,
                     DEFAULT_MENU_ITEMS_ROOM);
-            mMenuActionColor = a.getColor(R.styleable.ListItemView_liv_menuActionColor,
-                    Color.TRANSPARENT);
             mMenuOverflowColor = a.getColor(R.styleable.ListItemView_liv_menuOverflowColor,
                     Color.TRANSPARENT);
+            mMenuActionColorStateList = a.getColorStateList(R.styleable.ListItemView_liv_menuActionColor);
+            if (mMenuActionColorStateList == null) {
+                mMenuActionColor = a.getColor(R.styleable.ListItemView_liv_menuActionColor,
+                        Color.TRANSPARENT);
+            } else {
+                mMenuActionColor = Color.TRANSPARENT;
+            }
 
             mTitle = a.getString(R.styleable.ListItemView_liv_title);
             mSubtitle = a.getString(R.styleable.ListItemView_liv_subtitle);
@@ -283,7 +288,11 @@ public class ListItemView extends FrameLayout implements Checkable {
         setMultiline(mIsMultiline);
         setTitle(mTitle);
         setSubtitle(mSubtitle);
-        setMenuActionColor(mMenuActionColor);
+        if (mMenuActionColorStateList != null) {
+            setMenuActionColorList(mMenuActionColorStateList);
+        } else {
+            setMenuActionColor(mMenuActionColor);
+        }
         setMenuOverflowColor(mMenuOverflowColor);
         mMenuView.setChecked(isChecked());
         inflateMenu(mMenuId);
@@ -674,7 +683,7 @@ public class ListItemView extends FrameLayout implements Checkable {
      */
     public void setMenuActionColorList(final ColorStateList colorStateList) {
         mMenuActionColorStateList = colorStateList;
-        refreshDrawableState();
+        mMenuView.setActionIconColorList(mMenuActionColorStateList);
     }
 
     /**
