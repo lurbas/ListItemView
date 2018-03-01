@@ -119,7 +119,7 @@ public class CheckableAttrsActivity extends AppCompatActivity implements ColorPi
 
         checkableExampleAnimated.setOnClickListener(v -> {
             listItemView.setDisplayMode(ListItemView.MODE_ICON);
-            listItemView.setIconResId(R.drawable.selector_ic_check);
+            listItemView.setIconResId(R.drawable.asl_checkbox);
 
             checkableExampleNoIcon.setChecked(false);
             checkableExampleSimple.setChecked(false);
@@ -167,7 +167,7 @@ public class CheckableAttrsActivity extends AppCompatActivity implements ColorPi
         });
 
         checkableExampleAnimatedMenu.setOnClickListener(v -> {
-            listItemView.inflateMenu(R.menu.checkable_action_menu);
+            listItemView.inflateMenu(R.menu.checkable_animated_action_menu);
 
             checkableExampleNoMenu.setChecked(false);
             checkableExampleSimpleMenu.setChecked(false);

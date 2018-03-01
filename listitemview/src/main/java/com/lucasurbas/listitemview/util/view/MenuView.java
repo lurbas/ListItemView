@@ -202,7 +202,7 @@ public class MenuView extends LinearLayout implements Checkable {
         if (addOverflowAtTheEnd) {
 
             ImageView overflowAction = getOverflowActionView();
-            overflowAction.setImageResource(R.drawable.ic_more_vert_black_24dp);
+            overflowAction.setImageResource(R.drawable.vd_more_vert_black_24dp);
             ViewUtils.setIconColor(overflowAction, mOverflowIconColor);
             addView(overflowAction);
 

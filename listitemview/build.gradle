@@ -32,6 +32,7 @@ android {
         minSdkVersion 17
         targetSdkVersion 27
         versionName "$libraryVersion"
+        vectorDrawables.useSupportLibrary = true
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
