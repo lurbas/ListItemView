@@ -11,11 +11,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.lucasurbas.listitemviewsample.MainActivity">
+        <activity android:name="com.lucasurbas.listitemviewsample.GeneralAttrsActivity">
 
         </activity>
 
-        <activity android:name="com.lucasurbas.listitemviewsample.CheckableActivity">
+        <activity android:name="com.lucasurbas.listitemviewsample.CheckableAttrsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -5,7 +5,7 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
-              tools:context="com.lucasurbas.listitemviewsample.CheckableActivity">
+              tools:context="com.lucasurbas.listitemviewsample.CheckableAttrsActivity">
 
     <FrameLayout
         android:layout_width="match_parent"

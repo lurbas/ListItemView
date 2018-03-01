@@ -20,7 +20,7 @@ import butterknife.ButterKnife;
  *
  * @author Lucas Urbas
  */
-public class CheckableActivity extends AppCompatActivity implements ColorPickerDialogListener {
+public class CheckableAttrsActivity extends AppCompatActivity implements ColorPickerDialogListener {
 
     private static final int ICON_CHECKED_COLOR_ID = 1;
 
@@ -70,7 +70,7 @@ public class CheckableActivity extends AppCompatActivity implements ColorPickerD
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_checkable);
+        setContentView(R.layout.activity_attrs_checkable);
         ButterKnife.bind(this);
 
         listItemView.setOnClickListener(v -> {

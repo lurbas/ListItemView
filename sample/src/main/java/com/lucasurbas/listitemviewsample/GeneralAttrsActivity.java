@@ -21,7 +21,7 @@ import okhttp3.OkHttpClient;
  *
  * @author Lucas Urbas
  */
-public class MainActivity extends AppCompatActivity implements ColorPickerDialogListener {
+public class GeneralAttrsActivity extends AppCompatActivity implements ColorPickerDialogListener {
 
     private static final int ICON_COLOR_ID = 1;
 
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements ColorPickerDialog
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_attrs_general);
         ButterKnife.bind(this);
 
         attributeTitleView.setOnMenuItemClickListener(item -> onAttrTitleClicked());
