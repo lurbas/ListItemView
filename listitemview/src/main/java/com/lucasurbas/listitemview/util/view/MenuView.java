@@ -53,8 +53,6 @@ public class MenuView extends LinearLayout implements Checkable {
     //items that are currently presented as actions
     private List<MenuItemImpl> mActionItems = new ArrayList<>();
 
-    private List<MenuItemImpl> mActionShowAlwaysItems = new ArrayList<>();
-
     private boolean mChecked;
 
     private boolean mHasOverflow = false;
@@ -123,7 +121,7 @@ public class MenuView extends LinearLayout implements Checkable {
      *                      android:showAsAction="ifRoom" or android:showAsAction="always"
      *                      will show as actions.
      */
-    private void reset(@NonNull final MenuBuilder menuBuilder, int menuItemsRoom) {
+    public void reset(@NonNull final MenuBuilder menuBuilder, int menuItemsRoom) {
 
         //clean view and re-inflate
         removeAllViews();
@@ -131,7 +129,6 @@ public class MenuView extends LinearLayout implements Checkable {
         mMenuBuilder = menuBuilder;
         mMenuPopupHelper = new MenuPopupHelper(getContext(), mMenuBuilder, this);
 
-        mActionShowAlwaysItems = new ArrayList<>();
         mActionItems = new ArrayList<>();
         mMenuItems = new ArrayList<>();
 

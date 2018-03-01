@@ -117,8 +117,6 @@ public class ListItemView extends FrameLayout implements Checkable {
     @ColorInt
     private int mMenuOverflowColor;
 
-//    private OnMenuItemClickListener mActionMenuItemListener;
-
     private String mTitle;
 
     private String mSubtitle;
@@ -510,6 +508,18 @@ public class ListItemView extends FrameLayout implements Checkable {
         mMenuId = menuId;
         mMenuBuilder = null;
         mMenuView.reset(menuId, mMenuItemsRoom);
+        adjustPadding();
+    }
+
+    /**
+     * Inflates the menu items from menu builder
+     *
+     * @param menuBuilder a menu builder
+     */
+    public void setMenu(final MenuBuilder menuBuilder) {
+        mMenuBuilder = menuBuilder;
+        mMenuId = NULL;
+        mMenuView.reset(menuBuilder, mMenuItemsRoom);
         adjustPadding();
     }
 
