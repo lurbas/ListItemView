@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context="com.lucasurbas.listitemviewsample.GeneralAttrsActivity">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              tools:context="com.lucasurbas.listitemviewsample.GeneralAttrsActivity">
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="?colorItemBackground"
         android:minHeight="160dp">
 
         <com.lucasurbas.listitemview.ListItemView
@@ -18,13 +19,13 @@
             android:layout_height="wrap_content"
             android:background="?colorItemBackground"
             app:liv_subtitle="@string/subtitle_long"
-            app:liv_title="@string/title" />
+            app:liv_title="@string/title"/>
     </FrameLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#bbbbbb" />
+        android:background="#bbbbbb"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -39,57 +40,95 @@
             <com.lucasurbas.listitemview.ListItemView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:liv_subtitle="@string/attrs" />
+                app:liv_subtitle="@string/attrs"/>
 
             <com.lucasurbas.listitemview.ListItemView
                 android:id="@+id/attr_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:liv_menu="@menu/uncheck_menu"
-                app:liv_title="@string/attr_title" />
+                app:liv_menu="@menu/checkable_action_menu"
+                app:liv_menuActionColor="@color/color_state_checked"
+                app:liv_title="@string/attr_title"/>
 
             <com.lucasurbas.listitemview.ListItemView
                 android:id="@+id/attr_subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:liv_menu="@menu/uncheck_menu"
-                app:liv_title="@string/attr_subtitle" />
+                app:liv_menu="@menu/checkable_action_menu"
+                app:liv_menuActionColor="@color/color_state_checked"
+                app:liv_title="@string/attr_subtitle"/>
 
             <com.lucasurbas.listitemview.ListItemView
                 android:id="@+id/attr_multiline"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:liv_menu="@menu/check_menu"
-                app:liv_title="@string/attr_multiline" />
+                app:liv_menu="@menu/checkable_action_menu"
+                app:liv_menuActionColor="@color/color_state_checked"
+                app:liv_title="@string/attr_multiline"/>
 
             <com.lucasurbas.listitemview.ListItemView
                 android:id="@+id/attr_forceKeyline"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:liv_menu="@menu/check_menu"
-                app:liv_title="@string/attr_forceKeyline" />
+                app:liv_menu="@menu/checkable_action_menu"
+                app:liv_menuActionColor="@color/color_state_checked"
+                app:liv_title="@string/attr_forceKeyline"/>
 
             <com.lucasurbas.listitemview.ListItemView
                 android:id="@+id/attr_displayMode"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:liv_menu="@menu/attr_display_mode_menu"
-                app:liv_subtitle="@string/attr_modeStandard"
-                app:liv_title="@string/attr_displayMode" />
+                app:liv_subtitle="@string/attr_displayMode"/>
+
+            <com.lucasurbas.listitemview.ListItemView
+                android:id="@+id/attr_displayModeStandard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:liv_displayMode="icon"
+                app:liv_icon="@drawable/selector_ic_radio"
+                app:liv_iconColor="@color/color_state_checked"
+                app:liv_title="@string/attr_modeStandard"/>
+
+            <com.lucasurbas.listitemview.ListItemView
+                android:id="@+id/attr_displayModeIcon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:liv_displayMode="icon"
+                app:liv_icon="@drawable/selector_ic_radio"
+                app:liv_iconColor="@color/color_state_checked"
+                app:liv_title="@string/attr_modeIcon"/>
+
+            <com.lucasurbas.listitemview.ListItemView
+                android:id="@+id/attr_displayModeCircularIcon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:liv_displayMode="icon"
+                app:liv_icon="@drawable/selector_ic_radio"
+                app:liv_iconColor="@color/color_state_checked"
+                app:liv_title="@string/attr_modeCircularIcon"/>
+
+            <com.lucasurbas.listitemview.ListItemView
+                android:id="@+id/attr_displayModeAvatar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:liv_displayMode="icon"
+                app:liv_icon="@drawable/selector_ic_radio"
+                app:liv_iconColor="@color/color_state_checked"
+                app:liv_title="@string/attr_modeAvatar"/>
 
             <com.lucasurbas.listitemview.ListItemView
                 android:id="@+id/attr_iconColor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:liv_menu="@menu/color_action_menu"
-                app:liv_title="@string/attr_iconColor" />
+                app:liv_title="@string/attr_iconColor"/>
 
             <com.lucasurbas.listitemview.ListItemView
                 android:id="@+id/attr_circularIconColor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:liv_menu="@menu/color_action_menu"
-                app:liv_title="@string/attr_circularIconColor" />
+                app:liv_title="@string/attr_circularIconColor"/>
 
             <com.lucasurbas.listitemview.ListItemView
                 android:id="@+id/attr_actionMenu"
@@ -97,7 +136,7 @@
                 android:layout_height="wrap_content"
                 app:liv_menu="@menu/attr_actions_menu"
                 app:liv_subtitle="@string/attr_menuNone"
-                app:liv_title="@string/attr_actionMenu" />
+                app:liv_title="@string/attr_actionMenu"/>
 
             <com.lucasurbas.listitemview.ListItemView
                 android:id="@+id/attr_actionMenuRoom"
@@ -105,21 +144,21 @@
                 android:layout_height="wrap_content"
                 app:liv_menu="@menu/attr_room_menu"
                 app:liv_subtitle="@string/attr_room2"
-                app:liv_title="@string/attr_actionMenuRoom" />
+                app:liv_title="@string/attr_actionMenuRoom"/>
 
             <com.lucasurbas.listitemview.ListItemView
                 android:id="@+id/attr_actionMenuItemColor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:liv_menu="@menu/color_action_menu"
-                app:liv_title="@string/attr_actionMenuItemColor" />
+                app:liv_title="@string/attr_actionMenuItemColor"/>
 
             <com.lucasurbas.listitemview.ListItemView
                 android:id="@+id/attr_actionMenuOverflowColor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:liv_menu="@menu/color_action_menu"
-                app:liv_title="@string/attr_actionMenuOverflowColor" />
+                app:liv_title="@string/attr_actionMenuOverflowColor"/>
 
         </LinearLayout>
     </ScrollView>

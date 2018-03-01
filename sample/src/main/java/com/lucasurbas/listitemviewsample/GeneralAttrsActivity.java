@@ -31,14 +31,6 @@ public class GeneralAttrsActivity extends AppCompatActivity implements ColorPick
 
     private static final int OVERFLOW_COLOR_ID = 4;
 
-    private static final String KEY_TITLE = "key_title";
-
-    private static final String KEY_SUBTITLE = "key_subtitle";
-
-    private static final String KEY_MULTILINE = "key_multiline";
-
-    private static final String KEY_KEYLINE = "key_keyline";
-
     private static final String AVATAR_URL = "https://s-media-cache-ak0.pinimg.com/originals/a8/eb/5e/a8eb5e1e919fa1784d621549f3c2c259.jpg";
 
     @BindView(R.id.list_item_view)
@@ -56,8 +48,17 @@ public class GeneralAttrsActivity extends AppCompatActivity implements ColorPick
     @BindView(R.id.attr_forceKeyline)
     ListItemView attributeForceKeylineView;
 
-    @BindView(R.id.attr_displayMode)
-    ListItemView attributeDisplayModeView;
+    @BindView(R.id.attr_displayModeStandard)
+    ListItemView attributeDisplayModeStandardView;
+
+    @BindView(R.id.attr_displayModeIcon)
+    ListItemView attributeDisplayModeIconView;
+
+    @BindView(R.id.attr_displayModeCircularIcon)
+    ListItemView attributeDisplayModeCircularIconView;
+
+    @BindView(R.id.attr_displayModeAvatar)
+    ListItemView attributeDisplayModeAvatarView;
 
     @BindView(R.id.attr_iconColor)
     ListItemView attributeIconColorView;
@@ -77,13 +78,6 @@ public class GeneralAttrsActivity extends AppCompatActivity implements ColorPick
     @BindView(R.id.attr_actionMenuOverflowColor)
     ListItemView attributeActionMenuOverflowColorView;
 
-    private boolean isTitle = true;
-
-    private boolean isSubtitle = true;
-
-    private boolean isMultiline;
-
-    private boolean isForceKeyline;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,109 +85,104 @@ public class GeneralAttrsActivity extends AppCompatActivity implements ColorPick
         setContentView(R.layout.activity_attrs_general);
         ButterKnife.bind(this);
 
-        attributeTitleView.setOnMenuItemClickListener(item -> onAttrTitleClicked());
+        listItemView.setOnClickListener(v -> {});
+        listItemView.setOnMenuItemClickListener(item -> {});
 
-        attributeSubtitleView.setOnMenuItemClickListener(item -> onAttrSubtitleClicked());
+        attributeTitleView.setOnClickListener(v -> onAttrTitleClicked());
 
-        attributeMultilineView.setOnMenuItemClickListener(item -> onAttrMultilineClicked());
+        attributeSubtitleView.setOnClickListener(v -> onAttrSubtitleClicked());
 
-        attributeForceKeylineView.setOnMenuItemClickListener(item -> onAttrForceKeylineClicked());
+        attributeMultilineView.setOnClickListener(v -> onAttrMultilineClicked());
 
-        attributeDisplayModeView.setOnMenuItemClickListener(item -> onAttrDisplayModeClicked(item.getItemId()));
+        attributeForceKeylineView.setOnClickListener(v -> onAttrForceKeylineClicked());
 
-        attributeIconColorView.setOnMenuItemClickListener(item -> showColorPicker(ICON_COLOR_ID));
+        attributeDisplayModeStandardView.setOnClickListener(v -> {
+            listItemView.setDisplayMode(ListItemView.MODE_STANDARD);
+            listItemView.setIconResId(ListItemView.NULL);
 
-        attributeCircularIconColorView.setOnMenuItemClickListener(item -> showColorPicker(CIRCLE_COLOR_ID));
+            attributeDisplayModeStandardView.setChecked(true);
+            attributeDisplayModeIconView.setChecked(false);
+            attributeDisplayModeCircularIconView.setChecked(false);
+            attributeDisplayModeAvatarView.setChecked(false);
+        });
+
+        attributeDisplayModeIconView.setOnClickListener(v -> {
+            listItemView.setDisplayMode(ListItemView.MODE_ICON);
+            listItemView.setIconResId(R.drawable.ic_call_24dp);
+
+            attributeDisplayModeStandardView.setChecked(false);
+            attributeDisplayModeIconView.setChecked(true);
+            attributeDisplayModeCircularIconView.setChecked(false);
+            attributeDisplayModeAvatarView.setChecked(false);
+        });
+
+        attributeDisplayModeCircularIconView.setOnClickListener(v -> {
+            listItemView.setDisplayMode(ListItemView.MODE_CIRCULAR_ICON);
+            listItemView.setIconResId(R.drawable.ic_call_24dp);
+
+            attributeDisplayModeStandardView.setChecked(false);
+            attributeDisplayModeIconView.setChecked(false);
+            attributeDisplayModeCircularIconView.setChecked(true);
+            attributeDisplayModeAvatarView.setChecked(false);
+        });
+
+        attributeDisplayModeAvatarView.setOnClickListener(v -> {
+            listItemView.setDisplayMode(ListItemView.MODE_AVATAR);
+            listItemView.setIconResId(ListItemView.NULL);
+
+            attributeDisplayModeStandardView.setChecked(false);
+            attributeDisplayModeIconView.setChecked(false);
+            attributeDisplayModeCircularIconView.setChecked(false);
+            attributeDisplayModeAvatarView.setChecked(true);
+
+            OkHttpClient client = new OkHttpClient();
+            Picasso picasso = new Picasso.Builder(this).loggingEnabled(true)
+                    .downloader(new OkHttp3Downloader(client))
+                    .build();
+
+            picasso.load(AVATAR_URL)
+                    .placeholder(R.drawable.placeholder)
+                    .transform(new CircleTransform())
+                    .into(listItemView.getAvatarView());
+        });
+
+        attributeIconColorView.setOnClickListener(v -> showColorPicker(ICON_COLOR_ID));
+
+        attributeCircularIconColorView.setOnClickListener(v -> showColorPicker(CIRCLE_COLOR_ID));
 
         attributeActionMenuView.setOnMenuItemClickListener(item -> onAttrActionMenuClicked(item.getItemId()));
 
         attributeActionMenuRoomView.setOnMenuItemClickListener(item -> onAttrActionMenuRoomClicked(item.getItemId()));
 
-        attributeActionMenuItemColorView.setOnMenuItemClickListener(item -> showColorPicker(ACTION_MENU_COLOR_ID));
+        attributeActionMenuItemColorView.setOnClickListener(v -> showColorPicker(ACTION_MENU_COLOR_ID));
 
-        attributeActionMenuOverflowColorView.setOnMenuItemClickListener(item -> showColorPicker(OVERFLOW_COLOR_ID));
-    }
+        attributeActionMenuOverflowColorView.setOnClickListener(v -> showColorPicker(OVERFLOW_COLOR_ID));
 
-    @Override
-    protected void onSaveInstanceState(final Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putBoolean(KEY_TITLE, isTitle);
-        outState.putBoolean(KEY_SUBTITLE, isSubtitle);
-        outState.putBoolean(KEY_MULTILINE, isMultiline);
-        outState.putBoolean(KEY_KEYLINE, isForceKeyline);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(final Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        isTitle = savedInstanceState.getBoolean(KEY_TITLE);
-        isSubtitle = savedInstanceState.getBoolean(KEY_SUBTITLE);
-        isMultiline = savedInstanceState.getBoolean(KEY_MULTILINE);
-        isForceKeyline = savedInstanceState.getBoolean(KEY_KEYLINE);
+        if (savedInstanceState == null) {
+            attributeTitleView.setChecked(true);
+            attributeSubtitleView.setChecked(true);
+            attributeDisplayModeStandardView.setChecked(true);
+        }
     }
 
     private void onAttrTitleClicked() {
-        isTitle = !isTitle;
-        attributeTitleView.inflateMenu(isTitle ? R.menu.uncheck_menu : R.menu.check_menu);
-        listItemView.setTitle(isTitle ? getString(R.string.title) : null);
+        attributeTitleView.toggle();
+        listItemView.setTitle(attributeTitleView.isChecked() ? getString(R.string.title) : null);
     }
 
     private void onAttrSubtitleClicked() {
-        isSubtitle = !isSubtitle;
-        attributeSubtitleView.inflateMenu(isSubtitle ? R.menu.uncheck_menu : R.menu.check_menu);
-        listItemView.setSubtitle(isSubtitle ? getString(R.string.subtitle_long) : null);
+        attributeSubtitleView.toggle();
+        listItemView.setSubtitle(attributeSubtitleView.isChecked() ? getString(R.string.subtitle_long) : null);
     }
 
     private void onAttrMultilineClicked() {
-        isMultiline = !isMultiline;
-        attributeMultilineView.inflateMenu(isMultiline ? R.menu.uncheck_menu : R.menu.check_menu);
-        listItemView.setMultiline(isMultiline);
+        attributeMultilineView.toggle();
+        listItemView.setMultiline(attributeMultilineView.isChecked());
     }
 
     private void onAttrForceKeylineClicked() {
-        isForceKeyline = !isForceKeyline;
-        attributeForceKeylineView.inflateMenu(
-                isForceKeyline ? R.menu.uncheck_menu : R.menu.check_menu);
-        listItemView.forceKeyline(isForceKeyline);
-    }
-
-    private void onAttrDisplayModeClicked(int itemId) {
-        switch (itemId) {
-            default:
-            case R.id.action_modeStandard:
-                listItemView.setDisplayMode(ListItemView.MODE_STANDARD);
-                listItemView.setIconResId(ListItemView.NULL);
-                attributeDisplayModeView.setSubtitle(R.string.attr_modeStandard);
-                break;
-
-            case R.id.action_modeIcon:
-                listItemView.setDisplayMode(ListItemView.MODE_ICON);
-                listItemView.setIconResId(R.drawable.ic_call_24dp);
-                attributeDisplayModeView.setSubtitle(R.string.attr_modeIcon);
-                break;
-
-            case R.id.action_modeCircularIcon:
-                listItemView.setDisplayMode(ListItemView.MODE_CIRCULAR_ICON);
-                listItemView.setIconResId(R.drawable.ic_call_24dp);
-                attributeDisplayModeView.setSubtitle(R.string.attr_modeCircularIcon);
-                break;
-
-            case R.id.action_modeAvatar:
-                listItemView.setDisplayMode(ListItemView.MODE_AVATAR);
-                listItemView.setIconResId(ListItemView.NULL);
-                attributeDisplayModeView.setSubtitle(R.string.attr_modeAvatar);
-
-                OkHttpClient client = new OkHttpClient();
-                Picasso picasso = new Picasso.Builder(this).loggingEnabled(true)
-                        .downloader(new OkHttp3Downloader(client))
-                        .build();
-
-                picasso.load(AVATAR_URL)
-                        .placeholder(R.drawable.placeholder)
-                        .transform(new CircleTransform())
-                        .into(listItemView.getAvatarView());
-                break;
-        }
+        attributeForceKeylineView.toggle();
+        listItemView.forceKeyline(attributeForceKeylineView.isChecked());
     }
 
     private void onAttrActionMenuClicked(int itemId) {
