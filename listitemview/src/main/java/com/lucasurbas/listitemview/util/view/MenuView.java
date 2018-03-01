@@ -10,10 +10,13 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
+import android.widget.Checkable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
 import com.lucasurbas.listitemview.R;
 import com.lucasurbas.listitemview.util.ViewUtils;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -25,7 +28,7 @@ import java.util.List;
  * @author Lucas Urbas
  */
 @SuppressWarnings("RestrictedApi")
-public class MenuView extends LinearLayout {
+public class MenuView extends LinearLayout implements Checkable {
 
     private int mMenuResId = -1;
 
@@ -48,6 +51,8 @@ public class MenuView extends LinearLayout {
     private List<MenuItemImpl> mActionItems = new ArrayList<>();
 
     private List<MenuItemImpl> mActionShowAlwaysItems = new ArrayList<>();
+
+    private boolean mChecked;
 
     private boolean mHasOverflow = false;
 
@@ -108,7 +113,7 @@ public class MenuView extends LinearLayout {
      *                      android:showAsAction="ifRoom" or android:showAsAction="always"
      *                      will show as actions.
      */
-    public void reset(@NonNull final MenuBuilder menuBuilder, int menuItemsRoom) {
+    private void reset(@NonNull final MenuBuilder menuBuilder, int menuItemsRoom) {
 
         //clean view and re-inflate
         removeAllViews();
@@ -170,6 +175,9 @@ public class MenuView extends LinearLayout {
                     } else {
                         action.setBackground(null);
                     }
+
+                    final int[] stateSet = {android.R.attr.state_checked * (isChecked() ? 1 : -1)};
+                    action.setImageState(stateSet, true);
 
                     menuItemsRoom--;
                     if (menuItemsRoom == 0) {
@@ -261,6 +269,41 @@ public class MenuView extends LinearLayout {
             mMenuInflater = new SupportMenuInflater(getContext());
         }
         return mMenuInflater;
+    }
+
+    /**
+     * Set a checked state of the item.
+     *
+     * @param checked a new item checked state
+     */
+    @Override
+    public void setChecked(boolean checked) {
+        if (mChecked != checked) {
+            mChecked = checked;
+            for(int i = 0; i < getChildCount(); i++){
+                ImageView child = (ImageView) getChildAt(i);
+                final int[] stateSet = {android.R.attr.state_checked * (isChecked() ? 1 : -1)};
+                child.setImageState(stateSet, true);
+            }
+        }
+    }
+
+    /**
+     * Check if item is checked.
+     *
+     * @return if item is checked
+     */
+    @Override
+    public boolean isChecked() {
+        return mChecked;
+    }
+
+    /**
+     * Change the checked state of the item to the opposite.
+     */
+    @Override
+    public void toggle() {
+        setChecked(!mChecked);
     }
 }
 

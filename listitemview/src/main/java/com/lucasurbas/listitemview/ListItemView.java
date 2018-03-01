@@ -285,6 +285,7 @@ public class ListItemView extends FrameLayout implements Checkable {
         setSubtitle(mSubtitle);
         setMenuActionColor(mMenuActionColor);
         setMenuOverflowColor(mMenuOverflowColor);
+        mMenuView.setChecked(isChecked());
         inflateMenu(mMenuId);
 
         addRipple();
@@ -693,7 +694,6 @@ public class ListItemView extends FrameLayout implements Checkable {
      * @param listener listener to listen to menu item clicks
      */
     public void setOnMenuItemClickListener(final OnMenuItemClickListener listener) {
-//        this.mActionMenuItemListener = listener;
         if(listener != null) {
             mMenuView.setMenuCallback(new MenuBuilder.Callback() {
 
@@ -820,6 +820,7 @@ public class ListItemView extends FrameLayout implements Checkable {
             mChecked = checked;
             refreshDrawableState();
         }
+        mMenuView.setChecked(checked);
     }
 
     /**

@@ -78,6 +78,11 @@ public class CheckableActivity extends AppCompatActivity implements ColorPickerD
             listItemView.setSubtitle(listItemView.isChecked() ? R.string.checkable_checked
                     : R.string.checkable_unchecked);
         });
+        listItemView.setOnMenuItemClickListener(item -> {
+            listItemView.toggle();
+            listItemView.setSubtitle(listItemView.isChecked() ? R.string.checkable_checked
+                    : R.string.checkable_unchecked);
+        });
 
         checkableExampleNoIcon.setOnClickListener(v -> {
             listItemView.setDisplayMode(ListItemView.MODE_STANDARD);
