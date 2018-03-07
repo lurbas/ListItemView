@@ -9,6 +9,7 @@ import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v7.widget.AppCompatImageView;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
@@ -87,16 +88,7 @@ public class ViewUtils {
     }
 
     public static void setIconColor(ImageView iconHolder, ColorStateList colorStateList) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            iconHolder.setImageTintList(colorStateList);
-        } else {
-            Drawable wrappedDrawable = DrawableCompat.wrap(iconHolder.getDrawable()).mutate();
-            DrawableCompat.setTintList(wrappedDrawable, colorStateList);
-            if (wrappedDrawable.isStateful()) {
-                wrappedDrawable.setState(iconHolder.getDrawableState());
-            }
-            iconHolder.setImageDrawable(wrappedDrawable);
-        }
+        ((AppCompatImageView) iconHolder).setSupportImageTintList(colorStateList);
     }
 
     public static float dpToPixel(float dp) {

@@ -244,9 +244,9 @@ public class ListItemView extends FrameLayout implements Checkable {
             mKeyline = a.getDimensionPixelSize(R.styleable.ListItemView_liv_keyline, mKeyline);
             mForceKeyline = a.getBoolean(R.styleable.ListItemView_liv_forceKeyline, false);
 
-            mIconResId = a.getResourceId(R.styleable.ListItemView_liv_icon, NULL);
-            if (mIconResId != NULL) {
-                mIconDrawable = AppCompatResources.getDrawable(getContext(), mIconResId);
+            int iconDrawableResId = a.getResourceId(R.styleable.ListItemView_liv_icon, NULL);
+            if (iconDrawableResId != NULL) {
+                mIconDrawable = AppCompatResources.getDrawable(getContext(), iconDrawableResId);
             }
 
             mIconColorStateList = a.getColorStateList(R.styleable.ListItemView_liv_iconColor);
@@ -282,9 +282,7 @@ public class ListItemView extends FrameLayout implements Checkable {
         } else {
             setCircularIconColor(mCircularIconColor);
         }
-        if (mIconDrawable != null) {
-            setIconDrawableInternal(mIconDrawable);
-        }
+        setIconDrawableInternal(mIconDrawable);
         setMultiline(mIsMultiline);
         setTitle(mTitle);
         setSubtitle(mSubtitle);
@@ -615,11 +613,11 @@ public class ListItemView extends FrameLayout implements Checkable {
      */
     public void setIconDrawable(Drawable iconDrawable) {
         mIconResId = NULL;
-        mIconDrawable = iconDrawable;
-        setIconDrawableInternal(mIconDrawable);
+        setIconDrawableInternal(iconDrawable);
     }
 
     private void setIconDrawableInternal(Drawable iconDrawable) {
+        mIconDrawable = iconDrawable;
         if (mDisplayMode == MODE_ICON) {
             mIconView.setImageDrawable(iconDrawable);
             if (mIconView.getDrawable() != null) mIconView.getDrawable().jumpToCurrentState();
@@ -852,6 +850,7 @@ public class ListItemView extends FrameLayout implements Checkable {
             refreshDrawableState();
         }
         mMenuView.setChecked(checked);
+        invalidate();
     }
 
     /**
