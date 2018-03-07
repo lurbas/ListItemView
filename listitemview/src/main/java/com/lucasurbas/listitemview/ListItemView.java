@@ -282,7 +282,9 @@ public class ListItemView extends FrameLayout implements Checkable {
         } else {
             setCircularIconColor(mCircularIconColor);
         }
-        setIconDrawableInternal(mIconDrawable);
+        if (mIconDrawable != null) {
+            setIconDrawableInternal(mIconDrawable);
+        }
         setMultiline(mIsMultiline);
         setTitle(mTitle);
         setSubtitle(mSubtitle);

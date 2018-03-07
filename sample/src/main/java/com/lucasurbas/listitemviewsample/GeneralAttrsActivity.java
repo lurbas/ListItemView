@@ -112,9 +112,9 @@ public class GeneralAttrsActivity extends AppCompatActivity implements ColorPick
             listItemView.setIconResId(ListItemView.NULL);
 
             setCheckableRadioButtonState(attributeDisplayModeStandardView, true);
-            attributeDisplayModeIconView.setChecked(false);
-            attributeDisplayModeCircularIconView.setChecked(false);
-            attributeDisplayModeAvatarView.setChecked(false);
+            setCheckableRadioButtonState(attributeDisplayModeIconView, false);
+            setCheckableRadioButtonState(attributeDisplayModeCircularIconView, false);
+            setCheckableRadioButtonState(attributeDisplayModeAvatarView, false);
         });
 
         setupCheckableRadioButton(attributeDisplayModeIconView);
@@ -122,10 +122,10 @@ public class GeneralAttrsActivity extends AppCompatActivity implements ColorPick
             listItemView.setDisplayMode(ListItemView.MODE_ICON);
             listItemView.setIconResId(R.drawable.ic_call_24dp);
 
-            attributeDisplayModeStandardView.setChecked(false);
-            attributeDisplayModeIconView.setChecked(true);
-            attributeDisplayModeCircularIconView.setChecked(false);
-            attributeDisplayModeAvatarView.setChecked(false);
+            setCheckableRadioButtonState(attributeDisplayModeStandardView, false);
+            setCheckableRadioButtonState(attributeDisplayModeIconView, true);
+            setCheckableRadioButtonState(attributeDisplayModeCircularIconView, false);
+            setCheckableRadioButtonState(attributeDisplayModeAvatarView, false);
         });
 
         setupCheckableRadioButton(attributeDisplayModeCircularIconView);
@@ -133,10 +133,10 @@ public class GeneralAttrsActivity extends AppCompatActivity implements ColorPick
             listItemView.setDisplayMode(ListItemView.MODE_CIRCULAR_ICON);
             listItemView.setIconResId(R.drawable.ic_call_24dp);
 
-            attributeDisplayModeStandardView.setChecked(false);
-            attributeDisplayModeIconView.setChecked(false);
-            attributeDisplayModeCircularIconView.setChecked(true);
-            attributeDisplayModeAvatarView.setChecked(false);
+            setCheckableRadioButtonState(attributeDisplayModeStandardView, false);
+            setCheckableRadioButtonState(attributeDisplayModeIconView, false);
+            setCheckableRadioButtonState(attributeDisplayModeCircularIconView, true);
+            setCheckableRadioButtonState(attributeDisplayModeAvatarView, false);
         });
 
         setupCheckableRadioButton(attributeDisplayModeAvatarView);
@@ -144,10 +144,10 @@ public class GeneralAttrsActivity extends AppCompatActivity implements ColorPick
             listItemView.setDisplayMode(ListItemView.MODE_AVATAR);
             listItemView.setIconResId(ListItemView.NULL);
 
-            attributeDisplayModeStandardView.setChecked(false);
-            attributeDisplayModeIconView.setChecked(false);
-            attributeDisplayModeCircularIconView.setChecked(false);
-            attributeDisplayModeAvatarView.setChecked(true);
+            setCheckableRadioButtonState(attributeDisplayModeStandardView, false);
+            setCheckableRadioButtonState(attributeDisplayModeIconView, false);
+            setCheckableRadioButtonState(attributeDisplayModeCircularIconView, false);
+            setCheckableRadioButtonState(attributeDisplayModeAvatarView, true);
 
             OkHttpClient client = new OkHttpClient();
             Picasso picasso = new Picasso.Builder(this).loggingEnabled(true)
@@ -306,16 +306,14 @@ public class GeneralAttrsActivity extends AppCompatActivity implements ColorPick
                     false);
             listItemView.setIconDrawable(asl);
         } else {
-            listItemView.setIconDrawable(listItemView.isChecked() ?
-                    AppCompatResources.getDrawable(this, R.drawable.vd_radiobutton_checked) :
-                    AppCompatResources.getDrawable(this, R.drawable.vd_radiobutton_unchecked)
-            );
+            listItemView.setIconResId(R.drawable.selector_ic_radio);
         }
     }
 
     private void setCheckableRadioButtonState(ListItemView listItemView, boolean checked) {
-        listItemView.setChecked(checked);
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP &&
+                listItemView.isChecked() != checked) {
             Drawable drawable = checked ?
                     AnimatedVectorDrawableCompat
                             .create(this, R.drawable.avd_radiobutton_unchecked_to_checked) :
@@ -324,5 +322,6 @@ public class GeneralAttrsActivity extends AppCompatActivity implements ColorPick
             listItemView.setIconDrawable(drawable);
             ((Animatable) drawable).start();
         }
+        listItemView.setChecked(checked);
     }
 }
