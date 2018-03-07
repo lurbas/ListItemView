@@ -244,9 +244,9 @@ public class ListItemView extends FrameLayout implements Checkable {
             mKeyline = a.getDimensionPixelSize(R.styleable.ListItemView_liv_keyline, mKeyline);
             mForceKeyline = a.getBoolean(R.styleable.ListItemView_liv_forceKeyline, false);
 
-            int iconDrawableResId = a.getResourceId(R.styleable.ListItemView_liv_icon, NULL);
-            if (iconDrawableResId != NULL) {
-                mIconDrawable = AppCompatResources.getDrawable(getContext(), iconDrawableResId);
+            mIconResId = a.getResourceId(R.styleable.ListItemView_liv_icon, NULL);
+            if (mIconResId != NULL) {
+                mIconDrawable = AppCompatResources.getDrawable(getContext(), mIconResId);
             }
 
             mIconColorStateList = a.getColorStateList(R.styleable.ListItemView_liv_iconColor);
@@ -282,7 +282,7 @@ public class ListItemView extends FrameLayout implements Checkable {
         } else {
             setCircularIconColor(mCircularIconColor);
         }
-        setIconDrawable(mIconDrawable);
+        setIconDrawableInternal(mIconDrawable);
         setMultiline(mIsMultiline);
         setTitle(mTitle);
         setSubtitle(mSubtitle);
@@ -369,21 +369,6 @@ public class ListItemView extends FrameLayout implements Checkable {
                 textView.getPaddingRight(), textView.getPaddingBottom() + alignBottomExtra);
     }
 
-    private void setIconDrawable(Drawable iconDrawable) {
-        mIconDrawable = iconDrawable;
-        if (mDisplayMode == MODE_ICON) {
-            mIconView.setImageDrawable(mIconDrawable);
-        } else if (mDisplayMode == MODE_CIRCULAR_ICON) {
-            mCircularIconView.setIconDrawable(mIconDrawable);
-        }
-        if (mIconColorStateList != null) {
-            setIconColorList(mIconColorStateList);
-        } else {
-            setIconColor(mIconColor);
-        }
-        adjustPadding();
-    }
-
     @Override
     protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
         if (mIsMultiline) {
@@ -443,7 +428,7 @@ public class ListItemView extends FrameLayout implements Checkable {
         this.mIconColor = savedState.iconColor;
         this.mCircularIconColor = savedState.circularIconColor;
         this.mIconResId = savedState.iconResId;
-        if (this.mIconResId != 0) {
+        if (mIconResId != NULL && mIconResId != 0) {
             setIconResId(mIconResId);
         }
         this.mDisplayMode = savedState.displayMode;
@@ -613,12 +598,38 @@ public class ListItemView extends FrameLayout implements Checkable {
     /**
      * Set an icon on left side.
      *
-     * @param iconResId a icon resource id
+     * @param iconResId an icon resource id
      */
     public void setIconResId(@DrawableRes final int iconResId) {
         mIconResId = iconResId;
-        setIconDrawable(
+        setIconDrawableInternal(
                 mIconResId != NULL ? AppCompatResources.getDrawable(getContext(), mIconResId) : null);
+    }
+
+    /**
+     * Set an icon on left side.
+     *
+     * @param iconDrawable an icon drawable
+     */
+    public void setIconDrawable(Drawable iconDrawable) {
+        mIconResId = NULL;
+        mIconDrawable = iconDrawable;
+        setIconDrawableInternal(mIconDrawable);
+    }
+
+    private void setIconDrawableInternal(Drawable iconDrawable) {
+        if (mDisplayMode == MODE_ICON) {
+            mIconView.setImageDrawable(iconDrawable);
+            if (mIconView.getDrawable() != null) mIconView.getDrawable().jumpToCurrentState();
+        } else if (mDisplayMode == MODE_CIRCULAR_ICON) {
+            mCircularIconView.setIconDrawable(iconDrawable);
+        }
+        if (mIconColorStateList != null) {
+            setIconColorList(mIconColorStateList);
+        } else {
+            setIconColor(mIconColor);
+        }
+        adjustPadding();
     }
 
     /**
@@ -631,7 +642,6 @@ public class ListItemView extends FrameLayout implements Checkable {
         if (mDisplayMode == MODE_ICON && mIconView.getDrawable() != null) {
             ViewUtils.setIconColor(mIconView,
                     Color.alpha(mIconColor) == 0 ? mDefaultColor : mIconColor);
-
         } else if (mDisplayMode == MODE_CIRCULAR_ICON
                 && mCircularIconView.getIconDrawable() != null) {
             mCircularIconView.setMask(Color.alpha(mIconColor) == 0);
@@ -883,17 +893,12 @@ public class ListItemView extends FrameLayout implements Checkable {
                     Color.TRANSPARENT);
             setCircularIconColor(color);
         }
-//        if (mMenuActionColorStateList != null) {
-//            int color = mMenuActionColorStateList.getColorForState(getDrawableState(),
-//                    Color.TRANSPARENT);
-//            setMenuActionColor(color);
-//        }
     }
 
     @Override
     public void jumpDrawablesToCurrentState() {
         super.jumpDrawablesToCurrentState();
-//        if (mIconView.getDrawable() != null) mIconView.getDrawable().jumpToCurrentState();
+        if (mIconView.getDrawable() != null) mIconView.getDrawable().jumpToCurrentState();
     }
 
     private static class SavedState extends BaseSavedState {

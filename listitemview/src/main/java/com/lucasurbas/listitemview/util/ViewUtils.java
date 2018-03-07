@@ -84,14 +84,19 @@ public class ViewUtils {
         Drawable wrappedDrawable = DrawableCompat.wrap(iconHolder.getDrawable()).mutate();
         DrawableCompat.setTint(wrappedDrawable, color);
         iconHolder.setImageDrawable(wrappedDrawable);
-        iconHolder.invalidate();
     }
 
     public static void setIconColor(ImageView iconHolder, ColorStateList colorStateList) {
-        Drawable wrappedDrawable = DrawableCompat.wrap(iconHolder.getDrawable()).mutate();
-        DrawableCompat.setTintList(wrappedDrawable, colorStateList);
-        iconHolder.setImageDrawable(wrappedDrawable);
-        iconHolder.invalidate();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            iconHolder.setImageTintList(colorStateList);
+        } else {
+            Drawable wrappedDrawable = DrawableCompat.wrap(iconHolder.getDrawable()).mutate();
+            DrawableCompat.setTintList(wrappedDrawable, colorStateList);
+            if (wrappedDrawable.isStateful()) {
+                wrappedDrawable.setState(iconHolder.getDrawableState());
+            }
+            iconHolder.setImageDrawable(wrappedDrawable);
+        }
     }
 
     public static float dpToPixel(float dp) {

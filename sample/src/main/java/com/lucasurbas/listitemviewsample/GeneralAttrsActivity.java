@@ -2,9 +2,16 @@ package com.lucasurbas.listitemviewsample;
 
 import static com.jrummyapps.android.colorpicker.ColorPickerDialog.TYPE_PRESETS;
 
+import android.graphics.drawable.Animatable;
+import android.graphics.drawable.AnimatedStateListDrawable;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
+import android.support.graphics.drawable.AnimatedVectorDrawableCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
+import android.support.v7.content.res.AppCompatResources;
 
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.jrummyapps.android.colorpicker.ColorPickerDialog;
@@ -31,7 +38,9 @@ public class GeneralAttrsActivity extends AppCompatActivity implements ColorPick
 
     private static final int OVERFLOW_COLOR_ID = 4;
 
-    private static final String AVATAR_URL = "https://s-media-cache-ak0.pinimg.com/originals/a8/eb/5e/a8eb5e1e919fa1784d621549f3c2c259.jpg";
+    private static final String AVATAR_URL =
+            "https://s-media-cache-ak0.pinimg"
+                    + ".com/originals/a8/eb/5e/a8eb5e1e919fa1784d621549f3c2c259.jpg";
 
     @BindView(R.id.list_item_view)
     ListItemView listItemView;
@@ -82,6 +91,7 @@ public class GeneralAttrsActivity extends AppCompatActivity implements ColorPick
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         setContentView(R.layout.activity_attrs_general);
         ButterKnife.bind(this);
 
@@ -96,16 +106,18 @@ public class GeneralAttrsActivity extends AppCompatActivity implements ColorPick
 
         attributeForceKeylineView.setOnClickListener(v -> onAttrForceKeylineClicked());
 
+        setupCheckableRadioButton(attributeDisplayModeStandardView);
         attributeDisplayModeStandardView.setOnClickListener(v -> {
             listItemView.setDisplayMode(ListItemView.MODE_STANDARD);
             listItemView.setIconResId(ListItemView.NULL);
 
-            attributeDisplayModeStandardView.setChecked(true);
+            setCheckableRadioButtonState(attributeDisplayModeStandardView, true);
             attributeDisplayModeIconView.setChecked(false);
             attributeDisplayModeCircularIconView.setChecked(false);
             attributeDisplayModeAvatarView.setChecked(false);
         });
 
+        setupCheckableRadioButton(attributeDisplayModeIconView);
         attributeDisplayModeIconView.setOnClickListener(v -> {
             listItemView.setDisplayMode(ListItemView.MODE_ICON);
             listItemView.setIconResId(R.drawable.ic_call_24dp);
@@ -116,6 +128,7 @@ public class GeneralAttrsActivity extends AppCompatActivity implements ColorPick
             attributeDisplayModeAvatarView.setChecked(false);
         });
 
+        setupCheckableRadioButton(attributeDisplayModeCircularIconView);
         attributeDisplayModeCircularIconView.setOnClickListener(v -> {
             listItemView.setDisplayMode(ListItemView.MODE_CIRCULAR_ICON);
             listItemView.setIconResId(R.drawable.ic_call_24dp);
@@ -126,6 +139,7 @@ public class GeneralAttrsActivity extends AppCompatActivity implements ColorPick
             attributeDisplayModeAvatarView.setChecked(false);
         });
 
+        setupCheckableRadioButton(attributeDisplayModeAvatarView);
         attributeDisplayModeAvatarView.setOnClickListener(v -> {
             listItemView.setDisplayMode(ListItemView.MODE_AVATAR);
             listItemView.setIconResId(ListItemView.NULL);
@@ -150,13 +164,17 @@ public class GeneralAttrsActivity extends AppCompatActivity implements ColorPick
 
         attributeCircularIconColorView.setOnClickListener(v -> showColorPicker(CIRCLE_COLOR_ID));
 
-        attributeActionMenuView.setOnMenuItemClickListener(item -> onAttrActionMenuClicked(item.getItemId()));
+        attributeActionMenuView.setOnMenuItemClickListener(
+                item -> onAttrActionMenuClicked(item.getItemId()));
 
-        attributeActionMenuRoomView.setOnMenuItemClickListener(item -> onAttrActionMenuRoomClicked(item.getItemId()));
+        attributeActionMenuRoomView.setOnMenuItemClickListener(
+                item -> onAttrActionMenuRoomClicked(item.getItemId()));
 
-        attributeActionMenuItemColorView.setOnClickListener(v -> showColorPicker(ACTION_MENU_COLOR_ID));
+        attributeActionMenuItemColorView.setOnClickListener(
+                v -> showColorPicker(ACTION_MENU_COLOR_ID));
 
-        attributeActionMenuOverflowColorView.setOnClickListener(v -> showColorPicker(OVERFLOW_COLOR_ID));
+        attributeActionMenuOverflowColorView.setOnClickListener(
+                v -> showColorPicker(OVERFLOW_COLOR_ID));
 
         if (savedInstanceState == null) {
             attributeTitleView.setChecked(true);
@@ -172,7 +190,8 @@ public class GeneralAttrsActivity extends AppCompatActivity implements ColorPick
 
     private void onAttrSubtitleClicked() {
         attributeSubtitleView.toggle();
-        listItemView.setSubtitle(attributeSubtitleView.isChecked() ? getString(R.string.subtitle_long) : null);
+        listItemView.setSubtitle(
+                attributeSubtitleView.isChecked() ? getString(R.string.subtitle_long) : null);
     }
 
     private void onAttrMultilineClicked() {
@@ -262,5 +281,48 @@ public class GeneralAttrsActivity extends AppCompatActivity implements ColorPick
     @Override
     public void onDialogDismissed(final int dialogId) {
         //empty
+    }
+
+    private void setupCheckableRadioButton(ListItemView listItemView) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            AnimatedStateListDrawable asl = new AnimatedStateListDrawable();
+            asl.addState(
+                    new int[]{android.R.attr.state_checked},
+                    AppCompatResources.getDrawable(this, R.drawable.vd_radiobutton_checked),
+                    R.id.checked);
+            asl.addState(
+                    new int[0],
+                    AppCompatResources.getDrawable(this, R.drawable.vd_radiobutton_unchecked),
+                    R.id.unchecked);
+            asl.addTransition(
+                    R.id.unchecked,
+                    R.id.checked,
+                    AnimatedVectorDrawableCompat.create(this, R.drawable.avd_radiobutton_unchecked_to_checked),
+                    false);
+            asl.addTransition(
+                    R.id.checked,
+                    R.id.unchecked,
+                    AnimatedVectorDrawableCompat.create(this, R.drawable.avd_radiobutton_checked_to_unchecked),
+                    false);
+            listItemView.setIconDrawable(asl);
+        } else {
+            listItemView.setIconDrawable(listItemView.isChecked() ?
+                    AppCompatResources.getDrawable(this, R.drawable.vd_radiobutton_checked) :
+                    AppCompatResources.getDrawable(this, R.drawable.vd_radiobutton_unchecked)
+            );
+        }
+    }
+
+    private void setCheckableRadioButtonState(ListItemView listItemView, boolean checked) {
+        listItemView.setChecked(checked);
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            Drawable drawable = checked ?
+                    AnimatedVectorDrawableCompat
+                            .create(this, R.drawable.avd_radiobutton_unchecked_to_checked) :
+                    AnimatedVectorDrawableCompat
+                            .create(this, R.drawable.avd_radiobutton_checked_to_unchecked);
+            listItemView.setIconDrawable(drawable);
+            ((Animatable) drawable).start();
+        }
     }
 }

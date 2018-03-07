@@ -85,7 +85,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:liv_displayMode="icon"
-                app:liv_icon="@drawable/selector_ic_radio"
                 app:liv_iconColor="@color/color_state_checked"
                 app:liv_title="@string/attr_modeStandard"/>
 
@@ -94,7 +93,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:liv_displayMode="icon"
-                app:liv_icon="@drawable/selector_ic_radio"
                 app:liv_iconColor="@color/color_state_checked"
                 app:liv_title="@string/attr_modeIcon"/>
 
@@ -103,7 +101,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:liv_displayMode="icon"
-                app:liv_icon="@drawable/selector_ic_radio"
                 app:liv_iconColor="@color/color_state_checked"
                 app:liv_title="@string/attr_modeCircularIcon"/>
 
@@ -112,7 +109,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:liv_displayMode="icon"
-                app:liv_icon="@drawable/selector_ic_radio"
                 app:liv_iconColor="@color/color_state_checked"
                 app:liv_title="@string/attr_modeAvatar"/>
 

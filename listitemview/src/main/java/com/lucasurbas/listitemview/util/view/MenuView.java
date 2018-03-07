@@ -189,6 +189,7 @@ public class MenuView extends LinearLayout implements Checkable {
 
                     final int[] stateSet = {android.R.attr.state_checked * (isChecked() ? 1 : -1)};
                     action.setImageState(stateSet, true);
+                    action.getDrawable().jumpToCurrentState();
 
                     menuItemsRoom--;
                     if (menuItemsRoom == 0) {
