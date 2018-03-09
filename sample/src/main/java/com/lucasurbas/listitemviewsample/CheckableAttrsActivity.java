@@ -68,7 +68,7 @@ public class CheckableAttrsActivity extends AppCompatActivity implements ColorPi
     @BindView(R.id.attr_actionMenuItemColor)
     ListItemView attributeActionMenuItemColorView;
 
-    private AnimationHelper mAnimationHelper;
+    private AnimationHelper animationHelper;
 
 
     @Override
@@ -78,113 +78,113 @@ public class CheckableAttrsActivity extends AppCompatActivity implements ColorPi
         setContentView(R.layout.activity_attrs_checkable);
         ButterKnife.bind(this);
 
-        mAnimationHelper = new AnimationHelper(this);
+        animationHelper = new AnimationHelper(this);
 
         listItemView.setOnClickListener(v -> {
-            listItemView.toggle();
-            listItemView.setSubtitle(listItemView.isChecked() ? R.string.checkable_checked
-                    : R.string.checkable_unchecked);
+            onToggle();
         });
         listItemView.setOnMenuItemClickListener(item -> {
-            listItemView.toggle();
-            listItemView.setSubtitle(listItemView.isChecked() ? R.string.checkable_checked
-                    : R.string.checkable_unchecked);
+            onToggle();
         });
 
-        mAnimationHelper.setupRadioButton(checkableExampleNoIcon);
+        animationHelper.setupRadioButton(checkableExampleNoIcon);
         checkableExampleNoIcon.setOnClickListener(v -> {
             listItemView.setDisplayMode(ListItemView.MODE_STANDARD);
             listItemView.setIconResId(ListItemView.NULL);
 
-            mAnimationHelper.setRadioButtonState(checkableExampleNoIcon, true);
-            mAnimationHelper.setRadioButtonState(checkableExampleSimple, false);
-            mAnimationHelper.setRadioButtonState(checkableExampleTwoStates, false);
-            mAnimationHelper.setRadioButtonState(checkableExampleAnimated, false);
-            mAnimationHelper.setRadioButtonState(checkableExampleCircular, false);
+            animationHelper.setRadioButtonState(checkableExampleNoIcon, true);
+            animationHelper.setRadioButtonState(checkableExampleSimple, false);
+            animationHelper.setRadioButtonState(checkableExampleTwoStates, false);
+            animationHelper.setRadioButtonState(checkableExampleAnimated, false);
+            animationHelper.setRadioButtonState(checkableExampleCircular, false);
         });
 
-        mAnimationHelper.setupRadioButton(checkableExampleSimple);
+        animationHelper.setupRadioButton(checkableExampleSimple);
         checkableExampleSimple.setOnClickListener(v -> {
             listItemView.setDisplayMode(ListItemView.MODE_ICON);
             listItemView.setIconResId(R.drawable.ic_call_24dp);
 
-            mAnimationHelper.setRadioButtonState(checkableExampleNoIcon, false);
-            mAnimationHelper.setRadioButtonState(checkableExampleSimple, true);
-            mAnimationHelper.setRadioButtonState(checkableExampleTwoStates, false);
-            mAnimationHelper.setRadioButtonState(checkableExampleAnimated, false);
-            mAnimationHelper.setRadioButtonState(checkableExampleCircular, false);
+            animationHelper.setRadioButtonState(checkableExampleNoIcon, false);
+            animationHelper.setRadioButtonState(checkableExampleSimple, true);
+            animationHelper.setRadioButtonState(checkableExampleTwoStates, false);
+            animationHelper.setRadioButtonState(checkableExampleAnimated, false);
+            animationHelper.setRadioButtonState(checkableExampleCircular, false);
         });
 
-        mAnimationHelper.setupRadioButton(checkableExampleTwoStates);
+        animationHelper.setupRadioButton(checkableExampleTwoStates);
         checkableExampleTwoStates.setOnClickListener(v -> {
             listItemView.setDisplayMode(ListItemView.MODE_ICON);
             listItemView.setIconResId(R.drawable.selector_ic_check);
 
-            mAnimationHelper.setRadioButtonState(checkableExampleNoIcon, false);
-            mAnimationHelper.setRadioButtonState(checkableExampleSimple, false);
-            mAnimationHelper.setRadioButtonState(checkableExampleTwoStates, true);
-            mAnimationHelper.setRadioButtonState(checkableExampleAnimated, false);
-            mAnimationHelper.setRadioButtonState(checkableExampleCircular, false);
+            animationHelper.setRadioButtonState(checkableExampleNoIcon, false);
+            animationHelper.setRadioButtonState(checkableExampleSimple, false);
+            animationHelper.setRadioButtonState(checkableExampleTwoStates, true);
+            animationHelper.setRadioButtonState(checkableExampleAnimated, false);
+            animationHelper.setRadioButtonState(checkableExampleCircular, false);
         });
 
-        mAnimationHelper.setupRadioButton(checkableExampleAnimated);
+        animationHelper.setupRadioButton(checkableExampleAnimated);
         checkableExampleAnimated.setOnClickListener(v -> {
             listItemView.setDisplayMode(ListItemView.MODE_ICON);
-            mAnimationHelper.setupCheckBox(listItemView);
+            animationHelper.setupCheckBox(listItemView);
 
-            mAnimationHelper.setRadioButtonState(checkableExampleNoIcon, false);
-            mAnimationHelper.setRadioButtonState(checkableExampleSimple, false);
-            mAnimationHelper.setRadioButtonState(checkableExampleTwoStates, false);
-            mAnimationHelper.setRadioButtonState(checkableExampleAnimated, true);
-            mAnimationHelper.setRadioButtonState(checkableExampleCircular, false);
+            animationHelper.setRadioButtonState(checkableExampleNoIcon, false);
+            animationHelper.setRadioButtonState(checkableExampleSimple, false);
+            animationHelper.setRadioButtonState(checkableExampleTwoStates, false);
+            animationHelper.setRadioButtonState(checkableExampleAnimated, true);
+            animationHelper.setRadioButtonState(checkableExampleCircular, false);
         });
 
-        mAnimationHelper.setupRadioButton(checkableExampleCircular);
+        animationHelper.setupRadioButton(checkableExampleCircular);
         checkableExampleCircular.setOnClickListener(v -> {
             listItemView.setDisplayMode(ListItemView.MODE_CIRCULAR_ICON);
             listItemView.setIconResId(R.drawable.ic_call_24dp);
 
-            mAnimationHelper.setRadioButtonState(checkableExampleNoIcon, false);
-            mAnimationHelper.setRadioButtonState(checkableExampleSimple, false);
-            mAnimationHelper.setRadioButtonState(checkableExampleTwoStates, false);
-            mAnimationHelper.setRadioButtonState(checkableExampleAnimated, false);
-            mAnimationHelper.setRadioButtonState(checkableExampleCircular, true);
+            animationHelper.setRadioButtonState(checkableExampleNoIcon, false);
+            animationHelper.setRadioButtonState(checkableExampleSimple, false);
+            animationHelper.setRadioButtonState(checkableExampleTwoStates, false);
+            animationHelper.setRadioButtonState(checkableExampleAnimated, false);
+            animationHelper.setRadioButtonState(checkableExampleCircular, true);
         });
 
+        animationHelper.setupRadioButton(checkableExampleNoMenu);
         checkableExampleNoMenu.setOnClickListener(v -> {
             listItemView.inflateMenu(ListItemView.NULL);
 
-            checkableExampleNoMenu.setChecked(true);
-            checkableExampleSimpleMenu.setChecked(false);
-            checkableExampleTwoStatesMenu.setChecked(false);
-            checkableExampleAnimatedMenu.setChecked(false);
+            animationHelper.setRadioButtonState(checkableExampleNoMenu, true);
+            animationHelper.setRadioButtonState(checkableExampleSimpleMenu, false);
+            animationHelper.setRadioButtonState(checkableExampleTwoStatesMenu, false);
+            animationHelper.setRadioButtonState(checkableExampleAnimatedMenu, false);
         });
 
+        animationHelper.setupRadioButton(checkableExampleSimpleMenu);
         checkableExampleSimpleMenu.setOnClickListener(v -> {
             listItemView.inflateMenu(R.menu.single_action_menu);
 
-            checkableExampleNoMenu.setChecked(false);
-            checkableExampleSimpleMenu.setChecked(true);
-            checkableExampleTwoStatesMenu.setChecked(false);
-            checkableExampleAnimatedMenu.setChecked(false);
+            animationHelper.setRadioButtonState(checkableExampleNoMenu, false);
+            animationHelper.setRadioButtonState(checkableExampleSimpleMenu, true);
+            animationHelper.setRadioButtonState(checkableExampleTwoStatesMenu, false);
+            animationHelper.setRadioButtonState(checkableExampleAnimatedMenu, false);
         });
 
+        animationHelper.setupRadioButton(checkableExampleTwoStatesMenu);
         checkableExampleTwoStatesMenu.setOnClickListener(v -> {
             listItemView.inflateMenu(R.menu.checkable_action_menu);
 
-            checkableExampleNoMenu.setChecked(false);
-            checkableExampleSimpleMenu.setChecked(false);
-            checkableExampleTwoStatesMenu.setChecked(true);
-            checkableExampleAnimatedMenu.setChecked(false);
+            animationHelper.setRadioButtonState(checkableExampleNoMenu, false);
+            animationHelper.setRadioButtonState(checkableExampleSimpleMenu, false);
+            animationHelper.setRadioButtonState(checkableExampleTwoStatesMenu, true);
+            animationHelper.setRadioButtonState(checkableExampleAnimatedMenu, false);
         });
 
+        animationHelper.setupRadioButton(checkableExampleAnimatedMenu);
         checkableExampleAnimatedMenu.setOnClickListener(v -> {
-            listItemView.inflateMenu(R.menu.checkable_animated_action_menu);
+            animationHelper.setupCheckBoxMenu(listItemView);
 
-            checkableExampleNoMenu.setChecked(false);
-            checkableExampleSimpleMenu.setChecked(false);
-            checkableExampleTwoStatesMenu.setChecked(false);
-            checkableExampleAnimatedMenu.setChecked(true);
+            animationHelper.setRadioButtonState(checkableExampleNoMenu, false);
+            animationHelper.setRadioButtonState(checkableExampleSimpleMenu, false);
+            animationHelper.setRadioButtonState(checkableExampleTwoStatesMenu, false);
+            animationHelper.setRadioButtonState(checkableExampleAnimatedMenu, true);
         });
 
         attributeIconCheckedColorView.setOnClickListener(v -> showColorPicker(ICON_CHECKED_COLOR_ID));
@@ -197,6 +197,18 @@ public class CheckableAttrsActivity extends AppCompatActivity implements ColorPi
             checkableExampleSimple.setChecked(true);
             checkableExampleNoMenu.setChecked(true);
         }
+    }
+
+    private void onToggle(){
+        if (checkableExampleAnimated.isChecked()) {
+            animationHelper.toggleCheckBox(listItemView, false);
+        }
+        if (checkableExampleAnimatedMenu.isChecked()) {
+            animationHelper.toggleCheckBoxMenu(listItemView, false);
+        }
+        listItemView.toggle();
+        listItemView.setSubtitle(listItemView.isChecked() ? R.string.checkable_checked
+                : R.string.checkable_unchecked);
     }
 
     @Override

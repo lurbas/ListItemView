@@ -175,6 +175,7 @@ public class MenuView extends LinearLayout implements Checkable {
                     addView(action);
                     mActionItems.add(menuItem);
                     actionItemsIds.add(menuItem.getItemId());
+                    menuItem.setActionView(action);
 
                     if (mMenuCallback != null) {
                         action.setOnClickListener(new OnClickListener() {
@@ -236,8 +237,8 @@ public class MenuView extends LinearLayout implements Checkable {
      *                      android:showAsAction="ifRoom" or android:showAsAction="always"
      *                      will show as actions.
      */
-    public void reset(final int menu, int menuItemsRoom) {
-        mMenuResId = menu;
+    public void reset(final int menuResId, int menuItemsRoom) {
+        mMenuResId = menuResId;
 
         //clean view and re-inflate
         removeAllViews();
@@ -259,6 +260,10 @@ public class MenuView extends LinearLayout implements Checkable {
     private ImageView getOverflowActionView() {
         return (ImageView) LayoutInflater.from(getContext())
                 .inflate(R.layout.liv_action_item_overflow_layout, this, false);
+    }
+
+    public List<MenuItemImpl> getMenuItems() {
+        return mMenuItems;
     }
 
     private interface MenuItemImplPredicate {

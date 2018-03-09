@@ -20,6 +20,7 @@ import android.support.annotation.StringRes;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.view.menu.MenuBuilder;
+import android.support.v7.view.menu.MenuItemImpl;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -787,6 +788,23 @@ public class ListItemView extends FrameLayout implements Checkable {
      */
     public int getMenuItemsRoom() {
         return mMenuItemsRoom;
+    }
+
+    /**
+     * Getter for action menu item.
+     *
+     * @return a menu item
+     */
+    public MenuItemImpl findMenuItem(int menuId) {
+        if (mMenuView == null || mMenuView.getMenuItems() == null) {
+            return null;
+        }
+        for (MenuItemImpl item : mMenuView.getMenuItems()) {
+            if (item.getItemId() == menuId) {
+                return item;
+            }
+        }
+        return null;
     }
 
     /**

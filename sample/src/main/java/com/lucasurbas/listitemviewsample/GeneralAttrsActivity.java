@@ -81,7 +81,7 @@ public class GeneralAttrsActivity extends AppCompatActivity implements ColorPick
     @BindView(R.id.attr_actionMenuOverflowColor)
     ListItemView attributeActionMenuOverflowColorView;
 
-    private AnimationHelper mAnimationHelper;
+    private AnimationHelper animationHelper;
 
 
     @Override
@@ -91,61 +91,78 @@ public class GeneralAttrsActivity extends AppCompatActivity implements ColorPick
         setContentView(R.layout.activity_attrs_general);
         ButterKnife.bind(this);
 
-        mAnimationHelper = new AnimationHelper(this);
+        animationHelper = new AnimationHelper(this);
 
         listItemView.setOnClickListener(v -> {});
         listItemView.setOnMenuItemClickListener(item -> {});
 
-        attributeTitleView.setOnClickListener(v -> onAttrTitleClicked());
+        animationHelper.setupCheckBoxMenu(attributeTitleView);
+        attributeTitleView.setOnClickListener(v -> {
+            animationHelper.toggleCheckBoxMenu(attributeTitleView, true);
+            listItemView.setTitle(attributeTitleView.isChecked() ? getString(R.string.title) : null);
+        });
 
-        attributeSubtitleView.setOnClickListener(v -> onAttrSubtitleClicked());
+        animationHelper.setupCheckBoxMenu(attributeSubtitleView);
+        attributeSubtitleView.setOnClickListener(v -> {
+            animationHelper.toggleCheckBoxMenu(attributeSubtitleView, true);
+            listItemView.setSubtitle(
+                    attributeSubtitleView.isChecked() ? getString(R.string.subtitle_long) : null);
+        });
 
-        attributeMultilineView.setOnClickListener(v -> onAttrMultilineClicked());
+        animationHelper.setupCheckBoxMenu(attributeMultilineView);
+        attributeMultilineView.setOnClickListener(v -> {
+            animationHelper.toggleCheckBoxMenu(attributeMultilineView, true);
+            listItemView.setMultiline(attributeMultilineView.isChecked());
+        });
 
-        attributeForceKeylineView.setOnClickListener(v -> onAttrForceKeylineClicked());
+        animationHelper.setupCheckBoxMenu(attributeForceKeylineView);
+        attributeForceKeylineView.setOnClickListener(v -> {
+            animationHelper.toggleCheckBoxMenu(attributeForceKeylineView, true);
+            listItemView.forceKeyline(attributeForceKeylineView.isChecked());
+        });
 
-        mAnimationHelper.setupRadioButton(attributeDisplayModeStandardView);
+        animationHelper.setupRadioButton(attributeDisplayModeStandardView);
         attributeDisplayModeStandardView.setOnClickListener(v -> {
             listItemView.setDisplayMode(ListItemView.MODE_STANDARD);
             listItemView.setIconResId(ListItemView.NULL);
 
-            mAnimationHelper.setRadioButtonState(attributeDisplayModeStandardView, true);
-            mAnimationHelper.setRadioButtonState(attributeDisplayModeIconView, false);
-            mAnimationHelper.setRadioButtonState(attributeDisplayModeCircularIconView, false);
-            mAnimationHelper.setRadioButtonState(attributeDisplayModeAvatarView, false);
+            animationHelper.setRadioButtonState(attributeDisplayModeStandardView, true);
+            animationHelper.setRadioButtonState(attributeDisplayModeIconView, false);
+            animationHelper.setRadioButtonState(attributeDisplayModeCircularIconView, false);
+            animationHelper.setRadioButtonState(attributeDisplayModeAvatarView, false);
         });
 
-        mAnimationHelper.setupRadioButton(attributeDisplayModeIconView);
+        animationHelper.setupRadioButton(attributeDisplayModeIconView);
         attributeDisplayModeIconView.setOnClickListener(v -> {
             listItemView.setDisplayMode(ListItemView.MODE_ICON);
             listItemView.setIconResId(R.drawable.ic_call_24dp);
 
-            mAnimationHelper.setRadioButtonState(attributeDisplayModeStandardView, false);
-            mAnimationHelper.setRadioButtonState(attributeDisplayModeIconView, true);
-            mAnimationHelper.setRadioButtonState(attributeDisplayModeCircularIconView, false);
-            mAnimationHelper.setRadioButtonState(attributeDisplayModeAvatarView, false);
+            animationHelper.setRadioButtonState(attributeDisplayModeStandardView, false);
+            animationHelper.setRadioButtonState(attributeDisplayModeIconView, true);
+            animationHelper.setRadioButtonState(attributeDisplayModeCircularIconView, false);
+            animationHelper.setRadioButtonState(attributeDisplayModeAvatarView, false);
         });
 
-        mAnimationHelper.setupRadioButton(attributeDisplayModeCircularIconView);
+        animationHelper.setupRadioButton(attributeDisplayModeCircularIconView);
         attributeDisplayModeCircularIconView.setOnClickListener(v -> {
             listItemView.setDisplayMode(ListItemView.MODE_CIRCULAR_ICON);
             listItemView.setIconResId(R.drawable.ic_call_24dp);
 
-            mAnimationHelper.setRadioButtonState(attributeDisplayModeStandardView, false);
-            mAnimationHelper.setRadioButtonState(attributeDisplayModeIconView, false);
-            mAnimationHelper.setRadioButtonState(attributeDisplayModeCircularIconView, true);
-            mAnimationHelper.setRadioButtonState(attributeDisplayModeAvatarView, false);
+            animationHelper.setRadioButtonState(attributeDisplayModeStandardView, false);
+            animationHelper.setRadioButtonState(attributeDisplayModeIconView, false);
+            animationHelper.setRadioButtonState(attributeDisplayModeCircularIconView, true);
+            animationHelper.setRadioButtonState(attributeDisplayModeAvatarView, false);
         });
 
-        mAnimationHelper.setupRadioButton(attributeDisplayModeAvatarView);
+        animationHelper.setupRadioButton(attributeDisplayModeAvatarView);
         attributeDisplayModeAvatarView.setOnClickListener(v -> {
             listItemView.setDisplayMode(ListItemView.MODE_AVATAR);
             listItemView.setIconResId(ListItemView.NULL);
 
-            mAnimationHelper.setRadioButtonState(attributeDisplayModeStandardView, false);
-            mAnimationHelper.setRadioButtonState(attributeDisplayModeIconView, false);
-            mAnimationHelper.setRadioButtonState(attributeDisplayModeCircularIconView, false);
-            mAnimationHelper.setRadioButtonState(attributeDisplayModeAvatarView, true);
+            animationHelper.setRadioButtonState(attributeDisplayModeStandardView, false);
+            animationHelper.setRadioButtonState(attributeDisplayModeIconView, false);
+            animationHelper.setRadioButtonState(attributeDisplayModeCircularIconView, false);
+            animationHelper.setRadioButtonState(attributeDisplayModeAvatarView, true);
 
             OkHttpClient client = new OkHttpClient();
             Picasso picasso = new Picasso.Builder(this).loggingEnabled(true)
@@ -179,27 +196,6 @@ public class GeneralAttrsActivity extends AppCompatActivity implements ColorPick
             attributeSubtitleView.setChecked(true);
             attributeDisplayModeStandardView.setChecked(true);
         }
-    }
-
-    private void onAttrTitleClicked() {
-        attributeTitleView.toggle();
-        listItemView.setTitle(attributeTitleView.isChecked() ? getString(R.string.title) : null);
-    }
-
-    private void onAttrSubtitleClicked() {
-        attributeSubtitleView.toggle();
-        listItemView.setSubtitle(
-                attributeSubtitleView.isChecked() ? getString(R.string.subtitle_long) : null);
-    }
-
-    private void onAttrMultilineClicked() {
-        attributeMultilineView.toggle();
-        listItemView.setMultiline(attributeMultilineView.isChecked());
-    }
-
-    private void onAttrForceKeylineClicked() {
-        attributeForceKeylineView.toggle();
-        listItemView.forceKeyline(attributeForceKeylineView.isChecked());
     }
 
     private void onAttrActionMenuClicked(int itemId) {
