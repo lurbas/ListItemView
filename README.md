@@ -7,7 +7,7 @@ Implementation of List Item from Material Design [guidelines](https://material.i
 ![](https://github.com/lurbas/ListItemView/blob/master/readme/cover.png)
 
 ### Usage
-```sh
+```xml
 <com.lucasurbas.listitemview.ListItemView
         android:id="@+id/list_item_view"
         android:layout_width="match_parent"
@@ -22,11 +22,11 @@ Implementation of List Item from Material Design [guidelines](https://material.i
 
 #### Action Menu
 Right action icon is configured from xml menu file similar to toolbar configuration.
-```sh
+```
 app:liv_menu="@menu/multiple_action_menu"
 ```
 xml file
-```sh
+```xml
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
@@ -47,7 +47,7 @@ xml file
 </menu>
 ```
 add onClick listener
-```sh
+```java
 listItemView.setOnMenuItemClickListener(new ListItemView.OnMenuItemClickListener() {
         @Override
         public void onActionMenuItemSelected(final MenuItem item) {
@@ -57,7 +57,7 @@ listItemView.setOnMenuItemClickListener(new ListItemView.OnMenuItemClickListener
 ```
 
 #### Padding and Keyline
-```sh
+```
 app:liv_paddingStart="@dimen/padding_start"
 app:liv_paddingEnd="@dimen/padding_end"
 app:liv_keyline="@dimen/keyline"
@@ -67,19 +67,19 @@ Keyline `liv_keyline` is a line to which text will be offset when icon or avatar
 The view is RTL ready.
 
 It is possible to offset text without setting icon, by using **liv_forceKeyline** flag
-```sh
+```
 app:liv_forceKeyline="true"
 ```
 ![](https://github.com/lurbas/ListItemView/blob/master/readme/keyline.png)
 
 #### Circular Icon
-```sh
+```
 app:liv_displayMode="circularIcon"
 ```
 ![](https://github.com/lurbas/ListItemView/blob/master/readme/circular_icon.png)
 
 #### Avatar
-```sh
+```
 app:liv_displayMode="avatar"
 ```
 next you can get the `ImageView` and download into it an image using library of your choice (Picasso, Glide, etc).
@@ -97,7 +97,7 @@ Title color uses `?android:textColorPrimary` and Subtitle uses `?android:textCol
 with `?android:textColorSecondary` color. This means view can handle respectfully light and dark theme.
 
 To change icons color use accordingly:
-```sh
+```
 app:liv_iconColor="@color/icon_color"
 app:liv_circularIconColor="@color/icon_color"
 app:liv_menuActionColor="@color/icon_color"
@@ -105,14 +105,14 @@ app:liv_menuOverflowColor="@color/icon_color"
 ```
 
 ### Download (JCenter)
-```sh
+```gradle
 dependencies {
     compile 'com.lucasurbas:listitemview:1.0.5'
 }
 ```
 
 ### License
-```sh
+```
 Copyright 2017 Lucas Urbas
 
 Licensed under the Apache License, Version 2.0 (the "License");
