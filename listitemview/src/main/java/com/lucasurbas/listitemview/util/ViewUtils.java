@@ -1,6 +1,7 @@
 package com.lucasurbas.listitemview.util;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
@@ -8,11 +9,13 @@ import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v7.widget.AppCompatImageView;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
+
 import com.lucasurbas.listitemview.R;
 
 /**
@@ -79,10 +82,13 @@ public class ViewUtils {
     }
 
     public static void setIconColor(ImageView iconHolder, int color) {
-        Drawable wrappedDrawable = DrawableCompat.wrap(iconHolder.getDrawable());
+        Drawable wrappedDrawable = DrawableCompat.wrap(iconHolder.getDrawable()).mutate();
         DrawableCompat.setTint(wrappedDrawable, color);
         iconHolder.setImageDrawable(wrappedDrawable);
-        iconHolder.invalidate();
+    }
+
+    public static void setIconColor(ImageView iconHolder, ColorStateList colorStateList) {
+        ((AppCompatImageView) iconHolder).setSupportImageTintList(colorStateList);
     }
 
     public static float dpToPixel(float dp) {

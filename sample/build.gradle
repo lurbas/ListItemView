@@ -1,15 +1,21 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 27
+    buildToolsVersion "26.0.3"
     defaultConfig {
         applicationId "com.lucasurbas.listitemview"
         minSdkVersion 17
-        targetSdkVersion 25
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
+        vectorDrawables.useSupportLibrary = true
+
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
     buildTypes {
         release {
@@ -19,20 +25,21 @@ android {
     }
 }
 
-ext.supportLibraryVersion = '25.3.0'
+ext.supportLibraryVersion = '27.0.2'
+ext.butterknifeVersion = '8.8.1'
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile project(':listitemview')
-    compile "com.android.support:appcompat-v7:$supportLibraryVersion"
-    compile 'com.jakewharton:butterknife:8.5.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
-    compile 'com.jrummyapps:colorpicker:2.1.6'
-    compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.squareup.okhttp3:okhttp:3.6.0'
-    compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
-    testCompile 'junit:junit:4.12'
+    implementation project(':listitemview')
+    implementation "com.android.support:appcompat-v7:$supportLibraryVersion"
+    implementation "com.jakewharton:butterknife:$butterknifeVersion"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$butterknifeVersion"
+    implementation 'com.jrummyapps:colorpicker:2.1.6'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.squareup.okhttp3:okhttp:3.8.1'
+    implementation 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.1.0'
+    testImplementation 'junit:junit:4.12'
 }

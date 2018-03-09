@@ -1,12 +1,16 @@
 <resources>
     <string name="app_name">ListItemView</string>
 
+    <string name="main_general">General sample</string>
+    <string name="main_checkable">Checkable sample</string>
+
     <string name="action_heart">Heart</string>
     <string name="action_info">Info</string>
     <string name="action_remove">Remove</string>
     <string name="action_check">Check</string>
     <string name="action_uncheck">Uncheck</string>
     <string name="action_color">Color</string>
+    <string name="action_checkable">Checkable</string>
 
     <string name="title">Single Title</string>
     <string name="title_long">A very interesting and long title</string>
@@ -38,5 +42,26 @@
     <string name="attr_room1">1</string>
     <string name="attr_room2">2</string>
     <string name="attr_room3">3</string>
+
+    <string name="checkable_title">Click item to toggle it!</string>
+    <string name="checkable_checked">Checked</string>
+    <string name="checkable_unchecked">Unchecked</string>
+    <string name="attr_iconCheckedColor">Icon Checked Color</string>
+    <string name="attr_circularIconCheckedColor">Circular Icon Checked Color</string>
+    <string name="attr_actionMenuItemCheckedColor">Action Menu Item Checked Color</string>
+    <string name="checkable_iconExamples">Checkable icon examples</string>
+    <string name="checkable_menuExamples">Checkable menu examples</string>
+    <string name="checkable_modeStandard">Display Mode - Standard</string>
+    <string name="checkable_modeIcon">Display Mode - Icon</string>
+    <string name="checkable_modeCircularIcon">Display Mode - Circular Icon</string>
+    <string name="checkable_exampleNoIcon">No Icon</string>
+    <string name="checkable_exampleSimple">Simple - only color change</string>
+    <string name="checkable_exampleTwoStates">Two States</string>
+    <string name="checkable_exampleAnimated">Animated</string>
+    <string name="checkable_exampleCircular">Circular Icon - only color change</string>
+    <string name="checkable_exampleNoMenu">No Action Menu</string>
+    <string name="checkable_exampleSimpleMenu">Simple Menu - only color change</string>
+    <string name="checkable_exampleTwoStatesMenu">Two States Menu</string>
+    <string name="checkable_exampleAnimatedMenu">Animated Menu</string>
 
 </resources>

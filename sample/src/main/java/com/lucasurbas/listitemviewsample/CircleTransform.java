@@ -9,7 +9,7 @@ import com.squareup.picasso.Transformation;
 /**
  * Picasso transformation crop circle.
  *
- * @author urbl
+ * @author Lucas Urbas
  */
 public class CircleTransform implements Transformation {
 

@@ -25,13 +25,14 @@ ext {
 }
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 27
+    buildToolsVersion "26.0.3"
 
     defaultConfig {
         minSdkVersion 17
-        targetSdkVersion 25
+        targetSdkVersion 27
         versionName "$libraryVersion"
+        vectorDrawables.useSupportLibrary = true
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
@@ -48,15 +49,15 @@ android {
     }
 }
 
-ext.supportLibraryVersion = '25.3.1'
+ext.supportLibraryVersion = '27.0.2'
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile "com.android.support:appcompat-v7:$supportLibraryVersion"
-    testCompile 'junit:junit:4.12'
+    implementation "com.android.support:appcompat-v7:$supportLibraryVersion"
+    testImplementation 'junit:junit:4.12'
 }
 
 apply from: 'https://raw.githubusercontent.com/nuuneoi/JCenter/master/installv1.gradle'
