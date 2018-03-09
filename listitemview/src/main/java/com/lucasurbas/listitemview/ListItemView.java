@@ -1,6 +1,9 @@
 package com.lucasurbas.listitemview;
 
+import static java.lang.annotation.RetentionPolicy.SOURCE;
+
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -17,20 +20,22 @@ import android.support.annotation.StringRes;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.view.menu.MenuBuilder;
+import android.support.v7.view.menu.MenuItemImpl;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.MenuItem;
+import android.widget.Checkable;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.lucasurbas.listitemview.util.ViewUtils;
 import com.lucasurbas.listitemview.util.view.CircularIconView;
 import com.lucasurbas.listitemview.util.view.MenuView;
-import java.lang.annotation.Retention;
 
-import static java.lang.annotation.RetentionPolicy.SOURCE;
+import java.lang.annotation.Retention;
 
 
 /**
@@ -38,7 +43,7 @@ import static java.lang.annotation.RetentionPolicy.SOURCE;
  *
  * @author Lucas Urbas
  */
-public class ListItemView extends FrameLayout {
+public class ListItemView extends FrameLayout implements Checkable {
 
     // CONSTANTS
 
@@ -76,6 +81,10 @@ public class ListItemView extends FrameLayout {
 
     private static final int SUBTITLE_LEADING_SP = 20;
 
+    private static final int[] CHECKED_STATE_SET = {
+            android.R.attr.state_checked
+    };
+
     // CHILD VIEWS
 
     private LinearLayout mItemLayout;
@@ -109,8 +118,6 @@ public class ListItemView extends FrameLayout {
     @ColorInt
     private int mMenuOverflowColor;
 
-    private OnMenuItemClickListener mActionMenuItemListener;
-
     private String mTitle;
 
     private String mSubtitle;
@@ -133,6 +140,8 @@ public class ListItemView extends FrameLayout {
 
     private int mDisplayMode;
 
+    private boolean mChecked;
+
     @DrawableRes
     private int mIconResId;
 
@@ -146,6 +155,12 @@ public class ListItemView extends FrameLayout {
 
     @ColorInt
     private int mDefaultColor;
+
+    private ColorStateList mIconColorStateList;
+
+    private ColorStateList mCircularIconColorStateList;
+
+    private ColorStateList mMenuActionColorStateList;
 
     /**
      * Interface for implementing a listener to listen
@@ -175,14 +190,14 @@ public class ListItemView extends FrameLayout {
 
         inflate(getContext(), R.layout.liv_list_item_layout, this);
 
-        mItemLayout = (LinearLayout) findViewById(R.id.item_layout);
-        mMenuView = (MenuView) findViewById(R.id.menu_view);
-        mTitleView = (TextView) findViewById(R.id.title_view);
-        mSubtitleView = (TextView) findViewById(R.id.subtitle_view);
-        mIconView = (ImageView) findViewById(R.id.icon_view);
-        mTextsLayout = (LinearLayout) findViewById(R.id.texts_layout);
-        mCircularIconView = (CircularIconView) findViewById(R.id.circular_icon_view);
-        mAvatarView = (ImageView) findViewById(R.id.avatar_view);
+        mItemLayout = findViewById(R.id.item_layout);
+        mMenuView = findViewById(R.id.menu_view);
+        mTitleView = findViewById(R.id.title_view);
+        mSubtitleView = findViewById(R.id.subtitle_view);
+        mIconView = findViewById(R.id.icon_view);
+        mTextsLayout = findViewById(R.id.texts_layout);
+        mCircularIconView = findViewById(R.id.circular_icon_view);
+        mAvatarView = findViewById(R.id.avatar_view);
 
         mDefaultColor = ViewUtils.getDefaultColor(getContext());
         mPaddingEnd = getResources().getDimensionPixelSize(R.dimen.liv_padding_end);
@@ -208,10 +223,15 @@ public class ListItemView extends FrameLayout {
             mMenuId = a.getResourceId(R.styleable.ListItemView_liv_menu, NULL);
             mMenuItemsRoom = a.getInteger(R.styleable.ListItemView_liv_menuItemsRoom,
                     DEFAULT_MENU_ITEMS_ROOM);
-            mMenuActionColor = a.getColor(R.styleable.ListItemView_liv_menuActionColor,
-                    Color.TRANSPARENT);
             mMenuOverflowColor = a.getColor(R.styleable.ListItemView_liv_menuOverflowColor,
                     Color.TRANSPARENT);
+            mMenuActionColorStateList = a.getColorStateList(R.styleable.ListItemView_liv_menuActionColor);
+            if (mMenuActionColorStateList == null) {
+                mMenuActionColor = a.getColor(R.styleable.ListItemView_liv_menuActionColor,
+                        Color.TRANSPARENT);
+            } else {
+                mMenuActionColor = Color.TRANSPARENT;
+            }
 
             mTitle = a.getString(R.styleable.ListItemView_liv_title);
             mSubtitle = a.getString(R.styleable.ListItemView_liv_subtitle);
@@ -230,9 +250,20 @@ public class ListItemView extends FrameLayout {
                 mIconDrawable = AppCompatResources.getDrawable(getContext(), iconDrawableResId);
             }
 
-            mIconColor = a.getColor(R.styleable.ListItemView_liv_iconColor, Color.TRANSPARENT);
-            mCircularIconColor = a.getColor(R.styleable.ListItemView_liv_circularIconColor,
-                    Color.TRANSPARENT);
+            mIconColorStateList = a.getColorStateList(R.styleable.ListItemView_liv_iconColor);
+            if (mIconColorStateList == null) {
+                mIconColor = a.getColor(R.styleable.ListItemView_liv_iconColor, Color.TRANSPARENT);
+            } else {
+                mIconColor = Color.TRANSPARENT;
+            }
+
+            mCircularIconColorStateList = a.getColorStateList(R.styleable.ListItemView_liv_circularIconColor);
+            if (mCircularIconColorStateList == null) {
+                mCircularIconColor = a.getColor(R.styleable.ListItemView_liv_circularIconColor,
+                        Color.TRANSPARENT);
+            } else {
+                mCircularIconColor = Color.TRANSPARENT;
+            }
 
         } finally {
             a.recycle();
@@ -247,13 +278,22 @@ public class ListItemView extends FrameLayout {
         setupTextView(mSubtitleView, (int) ViewUtils.spToPixel(SUBTITLE_LEADING_SP), 1);
 
         setDisplayMode(mDisplayMode);
-        setCircularIconColor(mCircularIconColor);
-        setIconDrawable(mIconDrawable);
+        if (mCircularIconColorStateList != null) {
+            setCircularIconColorList(mCircularIconColorStateList);
+        } else {
+            setCircularIconColor(mCircularIconColor);
+        }
+        setIconDrawableInternal(mIconDrawable);
         setMultiline(mIsMultiline);
         setTitle(mTitle);
         setSubtitle(mSubtitle);
-        setMenuActionColor(mMenuActionColor);
+        if (mMenuActionColorStateList != null) {
+            setMenuActionColorList(mMenuActionColorStateList);
+        } else {
+            setMenuActionColor(mMenuActionColor);
+        }
         setMenuOverflowColor(mMenuOverflowColor);
+        mMenuView.setChecked(isChecked());
         inflateMenu(mMenuId);
 
         addRipple();
@@ -330,17 +370,6 @@ public class ListItemView extends FrameLayout {
                 textView.getPaddingRight(), textView.getPaddingBottom() + alignBottomExtra);
     }
 
-    private void setIconDrawable(Drawable iconDrawable) {
-        mIconDrawable = iconDrawable;
-        if (mDisplayMode == MODE_ICON) {
-            mIconView.setImageDrawable(mIconDrawable);
-        } else if (mDisplayMode == MODE_CIRCULAR_ICON) {
-            mCircularIconView.setIconDrawable(mIconDrawable);
-        }
-        setIconColor(mIconColor);
-        adjustPadding();
-    }
-
     @Override
     protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
         if (mIsMultiline) {
@@ -377,6 +406,10 @@ public class ListItemView extends FrameLayout {
         savedState.circularIconColor = this.mCircularIconColor;
         savedState.iconResId = this.mIconResId;
         savedState.displayMode = this.mDisplayMode;
+        savedState.checked = this.mChecked;
+        savedState.iconColorStateList = this.mIconColorStateList;
+        savedState.circularIconColorStateList = this.mCircularIconColorStateList;
+        savedState.menuActionColorStateList = this.mMenuActionColorStateList;
         return savedState;
     }
 
@@ -396,10 +429,14 @@ public class ListItemView extends FrameLayout {
         this.mIconColor = savedState.iconColor;
         this.mCircularIconColor = savedState.circularIconColor;
         this.mIconResId = savedState.iconResId;
-        if (this.mIconResId != 0) {
+        if (mIconResId != NULL && mIconResId != 0) {
             setIconResId(mIconResId);
         }
         this.mDisplayMode = savedState.displayMode;
+        this.mChecked = savedState.checked;
+        this.mIconColorStateList = savedState.iconColorStateList;
+        this.mCircularIconColorStateList = savedState.circularIconColorStateList;
+        this.mMenuActionColorStateList = savedState.menuActionColorStateList;
         setupView();
     }
 
@@ -447,28 +484,6 @@ public class ListItemView extends FrameLayout {
         mSubtitleView.setVisibility(TextUtils.isEmpty(mSubtitle) ? GONE : VISIBLE);
     }
 
-    public void setMenu(final MenuBuilder menuBuilder) {
-        mMenuBuilder = menuBuilder;
-        mMenuId = NULL;
-        mMenuView.setMenuCallback(new MenuBuilder.Callback() {
-
-            @Override
-            public boolean onMenuItemSelected(MenuBuilder menu, MenuItem item) {
-                if (mActionMenuItemListener != null) {
-                    mActionMenuItemListener.onActionMenuItemSelected(item);
-                }
-                return true;
-            }
-
-            @Override
-            public void onMenuModeChange(MenuBuilder menu) {
-            }
-
-        });
-        mMenuView.reset(menuBuilder, mMenuItemsRoom);
-        adjustPadding();
-    }
-
     /**
      * Inflates the menu items from
      * an xml resource.
@@ -478,22 +493,19 @@ public class ListItemView extends FrameLayout {
     public void inflateMenu(@MenuRes final int menuId) {
         mMenuId = menuId;
         mMenuBuilder = null;
-        mMenuView.setMenuCallback(new MenuBuilder.Callback() {
-
-            @Override
-            public boolean onMenuItemSelected(MenuBuilder menu, MenuItem item) {
-                if (mActionMenuItemListener != null) {
-                    mActionMenuItemListener.onActionMenuItemSelected(item);
-                }
-                return true;
-            }
-
-            @Override
-            public void onMenuModeChange(MenuBuilder menu) {
-            }
-
-        });
         mMenuView.reset(menuId, mMenuItemsRoom);
+        adjustPadding();
+    }
+
+    /**
+     * Inflates the menu items from menu builder
+     *
+     * @param menuBuilder a menu builder
+     */
+    public void setMenu(final MenuBuilder menuBuilder) {
+        mMenuBuilder = menuBuilder;
+        mMenuId = NULL;
+        mMenuView.reset(menuBuilder, mMenuItemsRoom);
         adjustPadding();
     }
 
@@ -587,12 +599,38 @@ public class ListItemView extends FrameLayout {
     /**
      * Set an icon on left side.
      *
-     * @param iconResId a icon resource id
+     * @param iconResId an icon resource id
      */
     public void setIconResId(@DrawableRes final int iconResId) {
         mIconResId = iconResId;
-        setIconDrawable(
+        setIconDrawableInternal(
                 mIconResId != NULL ? AppCompatResources.getDrawable(getContext(), mIconResId) : null);
+    }
+
+    /**
+     * Set an icon on left side.
+     *
+     * @param iconDrawable an icon drawable
+     */
+    public void setIconDrawable(Drawable iconDrawable) {
+        mIconResId = NULL;
+        setIconDrawableInternal(iconDrawable);
+    }
+
+    private void setIconDrawableInternal(Drawable iconDrawable) {
+        mIconDrawable = iconDrawable;
+        if (mDisplayMode == MODE_ICON) {
+            mIconView.setImageDrawable(iconDrawable);
+            if (mIconView.getDrawable() != null) mIconView.getDrawable().jumpToCurrentState();
+        } else if (mDisplayMode == MODE_CIRCULAR_ICON) {
+            mCircularIconView.setIconDrawable(iconDrawable);
+        }
+        if (mIconColorStateList != null) {
+            setIconColorList(mIconColorStateList);
+        } else {
+            setIconColor(mIconColor);
+        }
+        adjustPadding();
     }
 
     /**
@@ -605,7 +643,6 @@ public class ListItemView extends FrameLayout {
         if (mDisplayMode == MODE_ICON && mIconView.getDrawable() != null) {
             ViewUtils.setIconColor(mIconView,
                     Color.alpha(mIconColor) == 0 ? mDefaultColor : mIconColor);
-
         } else if (mDisplayMode == MODE_CIRCULAR_ICON
                 && mCircularIconView.getIconDrawable() != null) {
             mCircularIconView.setMask(Color.alpha(mIconColor) == 0);
@@ -614,6 +651,19 @@ public class ListItemView extends FrameLayout {
                     Color.alpha(mIconColor) == 0 ? Color.WHITE : mIconColor);
             mCircularIconView.setIconDrawable(wrappedDrawable);
         }
+    }
+
+    /**
+     * Set a colorStateList of icon on left side.
+     *
+     * @param colorStateList a icon colorStateList
+     */
+    public void setIconColorList(final ColorStateList colorStateList) {
+        mIconColorStateList = colorStateList;
+        if (mDisplayMode == MODE_ICON && mIconView.getDrawable() != null) {
+            ViewUtils.setIconColor(mIconView, mIconColorStateList);
+        }
+        refreshDrawableState();
     }
 
     /**
@@ -628,6 +678,16 @@ public class ListItemView extends FrameLayout {
     }
 
     /**
+     * Set a colorStateList of circular icon on left side.
+     *
+     * @param colorStateList a icon colorStateList
+     */
+    public void setCircularIconColorList(final ColorStateList colorStateList) {
+        mCircularIconColorStateList = colorStateList;
+        refreshDrawableState();
+    }
+
+    /**
      * Set a color of an action icon in menu.
      *
      * @param menuActionColor a icon color
@@ -635,6 +695,16 @@ public class ListItemView extends FrameLayout {
     public void setMenuActionColor(@ColorInt final int menuActionColor) {
         mMenuActionColor = Color.alpha(menuActionColor) == 0 ? mDefaultColor : menuActionColor;
         mMenuView.setActionIconColor(mMenuActionColor);
+    }
+
+    /**
+     * Set a colorStateList of an action icon in menu.
+     *
+     * @param colorStateList a icon colorStateList
+     */
+    public void setMenuActionColorList(final ColorStateList colorStateList) {
+        mMenuActionColorStateList = colorStateList;
+        mMenuView.setActionIconColorList(mMenuActionColorStateList);
     }
 
     /**
@@ -648,13 +718,30 @@ public class ListItemView extends FrameLayout {
     }
 
     /**
-     * Sets the listener that will be called when
+     * Set the listener that will be called when
      * an item in the overflow menu is clicked.
      *
      * @param listener listener to listen to menu item clicks
      */
     public void setOnMenuItemClickListener(final OnMenuItemClickListener listener) {
-        this.mActionMenuItemListener = listener;
+        if(listener != null) {
+            mMenuView.setMenuCallback(new MenuBuilder.Callback() {
+
+                @Override
+                public boolean onMenuItemSelected(MenuBuilder menu, MenuItem item) {
+                    listener.onActionMenuItemSelected(item);
+                    return true;
+                }
+
+                @Override
+                public void onMenuModeChange(MenuBuilder menu) {
+                }
+
+            });
+        } else {
+            mMenuView.setMenuCallback(null);
+        }
+        mMenuView.reset(mMenuId, mMenuItemsRoom);
     }
 
     /**
@@ -701,6 +788,23 @@ public class ListItemView extends FrameLayout {
      */
     public int getMenuItemsRoom() {
         return mMenuItemsRoom;
+    }
+
+    /**
+     * Getter for action menu item.
+     *
+     * @return a menu item
+     */
+    public MenuItemImpl findMenuItem(int menuId) {
+        if (mMenuView == null || mMenuView.getMenuItems() == null) {
+            return null;
+        }
+        for (MenuItemImpl item : mMenuView.getMenuItems()) {
+            if (item.getItemId() == menuId) {
+                return item;
+            }
+        }
+        return null;
     }
 
     /**
@@ -752,6 +856,70 @@ public class ListItemView extends FrameLayout {
         return mAvatarView;
     }
 
+    /**
+     * Set a checked state of the item.
+     *
+     * @param checked a new item checked state
+     */
+    @Override
+    public void setChecked(boolean checked) {
+        if (mChecked != checked) {
+            mChecked = checked;
+            refreshDrawableState();
+        }
+        mMenuView.setChecked(checked);
+        invalidate();
+    }
+
+    /**
+     * Check if item is checked.
+     *
+     * @return if item is checked
+     */
+    @Override
+    public boolean isChecked() {
+        return mChecked;
+    }
+
+    /**
+     * Change the checked state of the item to the opposite.
+     */
+    @Override
+    public void toggle() {
+        setChecked(!mChecked);
+    }
+
+    @Override
+    protected int[] onCreateDrawableState(int extraSpace) {
+        final int[] drawableState = super.onCreateDrawableState(extraSpace + 1);
+        if (isChecked()) {
+            mergeDrawableStates(drawableState, CHECKED_STATE_SET);
+        }
+        return drawableState;
+    }
+
+    @Override
+    protected void drawableStateChanged() {
+        super.drawableStateChanged();
+
+        if (mDisplayMode == MODE_CIRCULAR_ICON && mIconColorStateList != null) {
+            int color = mIconColorStateList.getColorForState(getDrawableState(), Color.TRANSPARENT);
+            setIconColor(color);
+        }
+
+        if (mCircularIconColorStateList != null) {
+            int color = mCircularIconColorStateList.getColorForState(getDrawableState(),
+                    Color.TRANSPARENT);
+            setCircularIconColor(color);
+        }
+    }
+
+    @Override
+    public void jumpDrawablesToCurrentState() {
+        super.jumpDrawablesToCurrentState();
+        if (mIconView.getDrawable() != null) mIconView.getDrawable().jumpToCurrentState();
+    }
+
     private static class SavedState extends BaseSavedState {
 
         private int menuId;
@@ -778,6 +946,14 @@ public class ListItemView extends FrameLayout {
 
         private int displayMode;
 
+        private boolean checked;
+
+        private ColorStateList iconColorStateList;
+
+        private ColorStateList circularIconColorStateList;
+
+        private ColorStateList menuActionColorStateList;
+
         SavedState(Parcelable superState) {
             super(superState);
         }
@@ -796,6 +972,10 @@ public class ListItemView extends FrameLayout {
             circularIconColor = in.readInt();
             iconResId = in.readInt();
             displayMode = in.readInt();
+            checked = in.readInt() == 1;
+            iconColorStateList = in.readParcelable(ColorStateList.class.getClassLoader());
+            circularIconColorStateList = in.readParcelable(ColorStateList.class.getClassLoader());
+            menuActionColorStateList = in.readParcelable(ColorStateList.class.getClassLoader());
         }
 
         @Override
@@ -813,6 +993,10 @@ public class ListItemView extends FrameLayout {
             out.writeInt(circularIconColor);
             out.writeInt(iconResId);
             out.writeInt(displayMode);
+            out.writeInt(checked ? 1 : 0);
+            out.writeParcelable(iconColorStateList, flags);
+            out.writeParcelable(circularIconColorStateList, flags);
+            out.writeParcelable(menuActionColorStateList, flags);
         }
 
         public static final Creator<SavedState> CREATOR = new Creator<SavedState>() {

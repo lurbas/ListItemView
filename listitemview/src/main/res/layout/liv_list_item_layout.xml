@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+       xmlns:tools="http://schemas.android.com/tools"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/icon_view"
@@ -10,7 +10,8 @@
         android:layout_height="24dp"
         android:layout_gravity="center_vertical|start"
         android:layout_marginBottom="16dp"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="16dp"
+        android:duplicateParentState="true"/>
 
     <com.lucasurbas.listitemview.util.view.CircularIconView
         android:id="@+id/circular_icon_view"
@@ -18,7 +19,7 @@
         android:layout_height="40dp"
         android:layout_gravity="center_vertical|start"
         android:layout_marginBottom="16dp"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="16dp"/>
 
     <ImageView
         android:id="@+id/avatar_view"
@@ -26,7 +27,7 @@
         android:layout_height="40dp"
         android:layout_gravity="center_vertical|start"
         android:layout_marginBottom="16dp"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="16dp"/>
 
     <LinearLayout
         android:id="@+id/item_layout"
@@ -52,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="2dp"
                 android:ellipsize="end"
-                tools:text="Single Title" />
+                tools:text="Single Title"/>
 
             <TextView
                 android:id="@+id/subtitle_view"
@@ -62,14 +63,14 @@
                 android:layout_marginTop="2dp"
                 android:ellipsize="end"
                 android:textColor="?android:textColorSecondary"
-                tools:text="Very long and interesting\nsubtitle" />
+                tools:text="Very long and interesting\nsubtitle"/>
 
         </LinearLayout>
 
         <com.lucasurbas.listitemview.util.view.MenuView
             android:id="@+id/menu_view"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"/>
 
     </LinearLayout>
 

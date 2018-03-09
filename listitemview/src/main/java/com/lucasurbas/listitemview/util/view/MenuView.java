@@ -1,6 +1,7 @@
 package com.lucasurbas.listitemview.util.view;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.support.annotation.NonNull;
 import android.support.v7.view.SupportMenuInflater;
 import android.support.v7.view.menu.MenuBuilder;
@@ -10,22 +11,25 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
+import android.widget.Checkable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
 import com.lucasurbas.listitemview.R;
 import com.lucasurbas.listitemview.util.ViewUtils;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 /**
- * View to represent action items on the right.
+ * View to represent action items on the right side of list item.
  *
- * @author urbl
+ * @author Lucas Urbas
  */
 @SuppressWarnings("RestrictedApi")
-public class MenuView extends LinearLayout {
+public class MenuView extends LinearLayout implements Checkable {
 
     private int mMenuResId = -1;
 
@@ -39,6 +43,8 @@ public class MenuView extends LinearLayout {
 
     private int mActionIconColor;
 
+    private ColorStateList mActionIconColorList;
+
     private int mOverflowIconColor;
 
     //all menu items
@@ -47,7 +53,7 @@ public class MenuView extends LinearLayout {
     //items that are currently presented as actions
     private List<MenuItemImpl> mActionItems = new ArrayList<>();
 
-    private List<MenuItemImpl> mActionShowAlwaysItems = new ArrayList<>();
+    private boolean mChecked;
 
     private boolean mHasOverflow = false;
 
@@ -70,6 +76,13 @@ public class MenuView extends LinearLayout {
     public void setActionIconColor(final int actionColor) {
         this.mActionIconColor = actionColor;
         refreshColors();
+    }
+
+    public void setActionIconColorList(final ColorStateList colorStateList) {
+        this.mActionIconColorList = colorStateList;
+        for (int i = 0; i < getChildCount(); i++) {
+            ViewUtils.setIconColor(((ImageView) getChildAt(i)), mActionIconColorList);
+        }
     }
 
     public void setOverflowColor(final int overflowColor) {
@@ -116,7 +129,6 @@ public class MenuView extends LinearLayout {
         mMenuBuilder = menuBuilder;
         mMenuPopupHelper = new MenuPopupHelper(getContext(), mMenuBuilder, this);
 
-        mActionShowAlwaysItems = new ArrayList<>();
         mActionItems = new ArrayList<>();
         mMenuItems = new ArrayList<>();
 
@@ -155,20 +167,30 @@ public class MenuView extends LinearLayout {
 
                     ImageView action = createActionView();
                     action.setImageDrawable(menuItem.getIcon());
-                    ViewUtils.setIconColor(action, mActionIconColor);
+                    if (mActionIconColorList != null) {
+                        ViewUtils.setIconColor(action, mActionIconColorList);
+                    } else {
+                        ViewUtils.setIconColor(action, mActionIconColor);
+                    }
                     addView(action);
                     mActionItems.add(menuItem);
                     actionItemsIds.add(menuItem.getItemId());
+                    menuItem.setActionView(action);
 
-                    action.setOnClickListener(new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-
-                            if (mMenuCallback != null) {
+                    if (mMenuCallback != null) {
+                        action.setOnClickListener(new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
                                 mMenuCallback.onMenuItemSelected(mMenuBuilder, menuItem);
                             }
-                        }
-                    });
+                        });
+                    } else {
+                        action.setBackground(null);
+                    }
+
+                    final int[] stateSet = {android.R.attr.state_checked * (isChecked() ? 1 : -1)};
+                    action.setImageState(stateSet, true);
+                    action.getDrawable().jumpToCurrentState();
 
                     menuItemsRoom--;
                     if (menuItemsRoom == 0) {
@@ -182,7 +204,7 @@ public class MenuView extends LinearLayout {
         if (addOverflowAtTheEnd) {
 
             ImageView overflowAction = getOverflowActionView();
-            overflowAction.setImageResource(R.drawable.ic_more_vert_black_24dp);
+            overflowAction.setImageResource(R.drawable.vd_more_vert_black_24dp);
             ViewUtils.setIconColor(overflowAction, mOverflowIconColor);
             addView(overflowAction);
 
@@ -215,8 +237,8 @@ public class MenuView extends LinearLayout {
      *                      android:showAsAction="ifRoom" or android:showAsAction="always"
      *                      will show as actions.
      */
-    public void reset(final int menu, int menuItemsRoom) {
-        mMenuResId = menu;
+    public void reset(final int menuResId, int menuItemsRoom) {
+        mMenuResId = menuResId;
 
         //clean view and re-inflate
         removeAllViews();
@@ -240,6 +262,10 @@ public class MenuView extends LinearLayout {
                 .inflate(R.layout.liv_action_item_overflow_layout, this, false);
     }
 
+    public List<MenuItemImpl> getMenuItems() {
+        return mMenuItems;
+    }
+
     private interface MenuItemImplPredicate {
 
         boolean apply(MenuItemImpl menuItem);
@@ -260,6 +286,44 @@ public class MenuView extends LinearLayout {
             mMenuInflater = new SupportMenuInflater(getContext());
         }
         return mMenuInflater;
+    }
+
+    /**
+     * Set a checked state of the item.
+     *
+     * @param checked a new item checked state
+     */
+    @Override
+    public void setChecked(boolean checked) {
+        if (mChecked != checked) {
+            mChecked = checked;
+            for(int i = 0; i < getChildCount(); i++){
+                if (mHasOverflow && i == getChildCount() - 1) {
+                    continue;
+                }
+                ImageView child = (ImageView) getChildAt(i);
+                final int[] stateSet = {android.R.attr.state_checked * (isChecked() ? 1 : -1)};
+                child.setImageState(stateSet, true);
+            }
+        }
+    }
+
+    /**
+     * Check if item is checked.
+     *
+     * @return if item is checked
+     */
+    @Override
+    public boolean isChecked() {
+        return mChecked;
+    }
+
+    /**
+     * Change the checked state of the item to the opposite.
+     */
+    @Override
+    public void toggle() {
+        setChecked(!mChecked);
     }
 }
 

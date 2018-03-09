@@ -12,8 +12,9 @@
         <item name="colorAccent">@color/colorAccent</item>
 
         <item name="android:windowBackground">@color/lightGrey</item>
-
         <item name="colorItemBackground">@color/white</item>
+
+        <item name="android:textColorSecondary">@color/textSecondaryLight</item>
 
     </style>
 
@@ -24,6 +25,8 @@
         <item name="colorAccent">@color/colorAccent</item>
 
         <item name="colorItemBackground">@color/darkGrey</item>
+
+        <item name="android:textColorSecondary">@color/textSecondaryDark</item>
     </style>
 
 </resources>
