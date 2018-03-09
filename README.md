@@ -107,7 +107,7 @@ app:liv_menuOverflowColor="@color/icon_color"
 ### Download (JCenter)
 ```gradle
 dependencies {
-    compile 'com.lucasurbas:listitemview:1.0.5'
+    compile 'com.lucasurbas:listitemview:1.1.0'
 }
 ```
 
