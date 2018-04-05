@@ -1,6 +1,5 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.lucasurbas.listitemview">
+<manifest package="com.lucasurbas.listitemview">
 
-    <application android:supportsRtl="true" />
+    <application />
 
 </manifest>
